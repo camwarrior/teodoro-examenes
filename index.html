@@ -66,6 +66,18 @@ header p{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.45}
 .ti .tdot{width:11px;height:11px;border-radius:50%;margin-top:4px;flex-shrink:0;margin-left:-22px;border:2px solid var(--bg)}
 .ti .tdt{font-size:11px;color:var(--text2)}
 .ti .tdesc{font-size:13px;margin-top:1px}
+.explain{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 16px 4px;margin-top:24px}
+.explain h3{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.explain h3 .ic{font-size:16px}
+.explain dl{margin-bottom:14px}
+.explain dt{font-size:13px;font-weight:600;color:var(--text);margin-top:10px}
+.explain dd{font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:2px}
+.explain .concl{background:var(--surface2);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.explain .concl .ct{font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.explain .concl p{font-size:12.5px;color:var(--text2);line-height:1.6}
+.explain .concl.ok{border-left:3px solid var(--good)}
+.explain .concl.watch{border-left:3px solid var(--warn)}
+.explain .concl.alert{border-left:3px solid var(--bad)}
 footer{padding:24px 0 40px;text-align:center;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px}
 canvas{max-width:100%}
 </style>
@@ -119,6 +131,20 @@ canvas{max-width:100%}
     <div class="card e1"><div class="dt">19 jun 2025</div><div class="dx">IRIS CKD etapa 1 – con proteinuria – normotenso</div><div class="meta">PAS 141 · PAD 69 · PAM 94 mmHg</div></div>
     <div class="card e1"><div class="dt">11 feb 2026</div><div class="dx">ERC IRIS 1-2 – sin proteinuria – normotenso</div><div class="meta">PAS 130 · PAD 68 · PAM 86 mmHg</div></div>
   </div>
+  <div class="explain">
+    <h3><span class="ic">🫘</span>¿Qué significa cada indicador?</h3>
+    <dl>
+      <dt>SDMA</dt><dd>Es el detector más temprano de daño renal. Sube cuando los riñones empiezan a filtrar peor, incluso antes que la creatinina. En perros se considera normal hasta 14. Es el marcador más fino para vigilar a Teodoro.</dd>
+      <dt>Creatinina</dt><dd>Un desecho que los riñones eliminan. Si se acumula en sangre, indica que los riñones no están filtrando bien. Es el valor "clásico" de función renal, pero reacciona más tarde que el SDMA.</dd>
+      <dt>NUS (nitrógeno ureico)</dt><dd>Otro desecho que filtran los riñones. Sube en falla renal, pero también con deshidratación o dieta alta en proteína, por eso se lee junto a la creatinina.</dd>
+      <dt>Fósforo</dt><dd>Mineral que los riñones ayudan a equilibrar. En enfermedad renal avanzada tiende a subir; mantenerlo controlado protege los riñones. En Teodoro está dentro de rango.</dd>
+      <dt>Clasificación IRIS</dt><dd>Es el "estadio" oficial de la enfermedad renal crónica, de 1 (más leve) a 4. AKI significa daño agudo y reversible; CKD significa daño crónico. También indica si hay proteína en orina y si la presión está alta.</dd>
+    </dl>
+    <div class="concl ok">
+      <div class="ct">Conclusión renal</div>
+      <p>Teodoro tuvo una crisis renal aguda grave en mayo 2024 (SDMA 40, creatinina 4.0), pero se ha recuperado muy bien: pasó de AKI grado II a enfermedad crónica estable en etapa 1-2, con la creatinina ya normal (1.0) y sin proteinuria en el último control. El SDMA en 14 está justo en el límite, así que conviene seguir vigilándolo, pero la tendencia general de los riñones ha sido claramente positiva.</p>
+    </div>
+  </div>
 </div>
 
 <!-- SANGRE -->
@@ -141,6 +167,19 @@ canvas{max-width:100%}
   <div class="chart-ttl">Hemoglobina (g/dL) · ref 13–20</div>
   <div class="legend"><span><span class="dot" style="background:var(--coral)"></span>Hemoglobina</span></div>
   <div class="chart-wrap"><canvas id="cHb" height="180"></canvas></div>
+  <div class="explain">
+    <h3><span class="ic">🩸</span>¿Qué significa cada indicador?</h3>
+    <dl>
+      <dt>PLI (lipasa pancreática)</dt><dd>Mide cuánto está "inflamado" el páncreas. Valores sobre 200 sugieren pancreatitis. Este es el indicador central del problema original de Teodoro: su enfermedad renal arrancó tras una pancreatitis.</dd>
+      <dt>Leucocitos (glóbulos blancos)</dt><dd>Las células de defensa. Suben cuando hay infección o inflamación, y bajan si las defensas están deprimidas. Sirven para detectar infecciones, como las urinarias que tuvo.</dd>
+      <dt>Hematocrito</dt><dd>El porcentaje de la sangre formado por glóbulos rojos. Bajo = anemia (común en enfermedad renal); alto = deshidratación. En Teodoro se mantiene en rango.</dd>
+      <dt>Hemoglobina</dt><dd>La proteína de los glóbulos rojos que transporta oxígeno. Va de la mano con el hematocrito y confirma si hay o no anemia.</dd>
+    </dl>
+    <div class="concl watch">
+      <div class="ct">Conclusión sangre</div>
+      <p>El hemograma de Teodoro es esencialmente normal: buenas defensas, sin anemia (algo muy positivo, porque la anemia es una complicación frecuente de la enfermedad renal). El punto a seguir es la PLI: lleva activa desde 2023 y sigue rondando el límite (197–311), lo que indica que la inflamación del páncreas no está del todo resuelta y necesita seguimiento.</p>
+    </div>
+  </div>
 </div>
 
 <!-- HIGADO -->
@@ -163,6 +202,19 @@ canvas{max-width:100%}
   <div class="chart-ttl">Colesterol total (mg/dL) · ref 133–367</div>
   <div class="legend"><span><span class="dot" style="background:var(--purple)"></span>Colesterol</span></div>
   <div class="chart-wrap"><canvas id="cCol" height="180"></canvas></div>
+  <div class="explain">
+    <h3><span class="ic">🧪</span>¿Qué significa cada indicador?</h3>
+    <dl>
+      <dt>ALT</dt><dd>Una enzima que vive dentro de las células del hígado. Cuando esas células se dañan o irritan, la ALT se "escapa" a la sangre y sube. Es el marcador más específico de daño hepático.</dd>
+      <dt>FA (fosfatasa alcalina)</dt><dd>Sube por problemas en el hígado o las vías biliares, pero también con ciertos medicamentos (como corticoides) y otras causas. Se interpreta junto a la ALT.</dd>
+      <dt>AST</dt><dd>Parecida a la ALT, pero está también en músculo, así que es menos específica del hígado. Confirma la tendencia que marca la ALT.</dd>
+      <dt>Colesterol</dt><dd>Se procesa en el hígado. Puede alterarse en problemas hepáticos, hormonales o metabólicos. En Teodoro se mantiene dentro del rango normal.</dd>
+    </dl>
+    <div class="concl alert">
+      <div class="ct">Conclusión hígado</div>
+      <p>Esta es el área que más conviene conversar con la veterinaria. La ALT está elevada de forma persistente y, de hecho, viene subiendo en los últimos controles (hasta 311 en enero 2026). Esto coincide con lo que muestra la ecografía: un hígado agrandado con cambios grasos/esteroidales y bastante "barro biliar" en la vesícula. No es una urgencia inmediata, pero sí un punto de vigilancia activa que no debería pasarse por alto.</p>
+    </div>
+  </div>
 </div>
 
 <!-- ORINA -->
@@ -184,6 +236,18 @@ canvas{max-width:100%}
     <div class="card aki"><div class="dt">29 ago 2025</div><div class="dx">Urocultivo</div><div class="res bad">E. coli &gt;100k UFC/mL<br><small>Sensible: Amikacina, Amoxi-Clav, Enrofloxacino, Nitrofurantoína</small></div></div>
     <div class="card aki"><div class="dt">15 sep 2025</div><div class="dx">Urocultivo</div><div class="res bad">E. coli &gt;100k UFC/mL<br><small>Sensible a todos los antibióticos probados</small></div></div>
     <div class="card aki"><div class="dt">12 nov 2025</div><div class="dx">Urocultivo</div><div class="res bad">E. coli &gt;100k UFC/mL<br><small>Intermedio: Amoxi-Clav, Cefadroxilo</small></div></div>
+  </div>
+  <div class="explain">
+    <h3><span class="ic">💧</span>¿Qué significa cada indicador?</h3>
+    <dl>
+      <dt>UPC (proteína/creatinina en orina)</dt><dd>Mide cuánta proteína se está "fugando" por la orina. Los riñones sanos retienen la proteína; si la dejan escapar, es señal de daño en el filtro renal. Normal hasta 0.5. Es uno de los mejores marcadores de cómo evoluciona la enfermedad renal.</dd>
+      <dt>Proteínas en orina</dt><dd>La cantidad bruta de proteína detectada. Se usa junto al UPC, que es más confiable porque corrige según lo concentrada que esté la orina.</dd>
+      <dt>Urocultivo</dt><dd>Se cultiva la orina para ver si crecen bacterias. Si crecen más de 100.000 unidades (UFC/mL), hay infección urinaria. El antibiograma indica qué antibióticos funcionan ("sensible") y cuáles no tanto ("intermedio" o "resistente").</dd>
+    </dl>
+    <div class="concl alert">
+      <div class="ct">Conclusión orina</div>
+      <p>Buena noticia por un lado: el UPC mejoró muchísimo, de 1.55 en la crisis a 0.12 (normal) en el último control, lo que confirma que los riñones están reteniendo bien la proteína. El punto rojo es la infección urinaria recurrente: la misma bacteria (E. coli) apareció en tres cultivos seguidos durante 2025, y en noviembre ya mostraba sensibilidad reducida a dos antibióticos. Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos.</p>
+    </div>
   </div>
 </div>
 
@@ -213,6 +277,21 @@ canvas{max-width:100%}
     <div class="card e2"><div class="dt">15 may 2025</div><div class="dx">Ecocardiografía + ECG</div><div class="res">Diagnóstico EDMVM ACVIM B1 (degeneración mixomatosa válvula mitral, regurgitación discreta)</div></div>
     <div class="card e1"><div class="dt">11 feb 2026</div><div class="dx">Ecocardiograma + ECG</div><div class="res">ACVIM B1 sin cambios. Regurgitación mitral leve. Score MINE 4 (leve). Ritmo sinusal con arritmia respiratoria fisiológica. FC 66-166 lpm</div></div>
   </div>
+  <div class="explain">
+    <h3><span class="ic">❤️</span>¿Qué significa cada indicador?</h3>
+    <dl>
+      <dt>Clasificación ACVIM</dt><dd>Es el "estadio" de la enfermedad de la válvula mitral en perros. Va de A (en riesgo) a D (insuficiencia grave). <strong>B1</strong> significa que hay una alteración leve en la válvula pero el corazón aún no ha cambiado de tamaño ni necesita medicación. Es la etapa más temprana con hallazgos.</dd>
+      <dt>Válvula mitral / regurgitación</dt><dd>La válvula que separa dos cámaras del corazón izquierdo. Con la edad puede engrosarse (degeneración mixomatosa) y dejar pasar un poco de sangre hacia atrás ("regurgitación"). En Teodoro esa fuga es leve.</dd>
+      <dt>Fracción de eyección / acortamiento</dt><dd>Miden qué tan fuerte bombea el corazón en cada latido. Los valores de Teodoro son normales, o sea que el músculo cardíaco trabaja bien.</dd>
+      <dt>AI/Ao</dt><dd>Compara el tamaño de la aurícula izquierda con la aorta. Si la aurícula se agranda, es señal de que la válvula está sobrecargando el corazón. En Teodoro está normal (1.49), sin agrandamiento.</dd>
+      <dt>PAS (presión arterial sistólica)</dt><dd>La presión de la sangre. Importa mucho en pacientes renales, porque la presión alta daña los riñones. Bajo 140 es normotenso (lo ideal). Teodoro está en 130.</dd>
+      <dt>ECG</dt><dd>Registra el ritmo eléctrico del corazón. El de Teodoro es normal, con una "arritmia sinusal respiratoria" que en realidad es algo sano y esperable en perros.</dd>
+    </dl>
+    <div class="concl ok">
+      <div class="ct">Conclusión cardiología</div>
+      <p>El corazón de Teodoro está en buen estado. Tiene una valvulopatía mitral leve (ACVIM B1) que se detectó en 2025 y que <strong>no ha progresado</strong>: el corazón conserva tamaño y fuerza normales, y aún no requiere medicación cardíaca. Además se mantiene normotenso, algo muy importante para proteger sus riñones. El plan habitual en esta etapa es solo seguimiento periódico con ecocardiograma.</p>
+    </div>
+  </div>
 </div>
 
 <!-- IMAGENES -->
@@ -224,6 +303,18 @@ canvas{max-width:100%}
   <div class="eco"><div class="dt">5 jun 2025</div><div class="ttl">Ecografía abdominal · control</div><div class="body">Nefropatía bilateral leve inflamatoria crónica. Pielectasia leve bilateral. Nefrolito izquierdo. Hepatomegalia leve con hepatopatía difusa moderada (vacuolar/esteroidal). Barro biliar leve a moderado.</div><span class="tag w">ERC crónica establecida</span></div>
   <div class="eco"><div class="dt">28 ene 2026</div><div class="ttl">Ecografía abdominal · control</div><div class="body">R. izquierdo 3.23 cm con pielectasia leve (0.19 cm) y ≥3 nefrolitos (mayor 0.21 cm). R. derecho 2.60 cm reducido, bordes irregulares, pielectasia (0.11 cm) con microlitos. Hígado aumentado, hepatopatía vacuolar moderada. Barro biliar ocupando 2/3 de cavidad. Sin evolución negativa vs jun 2025.</div><span class="tag w">Progresión renal vigilada</span></div>
   <div class="eco"><div class="dt">22 may 2026</div><div class="ttl">Radiografía abdominal (L-L y V-D)</div><div class="body">Sin cambios anatómicos ni patológicos. Hígado, riñones, estómago, yeyuno, colon y vejiga conservados. Control ERC etapa II.</div><span class="tag">Sin cambios patológicos</span></div>
+  <div class="explain">
+    <h3><span class="ic">📷</span>¿Qué significa cada examen?</h3>
+    <dl>
+      <dt>Ecografía abdominal</dt><dd>Usa ultrasonido para "ver" los órganos por dentro: riñones, hígado, páncreas, bazo, vejiga e intestinos. Permite medir tamaños, detectar cálculos (litos), inflamación, cambios de textura y masas. Es el examen que más información da sobre los órganos de Teodoro.</dd>
+      <dt>Radiografía abdominal</dt><dd>Una imagen de rayos X que muestra la forma, tamaño y posición general de los órganos, y detecta cálculos o gas anormal. Es complementaria a la ecografía: aporta una visión de conjunto.</dd>
+      <dt>Términos que aparecen seguido</dt><dd><strong>Nefropatía:</strong> daño renal. <strong>Pielectasia:</strong> leve dilatación de la zona donde se recoge la orina en el riñón. <strong>Nefrolito / microlito:</strong> piedra o piedrita en el riñón. <strong>Hepatomegalia:</strong> hígado agrandado. <strong>Barro biliar:</strong> contenido espeso acumulado en la vesícula.</dd>
+    </dl>
+    <div class="concl watch">
+      <div class="ct">Conclusión imágenes</div>
+      <p>Las ecografías cuentan la historia completa: del riñón con una masa en plena crisis de 2024 se pasó a una enfermedad renal crónica estable, aunque con cálculos renales y leve dilatación que conviene seguir. Lo que más ha cambiado es el hígado y la vesícula (más graso, con barro biliar abundante), coherente con la ALT elevada de la pestaña de hígado. La radiografía de mayo 2026 no mostró nada nuevo ni alarmante, lo cual es tranquilizador.</p>
+    </div>
+  </div>
 </div>
 
 <!-- EVOLUCION -->
@@ -252,6 +343,23 @@ canvas{max-width:100%}
     <div class="mc"><div class="lbl">ALT</div><div class="val bad">↑ Empeorando</div><div class="sub bad">Sube a 311</div></div>
     <div class="mc"><div class="lbl">PLI</div><div class="val warn">→ Persistente</div><div class="sub warn">Pancreatitis activa</div></div>
     <div class="mc"><div class="lbl">ITU E. coli</div><div class="val bad">⚠ Recurrente</div><div class="sub bad">3 episodios 2025</div></div>
+  </div>
+  <div class="explain">
+    <h3><span class="ic">📈</span>Resumen general en palabras simples</h3>
+    <dd style="margin-bottom:12px">Teodoro tiene tres temas crónicos que conviven y se vigilan juntos: <strong>los riñones</strong> (lo principal), <strong>el páncreas/hígado</strong> (de donde nació todo) y <strong>el corazón</strong> (un hallazgo más reciente y leve). Esta es la lectura de cada uno:</dd>
+    <div class="concl ok">
+      <div class="ct">Va bien 🟢</div>
+      <p><strong>Riñones:</strong> superó una crisis grave y hoy está estable en etapa temprana, con creatinina normal, sin proteinuria y presión controlada. <strong>Corazón:</strong> valvulopatía leve que no ha progresado y no requiere medicación. <strong>Sangre:</strong> sin anemia, buenas defensas.</p>
+    </div>
+    <div class="concl watch">
+      <div class="ct">A vigilar 🟡</div>
+      <p><strong>SDMA:</strong> volvió al límite (14) tras estar mejor, conviene seguir midiéndolo. <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía.</p>
+    </div>
+    <div class="concl alert">
+      <div class="ct">Conversar con la veterinaria 🔴</div>
+      <p><strong>Hígado:</strong> la ALT viene subiendo (311 en enero 2026) junto con cambios grasos en la ecografía. <strong>Infecciones urinarias:</strong> la misma bacteria reapareció tres veces en 2025, con sensibilidad antibiótica que empezó a reducirse. Estos dos puntos son los que más vale la pena plantear en el próximo control.</p>
+    </div>
+    <dd style="font-size:11.5px;color:var(--text3);margin-top:4px">Recuerda: este resumen es para ayudarte a entender los exámenes, no para reemplazar a tu veterinaria. Las decisiones de tratamiento siempre las toma ella con el examen físico de Teodoro.</dd>
   </div>
 </div>
 
