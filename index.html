@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Teodoro · Expediente médico</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<style>
+:root{
+  --bg:#0f1115;--surface:#181b21;--surface2:#1f232b;--border:#2a2f38;
+  --text:#e8eaed;--text2:#9aa0aa;--text3:#6b7280;
+  --good:#34d399;--warn:#fbbf24;--bad:#f87171;--ref:#ef4444;
+  --blue:#60a5fa;--purple:#a78bfa;--coral:#fb923c;--teal:#2dd4bf;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+header{padding:20px 0 14px;display:flex;align-items:center;gap:14px}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+header h1{font-size:19px;font-weight:600}
+header p{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.45}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 0;margin:0 -16px;padding-left:16px;padding-right:16px;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:9px 13px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:var(--text);border-bottom-color:var(--text)}
+.panel{display:none;padding:16px 0 40px}
+.panel.active{display:block}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+@media(min-width:560px){.metrics{grid-template-columns:repeat(4,1fr)}}
+.mc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.mc .lbl{font-size:11px;color:var(--text2);margin-bottom:5px}
+.mc .val{font-size:18px;font-weight:600}
+.mc .sub{font-size:10px;margin-top:3px}
+.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.chart-ttl{font-size:13px;font-weight:600;color:var(--text);margin:18px 0 4px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0 8px;font-size:11px;color:var(--text2)}
+.legend span{display:flex;align-items:center;gap:5px}
+.dot{width:10px;height:10px;border-radius:2px}
+.chart-wrap{position:relative;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;margin-bottom:8px}
+.section-ttl{font-size:14px;font-weight:600;margin:22px 0 12px}
+.cards{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px}
+@media(min-width:560px){.cards{grid-template-columns:1fr 1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;border-left:3px solid var(--border)}
+.card.e1{border-left-color:var(--good)}.card.e2{border-left-color:var(--warn)}.card.aki{border-left-color:var(--bad)}
+.card .dt{font-size:11px;color:var(--text2)}
+.card .dx{font-size:13px;font-weight:600;margin-top:3px}
+.card .meta{font-size:12px;color:var(--text2);margin-top:5px}
+.card .res{font-size:12px;margin-top:4px}
+.card .res small{font-size:11px;color:var(--text2)}
+.cardio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+@media(min-width:560px){.cardio-grid{grid-template-columns:repeat(3,1fr)}}
+.crd{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px}
+.crd .crd-lbl{font-size:11px;color:var(--text2)}
+.crd .crd-val{font-size:16px;font-weight:600;margin:2px 0}
+.crd .crd-ref{font-size:10px;color:var(--text3)}
+.eco{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.eco .dt{font-size:11px;color:var(--text2)}
+.eco .ttl{font-size:14px;font-weight:600;margin-top:2px}
+.eco .body{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.55}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;margin-top:8px;background:rgba(96,165,250,.15);color:var(--blue)}
+.tag.r{background:rgba(248,113,113,.15);color:var(--bad)}
+.tag.w{background:rgba(251,191,36,.15);color:var(--warn)}
+.timeline{border-left:2px solid var(--border);padding-left:16px;margin-bottom:18px}
+.ti{display:flex;gap:11px;margin-bottom:12px;align-items:flex-start}
+.ti .tdot{width:11px;height:11px;border-radius:50%;margin-top:4px;flex-shrink:0;margin-left:-22px;border:2px solid var(--bg)}
+.ti .tdt{font-size:11px;color:var(--text2)}
+.ti .tdesc{font-size:13px;margin-top:1px}
+footer{padding:24px 0 40px;text-align:center;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px}
+canvas{max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="avatar">🐾</div>
+  <div>
+    <h1>Teodoro Guerrero</h1>
+    <p>Chihuahua · Macho · Nacido 20 ago 2020 · ERC IRIS 1-2 · ACVIM B1 · Pancreatitis crónica</p>
+  </div>
+</header>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" onclick="sw(0)">🫘 Renal</button>
+  <button class="tab" onclick="sw(1)">🩸 Sangre</button>
+  <button class="tab" onclick="sw(2)">🧪 Hígado</button>
+  <button class="tab" onclick="sw(3)">💧 Orina</button>
+  <button class="tab" onclick="sw(4)">❤️ Cardio</button>
+  <button class="tab" onclick="sw(5)">📷 Imágenes</button>
+  <button class="tab" onclick="sw(6)">📈 Evolución</button>
+</div>
+
+<!-- RENAL -->
+<div class="panel active">
+  <div class="metrics">
+    <div class="mc"><div class="lbl">SDMA (último)</div><div class="val warn">14 µg/dL</div><div class="sub warn">Límite ≤14 · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">Creatinina (último)</div><div class="val good">1.0 mg/dL</div><div class="sub good">Normal ≤2 · Sep 2025</div></div>
+    <div class="mc"><div class="lbl">NUS (último)</div><div class="val good">20.5 mg/dL</div><div class="sub good">Normal · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">Fósforo (último)</div><div class="val good">3.3 mg/dL</div><div class="sub good">Normal · Ene 2026</div></div>
+  </div>
+  <div class="chart-ttl">SDMA — marcador renal temprano (µg/dL) · ref 1–14</div>
+  <div class="legend"><span><span class="dot" style="background:var(--blue)"></span>SDMA</span><span><span class="dot" style="background:var(--ref)"></span>Límite (14)</span></div>
+  <div class="chart-wrap"><canvas id="cSDMA" height="200"></canvas></div>
+  <div class="chart-ttl">Creatinina (mg/dL) · ref 0.6–2.0</div>
+  <div class="legend"><span><span class="dot" style="background:var(--good)"></span>Creatinina</span><span><span class="dot" style="background:var(--ref)"></span>Límite (2.0)</span></div>
+  <div class="chart-wrap"><canvas id="cCreat" height="190"></canvas></div>
+  <div class="chart-ttl">NUS — nitrógeno ureico (mg/dL) · ref 8–29</div>
+  <div class="legend"><span><span class="dot" style="background:var(--purple)"></span>NUS</span><span><span class="dot" style="background:var(--ref)"></span>Límite (29)</span></div>
+  <div class="chart-wrap"><canvas id="cNUS" height="180"></canvas></div>
+  <div class="chart-ttl">Fósforo (mg/dL) · ref 2.9–5.3</div>
+  <div class="legend"><span><span class="dot" style="background:var(--teal)"></span>Fósforo</span><span><span class="dot" style="background:var(--ref)"></span>Límite (5.3)</span></div>
+  <div class="chart-wrap"><canvas id="cFosf" height="180"></canvas></div>
+  <div class="section-ttl">Diagnósticos nefrológicos</div>
+  <div class="cards">
+    <div class="card aki"><div class="dt">27 may 2024</div><div class="dx">IRIS AKI grado II – no oligúrico</div><div class="meta">PAS 143 · PAD 68 · PAM 95 mmHg</div></div>
+    <div class="card e2"><div class="dt">19 jul 2024</div><div class="dx">IRIS CKD etapa 2 – proteinuria limítrofe – prehipertenso</div><div class="meta">PAS 144 · PAD 75 · PAM 100 mmHg</div></div>
+    <div class="card e2"><div class="dt">9 sep 2024</div><div class="dx">IRIS CKD etapa 2 – proteinuria limítrofe – normotenso</div><div class="meta">PAS 136 · PAD 71 · PAM 94 mmHg</div></div>
+    <div class="card e2"><div class="dt">7 ene 2025</div><div class="dx">IRIS CKD etapa 2 – proteinuria limítrofe – normotenso</div><div class="meta">PAS 139 · PAD 69 · PAM 93 mmHg</div></div>
+    <div class="card e1"><div class="dt">19 jun 2025</div><div class="dx">IRIS CKD etapa 1 – con proteinuria – normotenso</div><div class="meta">PAS 141 · PAD 69 · PAM 94 mmHg</div></div>
+    <div class="card e1"><div class="dt">11 feb 2026</div><div class="dx">ERC IRIS 1-2 – sin proteinuria – normotenso</div><div class="meta">PAS 130 · PAD 68 · PAM 86 mmHg</div></div>
+  </div>
+</div>
+
+<!-- SANGRE -->
+<div class="panel">
+  <div class="metrics">
+    <div class="mc"><div class="lbl">Leucocitos</div><div class="val good">10.380 /µL</div><div class="sub good">Normal · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">Hematocrito</div><div class="val good">45.1%</div><div class="sub good">Normal · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">Hemoglobina</div><div class="val good">15.2 g/dL</div><div class="sub good">Normal · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">PLI</div><div class="val warn">197.4 µg/L</div><div class="sub warn">Límite alto · Ene 2026</div></div>
+  </div>
+  <div class="chart-ttl">PLI — lipasa pancreática (µg/L) · ref 10–200</div>
+  <div class="legend"><span><span class="dot" style="background:var(--coral)"></span>PLI</span><span><span class="dot" style="background:var(--ref)"></span>Límite (200)</span></div>
+  <div class="chart-wrap"><canvas id="cPLI" height="200"></canvas></div>
+  <div class="chart-ttl">Leucocitos (/µL) · ref 6.000–17.000</div>
+  <div class="legend"><span><span class="dot" style="background:var(--purple)"></span>Leucocitos</span><span><span class="dot" style="background:var(--ref)"></span>Mínimo (6.000)</span></div>
+  <div class="chart-wrap"><canvas id="cLeuco" height="190"></canvas></div>
+  <div class="chart-ttl">Hematocrito (%) · ref 40–60</div>
+  <div class="legend"><span><span class="dot" style="background:var(--good)"></span>Hematocrito</span><span><span class="dot" style="background:var(--ref)"></span>Máximo (60)</span></div>
+  <div class="chart-wrap"><canvas id="cHcto" height="180"></canvas></div>
+  <div class="chart-ttl">Hemoglobina (g/dL) · ref 13–20</div>
+  <div class="legend"><span><span class="dot" style="background:var(--coral)"></span>Hemoglobina</span></div>
+  <div class="chart-wrap"><canvas id="cHb" height="180"></canvas></div>
+</div>
+
+<!-- HIGADO -->
+<div class="panel">
+  <div class="metrics">
+    <div class="mc"><div class="lbl">ALT (último)</div><div class="val bad">311 UI/L</div><div class="sub bad">Alto 18-86 · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">FA (último)</div><div class="val warn">213 UI/L</div><div class="sub warn">Alto 12-121 · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">AST (último)</div><div class="val warn">66 UI/L</div><div class="sub warn">Alto 12-42 · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">GGT (último)</div><div class="val good">5.2 UI/L</div><div class="sub good">Normal · Ene 2026</div></div>
+  </div>
+  <div class="chart-ttl">ALT — alanino aminotransferasa (UI/L) · ref 18–86</div>
+  <div class="legend"><span><span class="dot" style="background:var(--coral)"></span>ALT</span><span><span class="dot" style="background:var(--ref)"></span>Límite (86)</span></div>
+  <div class="chart-wrap"><canvas id="cALT" height="200"></canvas></div>
+  <div class="chart-ttl">Fosfatasa alcalina (UI/L) · ref 12–121</div>
+  <div class="legend"><span><span class="dot" style="background:var(--warn)"></span>FA</span><span><span class="dot" style="background:var(--ref)"></span>Límite (121)</span></div>
+  <div class="chart-wrap"><canvas id="cFA" height="190"></canvas></div>
+  <div class="chart-ttl">AST — aspartato aminotransferasa (UI/L) · ref 12–42</div>
+  <div class="legend"><span><span class="dot" style="background:var(--coral)"></span>AST</span><span><span class="dot" style="background:var(--ref)"></span>Límite (42)</span></div>
+  <div class="chart-wrap"><canvas id="cAST" height="190"></canvas></div>
+  <div class="chart-ttl">Colesterol total (mg/dL) · ref 133–367</div>
+  <div class="legend"><span><span class="dot" style="background:var(--purple)"></span>Colesterol</span></div>
+  <div class="chart-wrap"><canvas id="cCol" height="180"></canvas></div>
+</div>
+
+<!-- ORINA -->
+<div class="panel">
+  <div class="metrics">
+    <div class="mc"><div class="lbl">UPC (último)</div><div class="val good">0.12</div><div class="sub good">Normal 0.1-0.5 · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">Prot. orina</div><div class="val warn">12.9 mg/dL</div><div class="sub warn">Elevado ≤10 · Ene 2026</div></div>
+    <div class="mc"><div class="lbl">Urocultivo Sep 25</div><div class="val bad">E. coli +</div><div class="sub bad">>100k UFC/mL</div></div>
+    <div class="mc"><div class="lbl">Urocultivo Nov 25</div><div class="val bad">E. coli +</div><div class="sub bad">>100k UFC/mL</div></div>
+  </div>
+  <div class="chart-ttl">UPC — relación proteína/creatinina · ref 0.1–0.5</div>
+  <div class="legend"><span><span class="dot" style="background:var(--blue)"></span>UPC</span><span><span class="dot" style="background:var(--ref)"></span>Límite (0.5)</span></div>
+  <div class="chart-wrap"><canvas id="cUPC" height="200"></canvas></div>
+  <div class="section-ttl">Urocultivos (6 registros)</div>
+  <div class="cards">
+    <div class="card"><div class="dt">18 may 2024</div><div class="dx">Urocultivo</div><div class="res good">Negativo (72 h)</div></div>
+    <div class="card"><div class="dt">3 jun 2024</div><div class="dx">Urocultivo</div><div class="res good">Negativo (48 h)</div></div>
+    <div class="card"><div class="dt">11 jul 2024</div><div class="dx">Urocultivo</div><div class="res good">Negativo (48 h)</div></div>
+    <div class="card aki"><div class="dt">29 ago 2025</div><div class="dx">Urocultivo</div><div class="res bad">E. coli &gt;100k UFC/mL<br><small>Sensible: Amikacina, Amoxi-Clav, Enrofloxacino, Nitrofurantoína</small></div></div>
+    <div class="card aki"><div class="dt">15 sep 2025</div><div class="dx">Urocultivo</div><div class="res bad">E. coli &gt;100k UFC/mL<br><small>Sensible a todos los antibióticos probados</small></div></div>
+    <div class="card aki"><div class="dt">12 nov 2025</div><div class="dx">Urocultivo</div><div class="res bad">E. coli &gt;100k UFC/mL<br><small>Intermedio: Amoxi-Clav, Cefadroxilo</small></div></div>
+  </div>
+</div>
+
+<!-- CARDIO -->
+<div class="panel">
+  <div class="metrics">
+    <div class="mc"><div class="lbl">ACVIM</div><div class="val warn">B1</div><div class="sub" style="color:var(--text2)">Válvula mitral · Feb 2026</div></div>
+    <div class="mc"><div class="lbl">F. eyección</div><div class="val good">70.2%</div><div class="sub good">Normal · Feb 2026</div></div>
+    <div class="mc"><div class="lbl">F. acortamiento</div><div class="val good">37.1%</div><div class="sub good">Normal · Feb 2026</div></div>
+    <div class="mc"><div class="lbl">PAS (último)</div><div class="val good">130 mmHg</div><div class="sub good">Normotenso · Feb 2026</div></div>
+  </div>
+  <div class="section-ttl">Métricas ecocardiográficas (feb 2026)</div>
+  <div class="cardio-grid">
+    <div class="crd"><div class="crd-lbl">LVIDd</div><div class="crd-val">19.6 mm</div><div class="crd-ref">Diástole</div></div>
+    <div class="crd"><div class="crd-lbl">LVIDs</div><div class="crd-val">12.3 mm</div><div class="crd-ref">Sístole</div></div>
+    <div class="crd"><div class="crd-lbl">AI/Ao</div><div class="crd-val">1.49</div><div class="crd-ref">Normal &lt;1.6</div></div>
+    <div class="crd"><div class="crd-lbl">EF Teicholz</div><div class="crd-val">70.2%</div><div class="crd-ref">Normal &gt;50%</div></div>
+    <div class="crd"><div class="crd-lbl">FS</div><div class="crd-val">37.1%</div><div class="crd-ref">Normal 25-45%</div></div>
+    <div class="crd"><div class="crd-lbl">E/A mitral</div><div class="crd-val">1.47</div><div class="crd-ref">Diast. normal</div></div>
+  </div>
+  <div class="chart-ttl">Presión arterial sistólica (mmHg) · normotenso &lt;140</div>
+  <div class="legend"><span><span class="dot" style="background:var(--purple)"></span>PAS</span><span><span class="dot" style="background:var(--ref)"></span>Límite (140)</span></div>
+  <div class="chart-wrap"><canvas id="cPAS" height="180"></canvas></div>
+  <div class="section-ttl">Ecocardiografías y electrocardiogramas</div>
+  <div class="cards">
+    <div class="card e1"><div class="dt">31 ago 2022</div><div class="dx">Ecocardiografía + ECG</div><div class="res">Sin alteraciones cardiológicas. Ritmo sinusal regular. FC 133 lpm. FA 40.96%</div></div>
+    <div class="card e2"><div class="dt">15 may 2025</div><div class="dx">Ecocardiografía + ECG</div><div class="res">Diagnóstico EDMVM ACVIM B1 (degeneración mixomatosa válvula mitral, regurgitación discreta)</div></div>
+    <div class="card e1"><div class="dt">11 feb 2026</div><div class="dx">Ecocardiograma + ECG</div><div class="res">ACVIM B1 sin cambios. Regurgitación mitral leve. Score MINE 4 (leve). Ritmo sinusal con arritmia respiratoria fisiológica. FC 66-166 lpm</div></div>
+  </div>
+</div>
+
+<!-- IMAGENES -->
+<div class="panel">
+  <div class="section-ttl">Ecografías abdominales y radiografías</div>
+  <div class="eco"><div class="dt">2 ene 2024</div><div class="ttl">Ecografía abdominal</div><div class="body">Riñones con ecoarquitectura conservada y tamaño normal. Páncreas isoecoico. Componente mucoso gástrico levemente engrosado. Gastritis y colitis leve.</div><span class="tag">Inicio seguimiento</span></div>
+  <div class="eco"><div class="dt">18 may 2024</div><div class="ttl">Ecografía abdominal · crisis renal aguda</div><div class="body">R. derecho: corteza hiperecoica, diferenciación corticomedular disminuida. R. izquierdo: masa polo craneal 5.6×5.8 mm con halo anecoico. Esplenomegalia. Nefropatía bilateral aguda.</div><span class="tag r">Crisis renal AKI</span></div>
+  <div class="eco"><div class="dt">10 jul 2024</div><div class="ttl">Ecografía abdominal · control</div><div class="body">Riñones: forma, posición y ecogenicidad conservados. R. derecho 27.7 mm, R. izquierdo 28.6 mm. Bazo, hígado y tracto GI conservados. Signo de leve inflamación intestinal.</div><span class="tag w">Mejoría parcial</span></div>
+  <div class="eco"><div class="dt">5 jun 2025</div><div class="ttl">Ecografía abdominal · control</div><div class="body">Nefropatía bilateral leve inflamatoria crónica. Pielectasia leve bilateral. Nefrolito izquierdo. Hepatomegalia leve con hepatopatía difusa moderada (vacuolar/esteroidal). Barro biliar leve a moderado.</div><span class="tag w">ERC crónica establecida</span></div>
+  <div class="eco"><div class="dt">28 ene 2026</div><div class="ttl">Ecografía abdominal · control</div><div class="body">R. izquierdo 3.23 cm con pielectasia leve (0.19 cm) y ≥3 nefrolitos (mayor 0.21 cm). R. derecho 2.60 cm reducido, bordes irregulares, pielectasia (0.11 cm) con microlitos. Hígado aumentado, hepatopatía vacuolar moderada. Barro biliar ocupando 2/3 de cavidad. Sin evolución negativa vs jun 2025.</div><span class="tag w">Progresión renal vigilada</span></div>
+  <div class="eco"><div class="dt">22 may 2026</div><div class="ttl">Radiografía abdominal (L-L y V-D)</div><div class="body">Sin cambios anatómicos ni patológicos. Hígado, riñones, estómago, yeyuno, colon y vejiga conservados. Control ERC etapa II.</div><span class="tag">Sin cambios patológicos</span></div>
+</div>
+
+<!-- EVOLUCION -->
+<div class="panel">
+  <div class="section-ttl">Línea de tiempo clínica</div>
+  <div class="timeline">
+    <div class="ti"><div class="tdot" style="background:var(--good)"></div><div><div class="tdt">Ago 2022 · 2 años</div><div class="tdesc">Evaluación cardiológica de rutina. Sin soplo. ECG normal.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Nov 2023 · 3 a 3 m</div><div class="tdesc">Inicio síntomas GI. PLI 48 y SDMA 6 (normales). ALT 438.9 ↑↑, FA 231 ↑.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Ene 2024 · 3 a 5 m</div><div class="tdesc">Ecografía: gastritis y colitis leve. ALT 216 ↑, AST 215 ↑↑, FA 435 ↑↑, Fósforo 10.3 ↑↑.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Feb 2024 · 3 a 6 m</div><div class="tdesc">ALT 116.9 ↑, AST 268 ↑↑, Fósforo 10.5 ↑↑, Hematocrito 62 ↑.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--bad)"></div><div><div class="tdt">May 2024 · 3 a 9 m</div><div class="tdesc">CRISIS: SDMA 33→40 ↑↑, Creatinina 4.0 ↑↑, NUS 122 ↑↑, ALT 542 ↑↑. Nefropatía bilateral aguda con masa renal izquierda. Esplenomegalia. IRIS AKI grado II. UPC 1.55.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Jun–Ago 2024 · 4 años</div><div class="tdesc">Creatinina baja a 2.0→1.6, SDMA 20→25. Transición a CKD. FA pico 669 ↑↑. UPC mejora a 0.42. TLI &gt;50 ↑. IRIS CKD etapa 2.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Dic 2024 · 4 a 4 m</div><div class="tdesc">SDMA 24, Creatinina 1.5, ALT 236 ↑, FA 263 ↑. UPC 0.30. IRIS CKD etapa 2.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">May 2025 · 4 a 9 m</div><div class="tdesc">Diagnóstico cardíaco EDMVM ACVIM B1 (valvulopatía mitral leve). Sin repercusión hemodinámica.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Jun 2025 · 4 a 10 m</div><div class="tdesc">SDMA 14 (normal por 1ª vez), Creatinina 1.3. PLI pico 311 ↑↑ (pancreatitis activa). UPC sube a 0.58. Nefrolito izquierdo. IRIS CKD etapa 1.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--bad)"></div><div><div class="tdt">Ago–Nov 2025 · 5 años</div><div class="tdesc">ITU recurrente por E. coli (&gt;100k UFC/mL) en 3 urocultivos. Creatinina 1.0, SDMA 11 (mejor valor renal). UPC 0.19. ALT 302 ↑, FA 594 ↑↑.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Ene 2026 · 5 a 5 m</div><div class="tdesc">SDMA 14 (vuelve al límite). UPC 0.12 (normal), sin proteinuria. ALT 311 ↑↑, FA 213 ↑, Calcio 8.4 ↓. PLI 197. Ecografía: progresión renal y barro biliar 2/3.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--good)"></div><div><div class="tdt">Feb 2026 · 5 a 5 m</div><div class="tdesc">Ecocardiograma ACVIM B1 sin cambios. ECG normal. Normotenso. ERC IRIS 1-2.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--good)"></div><div><div class="tdt">May 2026 · 5 a 9 m</div><div class="tdesc">Radiografía abdominal: sin cambios anatómicos ni patológicos.</div></div></div>
+  </div>
+  <div class="section-ttl">Tendencias clave</div>
+  <div class="metrics">
+    <div class="mc"><div class="lbl">SDMA</div><div class="val good">↓ Controlado</div><div class="sub good">40 → 14</div></div>
+    <div class="mc"><div class="lbl">Creatinina</div><div class="val good">↓ Mejoró</div><div class="sub good">4.0 → 1.0</div></div>
+    <div class="mc"><div class="lbl">UPC</div><div class="val good">↓ Mejoró</div><div class="sub good">1.55 → 0.12</div></div>
+    <div class="mc"><div class="lbl">ALT</div><div class="val bad">↑ Empeorando</div><div class="sub bad">Sube a 311</div></div>
+    <div class="mc"><div class="lbl">PLI</div><div class="val warn">→ Persistente</div><div class="sub warn">Pancreatitis activa</div></div>
+    <div class="mc"><div class="lbl">ITU E. coli</div><div class="val bad">⚠ Recurrente</div><div class="sub bad">3 episodios 2025</div></div>
+  </div>
+</div>
+
+<footer>
+  Expediente médico de Teodoro · Datos extraídos de exámenes de laboratorio VetLab, ecografías, ecocardiogramas, ECG y radiografías (nov 2023 – may 2026).<br>
+  Esta visualización es de apoyo y no reemplaza la interpretación de su médico veterinario tratante.
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+  window.scrollTo(0,0);
+}
+Chart.defaults.color='#9aa0aa';
+Chart.defaults.font.size=11;
+function mk(id,labels,data,color,ref){
+  var el=document.getElementById(id);if(!el)return;
+  var ds=[{data:data,borderColor:color,backgroundColor:color+'33',tension:0.3,pointRadius:3,pointHoverRadius:6,spanGaps:true,borderWidth:2,fill:false}];
+  if(ref!=null)ds.push({data:labels.map(function(){return ref}),borderColor:'#ef4444',borderDash:[6,4],pointRadius:0,borderWidth:1.5});
+  new Chart(el,{type:'line',data:{labels:labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return c[0].label}}}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'}},x:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{maxRotation:45,minRotation:45,autoSkip:false}}}}});
+}
+mk('cSDMA',['Nov 23','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[6,33,40,20,25,24,14,11,14],'#60a5fa',14);
+mk('cCreat',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25'],[0.8,0.6,0.8,4.0,2.2,2.0,1.6,1.5,1.3,1.0],'#34d399',2);
+mk('cNUS',['Nov 23','Ene 24','Feb 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[32.1,14.4,25.4,122,32.5,22.8,25.8,25.0,12.4,20.5],'#a78bfa',29);
+mk('cFosf',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[4.2,10.3,10.5,7.5,5.3,4.2,4.3,3.5,3.1,2.5,3.3],'#2dd4bf',5.3);
+mk('cPLI',['Nov 23','May 24','May 24','Jun 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[48,221.7,213.1,270.3,229,273.6,192.4,311,182.9,197.4],'#fb923c',200);
+mk('cLeuco',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[8500,14940,10510,8940,10710,4460,6000,6250,8750,13080,10380],'#a78bfa',6000);
+mk('cHcto',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[54.6,50.1,62,54.8,43.9,48,50.7,56.5,55.1,47.5,45.1],'#34d399',60);
+mk('cHb',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[19.0,18.0,20.2,18.4,14.5,16.3,17.4,19.4,18.7,16.5,15.2],'#fb923c',null);
+mk('cALT',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[438.9,216.1,116.9,54,542,128,298.6,236.5,175.7,302,311],'#fb923c',86);
+mk('cFA',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[231,435,110,114,64,669,323,263,217,594,213],'#fbbf24',121);
+mk('cAST',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[110.1,215.2,268.4,25.1,200,41.3,51.3,46.5,45,63,66],'#fb923c',42);
+mk('cCol',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[213,306,149,217,190,330,309,321,320,298,323],'#a78bfa',null);
+mk('cUPC',['May 24','May 24','Jun 24','Jul 24','Ago 24','Dic 24','Jun 25','Ago 25','Ene 26'],[1.55,1.10,0.63,0.45,0.42,0.30,0.58,0.19,0.12],'#60a5fa',0.5);
+mk('cPAS',['Ago 22','May 24','Jul 24','Sep 24','Ene 25','Jun 25','Feb 26'],[113,143,144,136,139,141,130],'#a78bfa',140);
+</script>
+</body>
+</html>
