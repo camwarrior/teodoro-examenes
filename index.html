@@ -81,6 +81,43 @@ header p{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.45}
 .explain .concl.alert{border-left:3px solid var(--bad)}
 footer{padding:24px 0 40px;text-align:center;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px}
 canvas{max-width:100%}
+
+/* ===== PESTAÑA ARCHIVOS ===== */
+.note-af{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.3);border-radius:12px;padding:13px 15px;margin-bottom:16px;font-size:12.5px;color:var(--text2);line-height:1.55}
+.note-af b{color:var(--teal)}
+.af-filters{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 14px;padding:0 16px;scrollbar-width:none}
+.af-filters::-webkit-scrollbar{display:none}
+.af-chip{flex:0 0 auto;font-size:12px;padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;white-space:nowrap}
+.af-chip.on{background:var(--surface2);color:var(--text);border-color:var(--text3)}
+.af-list{display:flex;flex-direction:column;gap:9px}
+.af-yr{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 2px;padding-left:2px}
+.af-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:border-color .15s,transform .08s}
+.af-item:active{transform:scale(.992)}
+.af-item:hover{border-color:var(--text3)}
+.af-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.af-mid{flex:1;min-width:0}
+.af-mid .af-ttl{font-size:13.5px;font-weight:600}
+.af-mid .af-dt{font-size:11.5px;color:var(--text2);margin-top:2px}
+.af-mid .af-cd{font-size:11px;color:var(--text3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.af-pg{font-size:10.5px;color:var(--text2);background:var(--surface2);border-radius:20px;padding:2px 8px;white-space:nowrap}
+.af-chv{color:var(--text3);font-size:16px;flex-shrink:0}
+.lb{position:fixed;inset:0;background:rgba(7,8,11,.97);z-index:200;display:none;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.lb.open{display:flex}
+.lbhd{display:flex;align-items:center;gap:10px;padding:12px 14px;flex-shrink:0;border-bottom:1px solid var(--border)}
+.lbhd .lbico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.lbhd .lbt{flex:1;min-width:0}
+.lbhd .lbt h4{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+.lbhd .lbt span{font-size:11.5px;color:var(--text2)}
+.lbx{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;font-size:17px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.lbstg{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+.lbstg img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;transition:transform .2s ease;will-change:transform}
+.lbstg img.zoomed{transition:none;cursor:grab}
+.lbnv{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(31,35,43,.85);border:1px solid var(--border);color:var(--text);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
+.lbnv:disabled{opacity:.2;pointer-events:none}
+.lbpv{left:10px}.lbnx{right:10px}
+.lbft{flex-shrink:0;text-align:center;padding:10px;font-size:12px;color:var(--text2)}
+.lbft .lbhnt{font-size:10.5px;color:var(--text3);margin-top:2px}
+@media(min-width:560px){.lbstg img{max-width:760px}}
 </style>
 </head>
 <body>
@@ -102,6 +139,7 @@ canvas{max-width:100%}
   <button class="tab" onclick="sw(5)">❤️ Cardio</button>
   <button class="tab" onclick="sw(6)">📷 Imágenes</button>
   <button class="tab" onclick="sw(7)">📈 Evolución</button>
+  <button class="tab" onclick="sw(8)">📁 Archivos</button>
 </div>
 
 <!-- RENAL -->
@@ -406,6 +444,16 @@ canvas{max-width:100%}
   </div>
 </div>
 
+<!-- ARCHIVOS -->
+<div class="panel">
+  <div class="note-af">
+    <b>Archivos de Teodoro.</b> Los 42 exámenes ordenados del más reciente al más antiguo.
+    Toca cualquiera para ver sus páginas — sin descargar nada.
+  </div>
+  <div class="af-filters" id="af-filters"></div>
+  <div class="af-list" id="af-list"></div>
+</div>
+
 <footer>
   Expediente médico de Teodoro · Datos extraídos de exámenes de laboratorio VetLab, ecografías, ecocardiogramas, ECG y radiografías (nov 2023 – may 2026).<br>
   Esta visualización es de apoyo y no reemplaza la interpretación de su médico veterinario tratante.
@@ -448,6 +496,92 @@ mk('cK',['Nov 23','May 24','May 24','Jun 24','Ago 24','Dic 24','Jun 25','Ene 26'
 mk('cCl',['Nov 23','May 24','May 24','Jun 24','Ago 24','Dic 24','Jun 25','Ene 26','May 26'],[108.9,115.4,115.9,118,116.8,115.4,113.9,115.5,114.0],'#fb923c',113);
 
 (function(){var b=new Date(2020,7,22),n=new Date(),y=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth();if(n.getDate()<b.getDate())m--;if(m<0){y--;m+=12;}var el=document.getElementById('edad');if(el)el.textContent=' ('+y+'A'+m+'M)';})();
+</script>
+<div class="lb" id="lb">
+  <div class="lbhd">
+    <div class="lbico" id="lbico"></div>
+    <div class="lbt"><h4 id="lbtitle"></h4><span id="lbsub"></span></div>
+    <button class="lbx" onclick="afCloseLb()">✕</button>
+  </div>
+  <div class="lbstg" id="lbstg">
+    <button class="lbnv lbpv" id="lbpv" onclick="afPage(-1)">‹</button>
+    <img id="lbimg" alt="">
+    <button class="lbnv lbnx" id="lbnx" onclick="afPage(1)">›</button>
+  </div>
+  <div class="lbft"><div id="lbcnt"></div><div class="lbhnt" id="lbhnt"></div></div>
+</div>
+
+<script>
+var afOpenLb,afCloseLb,afPage;
+(function(){
+var ITEMS=[{"id":42,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"30 may 2026","codes":"Electrolitos · TSH · T4 Total","pages":2,"embedded":true,"images":["archivos/42_01.jpg","archivos/42_02.jpg"]},{"id":41,"cat":"rx","catLabel":"Informe radiográfico","icon":"🩻","color":"#fb923c","dateLabel":"22 may 2026","codes":"Lectura radiográfica","pages":1,"embedded":true,"images":["archivos/41_01.jpg"]},{"id":40,"cat":"rx","catLabel":"Radiografía abdominal","icon":"🩻","color":"#fb923c","dateLabel":"22 may 2026","codes":"Vista ventrodorsal (VD)","pages":1,"embedded":true,"images":["archivos/40_01.jpg"]},{"id":39,"cat":"rx","catLabel":"Radiografía abdominal","icon":"🩻","color":"#fb923c","dateLabel":"22 may 2026","codes":"Vista lateral","pages":1,"embedded":true,"images":["archivos/39_01.jpg"]},{"id":38,"cat":"cardio","catLabel":"Electrocardiograma (ECG)","icon":"❤️","color":"#a78bfa","dateLabel":"11 feb 2026","codes":"Trazado y lectura","pages":5,"embedded":true,"images":["archivos/38_01.jpg","archivos/38_02.jpg","archivos/38_03.jpg","archivos/38_04.jpg","archivos/38_05.jpg"]},{"id":37,"cat":"cardio","catLabel":"Informe cardiológico","icon":"❤️","color":"#a78bfa","dateLabel":"11 feb 2026","codes":"Informe del estudio","pages":5,"embedded":true,"images":["archivos/37_01.jpg","archivos/37_02.jpg","archivos/37_03.jpg","archivos/37_04.jpg","archivos/37_05.jpg"]},{"id":36,"cat":"cardio","catLabel":"Ecocardiografía","icon":"❤️","color":"#a78bfa","dateLabel":"11 feb 2026","codes":"Eco-Doppler cardíaco","pages":2,"embedded":true,"images":["archivos/36_01.jpg","archivos/36_02.jpg"]},{"id":35,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"29 ene 2026","codes":"Hemograma · Perfil Bioquímico · Perfil Lipídico · SDMA · Electrolitos · PLI · TSH · T4 Total · Urianálisis · Urocultivo","pages":8,"embedded":true,"images":["archivos/35_01.jpg","archivos/35_02.jpg","archivos/35_03.jpg","archivos/35_04.jpg","archivos/35_05.jpg","archivos/35_06.jpg","archivos/35_07.jpg","archivos/35_08.jpg"]},{"id":34,"cat":"eco","catLabel":"Ecografía abdominal","icon":"📡","color":"#60a5fa","dateLabel":"28 ene 2026","codes":"Estudio de imágenes","pages":3,"embedded":true,"images":["archivos/34_01.jpg","archivos/34_02.jpg","archivos/34_03.jpg"]},{"id":33,"cat":"eco","catLabel":"Informe ecográfico abdominal","icon":"📡","color":"#60a5fa","dateLabel":"28 ene 2026","codes":"Descripción y conclusiones","pages":1,"embedded":true,"images":["archivos/33_01.jpg"]},{"id":32,"cat":"orina","catLabel":"Urocultivo","icon":"🧫","color":"#fcd34d","dateLabel":"12 nov 2025","codes":"Urocultivo con antibiograma","pages":1,"embedded":true,"images":["archivos/32_01.jpg"]},{"id":31,"cat":"orina","catLabel":"Urocultivo","icon":"🧫","color":"#fcd34d","dateLabel":"15 sep 2025","codes":"Urocultivo con antibiograma","pages":1,"embedded":true,"images":["archivos/31_01.jpg"]},{"id":30,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"1 sep 2025","codes":"Hemograma · Perfil Bioquímico · SDMA · PLI","pages":3,"embedded":true,"images":["archivos/30_01.jpg","archivos/30_02.jpg","archivos/30_03.jpg"]},{"id":29,"cat":"orina","catLabel":"Orina","icon":"💧","color":"#fbbf24","dateLabel":"29 ago 2025","codes":"Urianálisis · Urocultivo","pages":3,"embedded":true,"images":["archivos/29_01.jpg","archivos/29_02.jpg","archivos/29_03.jpg"]},{"id":28,"cat":"renal","catLabel":"Informe renal","icon":"🫘","color":"#2dd4bf","dateLabel":"19 jun 2025","codes":"Informe renal de seguimiento","pages":2,"embedded":true,"images":["archivos/28_01.jpg","archivos/28_02.jpg"]},{"id":25,"cat":"eco","catLabel":"Ecografía abdominal","icon":"📡","color":"#60a5fa","dateLabel":"5 jun 2025","codes":"Estudio de imágenes","pages":3,"embedded":true,"images":["archivos/25_01.jpg","archivos/25_02.jpg","archivos/25_03.jpg"]},{"id":24,"cat":"eco","catLabel":"Informe ecográfico abdominal","icon":"📡","color":"#60a5fa","dateLabel":"5 jun 2025","codes":"Descripción y conclusiones","pages":1,"embedded":true,"images":["archivos/24_01.jpg"]},{"id":23,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"5 jun 2025","codes":"Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · TSH · T4 Total · Urianálisis · Urocultivo","pages":6,"embedded":true,"images":["archivos/23_01.jpg","archivos/23_02.jpg","archivos/23_03.jpg","archivos/23_04.jpg","archivos/23_05.jpg","archivos/23_06.jpg"]},{"id":27,"cat":"cardio","catLabel":"Ecocardiografía","icon":"❤️","color":"#a78bfa","dateLabel":"15 may 2025","codes":"Eco-Doppler cardíaco","pages":6,"embedded":true,"images":["archivos/27_01.jpg","archivos/27_02.jpg","archivos/27_03.jpg","archivos/27_04.jpg","archivos/27_05.jpg","archivos/27_06.jpg"]},{"id":26,"cat":"cardio","catLabel":"Electrocardiograma (ECG)","icon":"❤️","color":"#a78bfa","dateLabel":"15 may 2025","codes":"Trazado y lectura","pages":3,"embedded":true,"images":["archivos/26_01.jpg","archivos/26_02.jpg","archivos/26_03.jpg"]},{"id":22,"cat":"renal","catLabel":"Informe renal","icon":"🫘","color":"#2dd4bf","dateLabel":"7 ene 2025","codes":"Informe renal de seguimiento","pages":2,"embedded":true,"images":["archivos/22_01.jpg","archivos/22_02.jpg"]},{"id":21,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"28 dic 2024","codes":"Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · TLI Canino · Urianálisis · Urocultivo","pages":6,"embedded":true,"images":["archivos/21_01.jpg","archivos/21_02.jpg","archivos/21_03.jpg","archivos/21_04.jpg","archivos/21_05.jpg","archivos/21_06.jpg"]},{"id":20,"cat":"renal","catLabel":"Informe renal","icon":"🫘","color":"#2dd4bf","dateLabel":"9 sep 2024","codes":"Informe renal de seguimiento","pages":2,"embedded":true,"images":["archivos/20_01.jpg","archivos/20_02.jpg"]},{"id":19,"cat":"resumen","catLabel":"Resumen de exámenes","icon":"📋","color":"#9aa0aa","dateLabel":"31 ago 2024","codes":"Tablas resumen · May–Ago 2024","pages":3,"embedded":true,"images":["archivos/19_01.jpg","archivos/19_02.jpg","archivos/19_03.jpg"]},{"id":18,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"30 ago 2024","codes":"Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · TLI Canino · Urianálisis · Urocultivo","pages":6,"embedded":true,"images":["archivos/18_01.jpg","archivos/18_02.jpg","archivos/18_03.jpg","archivos/18_04.jpg","archivos/18_05.jpg","archivos/18_06.jpg"]},{"id":17,"cat":"renal","catLabel":"Informe renal","icon":"🫘","color":"#2dd4bf","dateLabel":"19 jul 2024","codes":"Informe renal de seguimiento","pages":2,"embedded":true,"images":["archivos/17_01.jpg","archivos/17_02.jpg"]},{"id":16,"cat":"orina","catLabel":"Orina","icon":"💧","color":"#fbbf24","dateLabel":"11 jul 2024","codes":"Urianálisis · Urocultivo","pages":3,"embedded":true,"images":["archivos/16_01.jpg","archivos/16_02.jpg","archivos/16_03.jpg"]},{"id":15,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"11 jul 2024","codes":"Hemograma · Perfil Bioquímico · SDMA · PLI · TLI Canino","pages":2,"embedded":true,"images":["archivos/15_01.jpg","archivos/15_02.jpg"]},{"id":14,"cat":"eco","catLabel":"Informe ecográfico abdominal","icon":"📡","color":"#60a5fa","dateLabel":"10 jul 2024","codes":"Descripción y conclusiones","pages":26,"embedded":true,"images":["archivos/14_01.jpg","archivos/14_02.jpg","archivos/14_03.jpg","archivos/14_04.jpg","archivos/14_05.jpg","archivos/14_06.jpg","archivos/14_07.jpg","archivos/14_08.jpg","archivos/14_09.jpg","archivos/14_10.jpg","archivos/14_11.jpg","archivos/14_12.jpg","archivos/14_13.jpg","archivos/14_14.jpg","archivos/14_15.jpg","archivos/14_16.jpg","archivos/14_17.jpg","archivos/14_18.jpg","archivos/14_19.jpg","archivos/14_20.jpg","archivos/14_21.jpg","archivos/14_22.jpg","archivos/14_23.jpg","archivos/14_24.jpg","archivos/14_25.jpg","archivos/14_26.jpg"]},{"id":13,"cat":"rx","catLabel":"Radiografías laterales","icon":"🩻","color":"#fb923c","dateLabel":"3 jun 2024","codes":"Imágenes radiográficas","pages":2,"embedded":true,"images":["archivos/13_01.jpg","archivos/13_02.jpg"]},{"id":12,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"3 jun 2024","codes":"Electrolitos · PLI · TLI Canino · Fructosamina · Urianálisis · Urocultivo","pages":4,"embedded":true,"images":["archivos/12_01.jpg","archivos/12_02.jpg","archivos/12_03.jpg","archivos/12_04.jpg"]},{"id":11,"cat":"renal","catLabel":"Informe renal","icon":"🫘","color":"#2dd4bf","dateLabel":"27 may 2024","codes":"Informe renal de seguimiento","pages":2,"embedded":true,"images":["archivos/11_01.jpg","archivos/11_02.jpg"]},{"id":10,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"24 may 2024","codes":"Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · Urianálisis","pages":4,"embedded":true,"images":["archivos/10_01.jpg","archivos/10_02.jpg","archivos/10_03.jpg","archivos/10_04.jpg"]},{"id":9,"cat":"eco","catLabel":"Ecografía abdominal","icon":"📡","color":"#60a5fa","dateLabel":"18 may 2024","codes":"Estudio de imágenes","pages":24,"embedded":true,"images":["archivos/09_01.jpg","archivos/09_02.jpg","archivos/09_03.jpg","archivos/09_04.jpg","archivos/09_05.jpg","archivos/09_06.jpg","archivos/09_07.jpg","archivos/09_08.jpg","archivos/09_09.jpg","archivos/09_10.jpg","archivos/09_11.jpg","archivos/09_12.jpg","archivos/09_13.jpg","archivos/09_14.jpg","archivos/09_15.jpg","archivos/09_16.jpg","archivos/09_17.jpg","archivos/09_18.jpg","archivos/09_19.jpg","archivos/09_20.jpg","archivos/09_21.jpg","archivos/09_22.jpg","archivos/09_23.jpg","archivos/09_24.jpg"]},{"id":8,"cat":"orina","catLabel":"Orina","icon":"💧","color":"#fbbf24","dateLabel":"18 may 2024","codes":"Urianálisis · Urocultivo","pages":3,"embedded":true,"images":["archivos/08_01.jpg","archivos/08_02.jpg","archivos/08_03.jpg"]},{"id":7,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"14 may 2024","codes":"Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI","pages":4,"embedded":true,"images":["archivos/07_01.jpg","archivos/07_02.jpg","archivos/07_03.jpg","archivos/07_04.jpg"]},{"id":6,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"7 feb 2024","codes":"Hemograma · Perfil Bioquímico","pages":2,"embedded":true,"images":["archivos/06_01.jpg","archivos/06_02.jpg"]},{"id":5,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"3 ene 2024","codes":"Hemograma · Perfil Bioquímico · TLI Canino · TSH · T4 Total","pages":3,"embedded":true,"images":["archivos/05_01.jpg","archivos/05_02.jpg","archivos/05_03.jpg"]},{"id":4,"cat":"eco","catLabel":"Ecografía abdominal","icon":"📡","color":"#60a5fa","dateLabel":"2 ene 2024","codes":"Estudio de imágenes","pages":14,"embedded":true,"images":["archivos/04_01.jpg","archivos/04_02.jpg","archivos/04_03.jpg","archivos/04_04.jpg","archivos/04_05.jpg","archivos/04_06.jpg","archivos/04_07.jpg","archivos/04_08.jpg","archivos/04_09.jpg","archivos/04_10.jpg","archivos/04_11.jpg","archivos/04_12.jpg","archivos/04_13.jpg","archivos/04_14.jpg"]},{"id":3,"cat":"sangre","catLabel":"Sangre / Bioquímica","icon":"🩸","color":"#f87171","dateLabel":"8 nov 2023","codes":"Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · Parvovirus","pages":4,"embedded":true,"images":["archivos/03_01.jpg","archivos/03_02.jpg","archivos/03_03.jpg","archivos/03_04.jpg"]},{"id":2,"cat":"cardio","catLabel":"Evaluación cardiológica","icon":"❤️","color":"#a78bfa","dateLabel":"31 ago 2022","codes":"Evaluación clínica","pages":2,"embedded":true,"images":["archivos/02_01.jpg","archivos/02_02.jpg"]},{"id":1,"cat":"cardio","catLabel":"Electrocardiograma (ECG)","icon":"❤️","color":"#a78bfa","dateLabel":"31 ago 2022","codes":"Trazado y lectura","pages":1,"embedded":true,"images":["archivos/01_01.jpg"]}];
+var CATS=[['all','Todos'],['sangre','🩸 Sangre'],['orina','💧 Orina'],['renal','🫘 Renal'],
+          ['eco','📡 Ecografía'],['rx','🩻 Radiografía'],['cardio','❤️ Cardio'],['resumen','📋 Resumen']];
+var filter='all',cur=null,pg=0,zoom=false,panX=0,panY=0,psx=0,psy=0,drag=false,lastTap=0,tsX=0,tsY=0;
+function h2r(h,a){var n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')'}
+function rFilters(){
+  var el=document.getElementById('af-filters');
+  el.innerHTML=CATS.map(function(c){return '<button class="af-chip'+(c[0]===filter?' on':'')+'" onclick="afSetFilter(\''+c[0]+'\')">'+c[1]+'</button>'}).join('');
+}
+window.afSetFilter=function(f){filter=f;rFilters();rList();};
+function rList(){
+  var el=document.getElementById('af-list');
+  var list=ITEMS.filter(function(it){return filter==='all'||it.cat===filter;});
+  var html='',lastYr=null;
+  list.forEach(function(it){
+    var yr=(it.dateLabel.match(/\d{4}/)||['?'])[0];
+    if(yr!==lastYr){html+='<div class="af-yr">'+yr+'</div>';lastYr=yr;}
+    var idx=ITEMS.indexOf(it);
+    html+='<div class="af-item" onclick="afOpenLb('+idx+')">'
+      +'<div class="af-ico" style="background:'+h2r(it.color,.16)+';color:'+it.color+'">'+it.icon+'</div>'
+      +'<div class="af-mid">'
+      +'<div class="af-ttl">'+it.catLabel+'</div>'
+      +'<div class="af-dt">'+it.dateLabel+'</div>'
+      +'<div class="af-cd">'+it.codes+'</div>'
+      +'</div>'
+      +'<div class="af-pg">'+it.pages+' pág'+(it.pages>1?'s':'')+'</div>'
+      +'<div class="af-chv">›</div>'
+      +'</div>';
+  });
+  el.innerHTML=html;
+}
+function resetZoom(){zoom=false;panX=0;panY=0;var img=document.getElementById('lbimg');img.classList.remove('zoomed');img.style.transform='';}
+function applyT(){var img=document.getElementById('lbimg');img.style.transform=zoom?'translate('+panX+'px,'+panY+'px) scale(2.4)':'';}
+function showPage(){
+  var img=document.getElementById('lbimg');
+  resetZoom();
+  img.src=cur.images[pg];
+  if(pg+1<cur.pages)new Image().src=cur.images[pg+1];
+  document.getElementById('lbcnt').textContent=cur.pages>1?(pg+1)+' / '+cur.pages:'';
+  document.getElementById('lbhnt').textContent=cur.pages>1?'Desliza o usa ‹ › para cambiar de página · doble toque para acercar':'Doble toque para acercar';
+  var pv=document.getElementById('lbpv'),nx=document.getElementById('lbnx');
+  pv.disabled=pg<=0;nx.disabled=pg>=cur.pages-1;
+  pv.style.display=cur.pages>1?'flex':'none';
+  nx.style.display=cur.pages>1?'flex':'none';
+}
+afOpenLb=function(idx){
+  cur=ITEMS[idx];pg=0;
+  var ico=document.getElementById('lbico');
+  ico.textContent=cur.icon;ico.style.background=h2r(cur.color,.16);ico.style.color=cur.color;
+  document.getElementById('lbtitle').textContent=cur.catLabel;
+  document.getElementById('lbsub').textContent=cur.dateLabel+' · '+cur.pages+' página'+(cur.pages>1?'s':'');
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow='hidden';
+  showPage();
+};
+afCloseLb=function(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='';cur=null;};
+afPage=function(d){if(!cur)return;var n=pg+d;if(n>=0&&n<cur.pages){pg=n;showPage();}};
+var lbimg=document.getElementById('lbimg');
+lbimg.addEventListener('click',function(){var now=Date.now();if(now-lastTap<300){zoom=!zoom;panX=0;panY=0;lbimg.classList.toggle('zoomed',zoom);applyT();}lastTap=now;});
+lbimg.addEventListener('pointerdown',function(e){if(!zoom)return;drag=true;psx=e.clientX-panX;psy=e.clientY-panY;lbimg.setPointerCapture(e.pointerId);});
+lbimg.addEventListener('pointermove',function(e){if(!drag)return;panX=e.clientX-psx;panY=e.clientY-psy;applyT();});
+lbimg.addEventListener('pointerup',function(){drag=false;});
+var stg=document.getElementById('lbstg');
+stg.addEventListener('touchstart',function(e){if(zoom)return;tsX=e.touches[0].clientX;tsY=e.touches[0].clientY;},{passive:true});
+stg.addEventListener('touchend',function(e){if(zoom)return;var dx=e.changedTouches[0].clientX-tsX,dy=e.changedTouches[0].clientY-tsY;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))afPage(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',function(e){if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='Escape')afCloseLb();if(e.key==='ArrowRight')afPage(1);if(e.key==='ArrowLeft')afPage(-1);});
+rFilters();rList();
+})();
 </script>
 </body>
 </html>
