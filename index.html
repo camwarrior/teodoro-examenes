@@ -107,7 +107,7 @@ canvas{max-width:100%}
 <div class="panel active">
   <div class="metrics">
     <div class="mc"><div class="lbl">SDMA (último)</div><div class="val warn">14 µg/dL</div><div class="sub warn">Límite ≤14 · Ene 2026</div></div>
-    <div class="mc"><div class="lbl">Creatinina (último)</div><div class="val good">1.0 mg/dL</div><div class="sub good">Normal ≤2 · Sep 2025</div></div>
+    <div class="mc"><div class="lbl">Creatinina (último)</div><div class="val good">1.4 mg/dL</div><div class="sub good">Normal ≤2 · Ene 2026</div></div>
     <div class="mc"><div class="lbl">NUS (último)</div><div class="val good">20.5 mg/dL</div><div class="sub good">Normal · Ene 2026</div></div>
     <div class="mc"><div class="lbl">Fósforo (último)</div><div class="val good">3.3 mg/dL</div><div class="sub good">Normal · Ene 2026</div></div>
   </div>
@@ -427,7 +427,7 @@ function mk(id,labels,data,color,ref){
   new Chart(el,{type:'line',data:{labels:labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return c[0].label}}}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'}},x:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{maxRotation:45,minRotation:45,autoSkip:false}}}}});
 }
 mk('cSDMA',['Nov 23','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[6,33,40,20,25,24,14,11,14],'#60a5fa',14);
-mk('cCreat',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25'],[0.8,0.6,0.8,4.0,2.2,2.0,1.6,1.5,1.3,1.0],'#34d399',2);
+mk('cCreat',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[0.8,0.6,0.8,4.0,2.2,2.0,1.6,1.5,1.3,1.0,1.4],'#34d399',2);
 mk('cNUS',['Nov 23','Ene 24','Feb 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[32.1,14.4,25.4,122,32.5,22.8,25.8,25.0,12.4,20.5],'#a78bfa',29);
 mk('cFosf',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[4.2,10.3,10.5,7.5,5.3,4.2,4.3,3.5,3.1,2.5,3.3],'#2dd4bf',5.3);
 mk('cPLI',['Nov 23','May 24','May 24','Jun 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[48,221.7,213.1,270.3,229,273.6,192.4,311,182.9,197.4],'#fb923c',200);
