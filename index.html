@@ -96,10 +96,11 @@ canvas{max-width:100%}
   <button class="tab active" onclick="sw(0)">🫘 Renal</button>
   <button class="tab" onclick="sw(1)">🩸 Sangre</button>
   <button class="tab" onclick="sw(2)">🧪 Hígado</button>
-  <button class="tab" onclick="sw(3)">💧 Orina</button>
-  <button class="tab" onclick="sw(4)">❤️ Cardio</button>
-  <button class="tab" onclick="sw(5)">📷 Imágenes</button>
-  <button class="tab" onclick="sw(6)">📈 Evolución</button>
+  <button class="tab" onclick="sw(3)">🦋 Tiroides/Elec</button>
+  <button class="tab" onclick="sw(4)">💧 Orina</button>
+  <button class="tab" onclick="sw(5)">❤️ Cardio</button>
+  <button class="tab" onclick="sw(6)">📷 Imágenes</button>
+  <button class="tab" onclick="sw(7)">📈 Evolución</button>
 </div>
 
 <!-- RENAL -->
@@ -213,6 +214,45 @@ canvas{max-width:100%}
     <div class="concl alert">
       <div class="ct">Conclusión hígado</div>
       <p>Esta es el área que más conviene conversar con la veterinaria. La ALT está elevada de forma persistente y, de hecho, viene subiendo en los últimos controles (hasta 311 en enero 2026). Esto coincide con lo que muestra la ecografía: un hígado agrandado con cambios grasos/esteroidales y bastante "barro biliar" en la vesícula. No es una urgencia inmediata, pero sí un punto de vigilancia activa que no debería pasarse por alto.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TIROIDES / ELECTROLITOS -->
+<div class="panel">
+  <div class="metrics">
+    <div class="mc"><div class="lbl">T4 total (último)</div><div class="val warn">3.97 µg/dL</div><div class="sub warn">Alto 1.3-3.5 · May 2026</div></div>
+    <div class="mc"><div class="lbl">TSH (último)</div><div class="val good">0.18 ng/mL</div><div class="sub good">Normal 0.01-0.6 · May 2026</div></div>
+    <div class="mc"><div class="lbl">Sodio (último)</div><div class="val warn">150.7 mEq/L</div><div class="sub warn">Límite alto 140-150 · May 2026</div></div>
+    <div class="mc"><div class="lbl">Potasio (último)</div><div class="val warn">5.6 mEq/L</div><div class="sub warn">Límite alto 3.5-5.5 · May 2026</div></div>
+    <div class="mc"><div class="lbl">Cloro (último)</div><div class="val warn">114.0 mEq/L</div><div class="sub warn">Alto 107-113 · May 2026</div></div>
+  </div>
+  <div class="chart-ttl">T4 total (µg/dL) · ref actual sin terapia 1,3–3,5</div>
+  <div class="legend"><span><span class="dot" style="background:var(--warn)"></span>T4 total</span><span><span class="dot" style="background:var(--ref)"></span>Límite actual (3,5)</span></div>
+  <div class="chart-wrap"><canvas id="cT4" height="190"></canvas></div>
+  <div class="chart-ttl">TSH (ng/mL) · ref 0,01–0,6</div>
+  <div class="legend"><span><span class="dot" style="background:var(--blue)"></span>TSH</span><span><span class="dot" style="background:var(--ref)"></span>Límite (0,6)</span></div>
+  <div class="chart-wrap"><canvas id="cTSH" height="180"></canvas></div>
+  <div class="chart-ttl">Sodio — Na (mEq/L) · ref 140–150</div>
+  <div class="legend"><span><span class="dot" style="background:var(--teal)"></span>Sodio</span><span><span class="dot" style="background:var(--ref)"></span>Límite (150)</span></div>
+  <div class="chart-wrap"><canvas id="cNa" height="180"></canvas></div>
+  <div class="chart-ttl">Potasio — K (mEq/L) · ref 3,5–5,5</div>
+  <div class="legend"><span><span class="dot" style="background:var(--warn)"></span>Potasio</span><span><span class="dot" style="background:var(--ref)"></span>Límite (5,5)</span></div>
+  <div class="chart-wrap"><canvas id="cK" height="180"></canvas></div>
+  <div class="chart-ttl">Cloro — Cl (mEq/L) · ref 107–113</div>
+  <div class="legend"><span><span class="dot" style="background:var(--coral)"></span>Cloro</span><span><span class="dot" style="background:var(--ref)"></span>Límite (113)</span></div>
+  <div class="chart-wrap"><canvas id="cCl" height="180"></canvas></div>
+  <div class="explain">
+    <h3><span class="ic">🦋</span>¿Qué significa cada indicador?</h3>
+    <dl>
+      <dt>T4 total</dt><dd>La principal hormona de la tiroides. Si está baja con TSH alta, indica hipotiroidismo (lo común en perros). Si está alta con TSH baja sugiere hipertiroidismo, que en perros es muy poco frecuente. En Teodoro viene subiendo lentamente (2.98 → 3.18 → 3.69 → 3.97).</dd>
+      <dt>TSH</dt><dd>La hormona que el cerebro usa para "dar la orden" a la tiroides. Se interpreta siempre junto a la T4. En Teodoro está normal, incluso en la parte baja, lo que descarta hipotiroidismo.</dd>
+      <dt>Sodio, potasio y cloro (electrolitos)</dt><dd>Sales minerales que regulan la hidratación y el equilibrio del cuerpo. Cuando los tres suben juntos de forma leve suele reflejar que la sangre está "concentrada" por deshidratación leve, más que un trastorno propio de cada sal.</dd>
+    </dl>
+    <div class="concl watch">
+      <div class="ct">Conclusión tiroides y electrolitos</div>
+      <p><strong>Importante sobre los rangos:</strong> el laboratorio cambió su valor de referencia de la T4 entre 2025 y 2026: los informes de 2024–2025 usaban un límite superior de <strong>3,8</strong> µg/dL, y los de 2026 usan <strong>3,5</strong> µg/dL (pacientes sin terapia). Por eso la T4 de enero 2026 (3.69) y la de mayo 2026 (3.97) figuran como altas bajo el criterio nuevo; con el criterio antiguo, 3.69 habría quedado dentro de rango. La tendencia al alza, sin embargo, es real con cualquiera de los dos criterios.</p>
+      <p>No hay hipotiroidismo (sería T4 baja con TSH alta; Teodoro tiene lo contrario). El hipertiroidismo verdadero es muy raro en perros y poco probable sin signos clínicos. Los electrolitos están los tres en el límite alto, compatible con deshidratación leve por su condición renal; el cloro, de hecho, lleva alto de forma crónica desde 2024. Punto a conversar con el equipo tratante: el propio informe sugiere medir <strong>T4 libre</strong> cuando la T4 total sale elevada sin tratamiento, por si quieren confirmar la tendencia.</p>
     </div>
   </div>
 </div>
@@ -334,6 +374,7 @@ canvas{max-width:100%}
     <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">Ene 2026 · 5 a 5 m</div><div class="tdesc">SDMA 14 (vuelve al límite). UPC 0.12 (normal), sin proteinuria. ALT 311 ↑↑, FA 213 ↑, Calcio 8.4 ↓. PLI 197. Ecografía: progresión renal y barro biliar 2/3.</div></div></div>
     <div class="ti"><div class="tdot" style="background:var(--good)"></div><div><div class="tdt">Feb 2026 · 5 a 5 m</div><div class="tdesc">Ecocardiograma ACVIM B1 sin cambios. ECG normal. Normotenso. ERC IRIS 1-2.</div></div></div>
     <div class="ti"><div class="tdot" style="background:var(--good)"></div><div><div class="tdt">May 2026 · 5 a 9 m</div><div class="tdesc">Radiografía abdominal: sin cambios anatómicos ni patológicos.</div></div></div>
+    <div class="ti"><div class="tdot" style="background:var(--warn)"></div><div><div class="tdt">May 2026 · 5 a 9 m</div><div class="tdesc">Perfil tiroideo y electrolitos (pedido por nefrólogo). T4 3.97 ↑ bajo el límite nuevo del laboratorio (3,5), TSH 0.18 normal → sin hipotiroidismo. Na 150.7, K 5.6, Cl 114 en el límite alto, compatible con deshidratación leve.</div></div></div>
   </div>
   <div class="section-ttl">Tendencias clave</div>
   <div class="metrics">
@@ -343,6 +384,7 @@ canvas{max-width:100%}
     <div class="mc"><div class="lbl">ALT</div><div class="val bad">↑ Empeorando</div><div class="sub bad">Sube a 311</div></div>
     <div class="mc"><div class="lbl">PLI</div><div class="val warn">→ Persistente</div><div class="sub warn">Pancreatitis activa</div></div>
     <div class="mc"><div class="lbl">ITU E. coli</div><div class="val bad">⚠ Recurrente</div><div class="sub bad">3 episodios 2025</div></div>
+    <div class="mc"><div class="lbl">T4 total</div><div class="val warn">↑ Leve alza</div><div class="sub warn">2.98 → 3.97</div></div>
   </div>
   <div class="explain">
     <h3><span class="ic">📈</span>Resumen general en palabras simples</h3>
@@ -353,7 +395,7 @@ canvas{max-width:100%}
     </div>
     <div class="concl watch">
       <div class="ct">A vigilar 🟡</div>
-      <p><strong>SDMA:</strong> volvió al límite (14) tras estar mejor, conviene seguir midiéndolo. <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía.</p>
+      <p><strong>SDMA:</strong> volvió al límite (14) tras estar mejor, conviene seguir midiéndolo. <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía. <strong>Tiroides:</strong> la T4 viene subiendo lentamente y quedó algo sobre el rango nuevo del laboratorio (3,5); la TSH normal descarta hipotiroidismo, y se podría medir T4 libre para confirmar la tendencia. <strong>Electrolitos:</strong> sodio, potasio y cloro en el límite alto, compatible con deshidratación leve.</p>
     </div>
     <div class="concl alert">
       <div class="ct">Conversar con la veterinaria 🔴</div>
@@ -398,6 +440,11 @@ mk('cAST',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 2
 mk('cCol',['Nov 23','Ene 24','Feb 24','May 24','May 24','Jul 24','Ago 24','Dic 24','Jun 25','Sep 25','Ene 26'],[213,306,149,217,190,330,309,321,320,298,323],'#a78bfa',null);
 mk('cUPC',['May 24','May 24','Jun 24','Jul 24','Ago 24','Dic 24','Jun 25','Ago 25','Ene 26'],[1.55,1.10,0.63,0.45,0.42,0.30,0.58,0.19,0.12],'#60a5fa',0.5);
 mk('cPAS',['Ago 22','May 24','Jul 24','Sep 24','Ene 25','Jun 25','Feb 26'],[113,143,144,136,139,141,130],'#a78bfa',140);
+mk('cT4',['Ene 24','Jun 25','Ene 26','May 26'],[2.98,3.18,3.69,3.97],'#fbbf24',3.5);
+mk('cTSH',['Ene 24','Jun 25','Ene 26','May 26'],[0.22,0.3,0.3,0.18],'#60a5fa',0.6);
+mk('cNa',['Nov 23','May 24','May 24','Jun 24','Ago 24','Dic 24','Jun 25','Ene 26','May 26'],[145.5,143.5,147.1,144.4,148.2,150.2,148.8,151.1,150.7],'#2dd4bf',150);
+mk('cK',['Nov 23','May 24','May 24','Jun 24','Ago 24','Dic 24','Jun 25','Ene 26','May 26'],[4.9,3.8,5.3,4.8,4.8,5.2,5.4,5.8,5.6],'#fbbf24',5.5);
+mk('cCl',['Nov 23','May 24','May 24','Jun 24','Ago 24','Dic 24','Jun 25','Ene 26','May 26'],[108.9,115.4,115.9,118,116.8,115.4,113.9,115.5,114.0],'#fb923c',113);
 </script>
 </body>
 </html>
