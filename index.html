@@ -118,6 +118,10 @@ canvas{max-width:100%}
 .lbft{flex-shrink:0;text-align:center;padding:10px;font-size:12px;color:var(--text2)}
 .lbft .lbhnt{font-size:10.5px;color:var(--text3);margin-top:2px}
 @media(min-width:560px){.lbstg img{max-width:760px}}
+.lbdl{background:var(--surface2);border:1px solid var(--border);color:var(--teal);width:36px;height:36px;border-radius:50%;font-size:17px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:opacity .15s}
+.lbdl:disabled{opacity:.4;cursor:default}
+.lbdl.spin{animation:lbspin .9s linear infinite}
+@keyframes lbspin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -501,6 +505,7 @@ mk('cCl',['Nov 23','May 24','May 24','Jun 24','Ago 24','Dic 24','Jun 25','Ene 26
   <div class="lbhd">
     <div class="lbico" id="lbico"></div>
     <div class="lbt"><h4 id="lbtitle"></h4><span id="lbsub"></span></div>
+    <button class="lbdl" id="lbdl" onclick="afDownload()" title="Descargar PDF">↓</button>
     <button class="lbx" onclick="afCloseLb()">✕</button>
   </div>
   <div class="lbstg" id="lbstg">
@@ -582,6 +587,9 @@ stg.addEventListener('touchstart',function(e){if(e.touches.length===2){pinching=
 stg.addEventListener('touchmove',function(e){if(e.touches.length===2&&pinching){var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);scale=Math.max(1,Math.min(5,piScale*(d/piDist)));if(scale<=1){panX=0;panY=0;}applyT();e.preventDefault();}},{passive:false});
 stg.addEventListener('touchend',function(e){if(e.touches.length<2)pinching=false;if(!pinching&&e.changedTouches.length===1){var dx=e.changedTouches[0].clientX-tsX,dy=e.changedTouches[0].clientY-tsY;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)&&scale<=1)afPage(dx<0?1:-1);}},{passive:false});
 document.addEventListener('keydown',function(e){if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='Escape')afCloseLb();if(e.key==='ArrowRight')afPage(1);if(e.key==='ArrowLeft')afPage(-1);});
+function loadJsPDF(){return new Promise(function(res){if(window.jspdf){res();return;}var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=res;document.head.appendChild(s);});}
+function imgData(url){return new Promise(function(res){var img=new Image();img.onload=function(){var c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);res({d:c.toDataURL('image/jpeg',0.95),w:img.naturalWidth,h:img.naturalHeight});};img.src=url;});}
+afDownload=async function(){if(!cur)return;var btn=document.getElementById('lbdl');btn.disabled=true;btn.classList.add('spin');btn.textContent='↻';try{await loadJsPDF();var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});for(var i=0;i<cur.images.length;i++){var p=await imgData(cur.images[i]);if(i>0)doc.addPage('a4','portrait');var A4W=210,A4H=297,asp=p.w/p.h,dw,dh,dx,dy;if(asp>A4W/A4H){dw=A4W;dh=A4W/asp;dx=0;dy=(A4H-dh)/2;}else{dh=A4H;dw=A4H*asp;dy=0;dx=(A4W-dw)/2;}doc.addImage(p.d,'JPEG',dx,dy,dw,dh);}var fname=(cur.catLabel+'_'+cur.dateLabel).replace(/[\/\\:*?"<>|]/g,'').replace(/\s+/g,'_')+'.pdf';doc.save(fname);}catch(e){console.error(e);alert('Error generando el PDF. Intenta de nuevo.');}btn.disabled=false;btn.classList.remove('spin');btn.textContent='↓';};
 rFilters();rList();
 })();
 </script>
