@@ -29,8 +29,8 @@ header p{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.45}
 .panel.active{display:block}
 @keyframes slInR{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:translateX(0)}}
 @keyframes slInL{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
-.panel.sl-r{animation:slInR .18s cubic-bezier(.22,.61,.36,1)}
-.panel.sl-l{animation:slInL .18s cubic-bezier(.22,.61,.36,1)}
+.panel.sl-r{animation:slInR .24s cubic-bezier(.22,.61,.36,1)}
+.panel.sl-l{animation:slInL .24s cubic-bezier(.22,.61,.36,1)}
 @media(prefers-reduced-motion:reduce){.panel.sl-r,.panel.sl-l{animation:none}}
 .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
 @media(min-width:560px){.metrics{grid-template-columns:repeat(4,1fr)}}
@@ -522,15 +522,16 @@ mk('cPAS',['Ago 22','May 24','Jul 24','Sep 24','Ene 25','Jun 25','Feb 26'],[113,
   if(!wrap)return;
   var SX=0,SY=0,ST=0,track=false;
   function lbOpen(){var lb=document.getElementById('lb');return lb&&lb.classList.contains('open');}
-  function inScrollable(el){
+  function ignoreZone(el){
     while(el&&el!==wrap){
+      if(el.tagName==='HEADER')return true;
       if(el.classList&&(el.classList.contains('tabs')||el.classList.contains('af-filters')))return true;
       el=el.parentElement;
     }
     return false;
   }
   wrap.addEventListener('touchstart',function(e){
-    if(lbOpen()||e.touches.length!==1||inScrollable(e.target)){track=false;return;}
+    if(lbOpen()||e.touches.length!==1||ignoreZone(e.target)){track=false;return;}
     SX=e.touches[0].clientX;SY=e.touches[0].clientY;ST=Date.now();track=true;
   },{passive:true});
   wrap.addEventListener('touchend',function(e){
