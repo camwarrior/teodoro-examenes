@@ -60,13 +60,18 @@ MESES = {1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",
 # Los que tienen id None no se grafican (solo nota): calcio, glucosa, etc.
 SERIES = [
     # (regex del parámetro normalizado, id_serie, unidad_esperada, ref_low, ref_high)
-    (r"creatinina",                         "cCreat", "mg/dl", 0.6, 2.0),
+    # Primero los que NO deben caer en una serie de sangre aunque compartan palabras
+    # (match_entry devuelve la primera coincidencia). Antes se mapeaban mal: "creatinina en
+    # orina" iba a cCreat y HDL/LDL/VLDL colesterol iban a cCol.
+    (r"creatinina en orina",                None,     "mg/dl", 40, 600),
+    (r"^(hdl|ldl|vldl) colesterol|^colesterol (hdl|ldl|vldl)", None, "mg/dl", None, None),
+    (r"^creatinina",                        "cCreat", "mg/dl", 0.6, 2.0),
     (r"nus|nitrogeno ureico",               "cNUS",   "mg/dl", 8, 29),
     (r"^fosforo|(?<![a-z])fosforo",         "cFosf",  "mg/dl", 2.9, 5.3),
-    (r"alt|alanino amino",                  "cALT",   "ui/l", 18, 86),
+    (r"(?<![a-z])alt(?![a-z])|alanino amino", "cALT", "ui/l", 18, 86),
     (r"fosfatasa alcalina",                 "cFA",    "ui/l", 12, 121),
-    (r"ast|aspartato amino",                "cAST",   "ui/l", 12, 42),
-    (r"colesterol",                         "cCol",   "mg/dl", 133, 367),
+    (r"(?<![a-z])ast(?![a-z])|aspartato amino", "cAST", "ui/l", 12, 42),
+    (r"^colesterol",                        "cCol",   "mg/dl", 133, 367),
     (r"t4 total",                           "cT4",    "ug/dl", 1.3, 3.5),
     (r"^tsh|(?<![a-z])tsh",                 "cTSH",   "ng/ml", 0.01, 0.6),
     (r"sodio",                              "cNa",    "meq/l", 140, 150),
@@ -74,9 +79,29 @@ SERIES = [
     (r"cloro",                              "cCl",    "meq/l", 107, 113),
     (r"sdma",                               "cSDMA",  "ug/dl", 1, 14),
     (r"pli|lipasa pancreatica",             "cPLI",   "ug/l", 10, 200),
+    (r"^hematocrito",                       "cHcto",  "%", 40, 60),
+    (r"^hemoglobina",                       "cHb",    "g/dl", 13, 20),
+    (r"^leucocitos",                        "cLeuco", "/ul", 6000, 17000),
     (r"calcio",                             None,     "mg/dl", 9, 11.5),
     (r"glucosa",                            None,     "mg/dl", 70, 120),
+    # Resto del perfil bioquímico VetLab (no graficados, solo nota). Antes faltaban aquí y la
+    # tabla de confirmación los omitía en silencio (bug detectado con el archivo 45, oct 2026).
+    (r"proteinas totales en orina",         None,     "mg/dl", 0, 10),
+    (r"^proteinas totales",                 None,     "g/dl", 5.4, 7.5),
+    (r"albumina",                           None,     "g/dl", 2.8, 4.0),
+    (r"globulinas",                         None,     "g/dl", 2.7, 4.4),
+    (r"(?<![a-z])ggt(?![a-z])|gamma glutamil", None,  "ui/l", 2, 10),
+    (r"(?<![a-z])urea(?![a-z])",            None,     "mg/dl", 16, 58),
+    (r"bilirrubina total",                  None,     "mg/dl", 0.1, 0.3),
 ]
+
+
+def match_entry(label):
+    """Entrada de SERIES que corresponde a un label normalizado, o None si no está mapeado."""
+    for entry in SERIES:
+        if re.search(entry[0], label):
+            return entry
+    return None
 
 
 def magic(path):
@@ -226,13 +251,22 @@ def parse_values(text):
             l = line.strip()
             if not l: continue
             nl = norm(l)
-            # ---- formato B: header de sección (línea corta, sin dígitos de valor) ----
-            for secpat, secid in [(r"t4 total", "cT4"), (r"(?<![a-z])tsh(?![a-z])", "cTSH")]:
+            # ---- formato B: header de sección (sin valor+unidad en la misma línea) ----
+            # (regex, nombre mostrado, id de serie o None si es solo nota)
+            for secpat, secname, secid in [
+                    (r"t4 total", "T4 total", "cT4"),
+                    (r"(?<![a-z])tsh(?![a-z])", "TSH", "cTSH"),
+                    (r"sdma", "SDMA", "cSDMA"),
+                    (r"(?<![a-z])pli(?![a-z])|lipasa pancreatica", "PLI", "cPLI"),
+                    (r"tli canino", "TLI canino", None),
+                    (r"fructosamina", "Fructosamina", None),
+                    (r"^glucosa", "Glucosa", None)]:
                 if re.search(secpat, nl) and "resultado" not in nl and not re.search(r"\d+\s*(ug|ng|mg|ui|meq)", nl):
-                    current = secid
+                    current = (secname, secid)
             mB = re.match(r"resultado[:\s]+([<>]?\d+[.,]?\d*)\s*([a-z/µu%]+)?(?:\s+([\d.,]+)\s*-\s*([\d.,]+))?", nl)
             if mB and current:
-                out.append({"param": current, "sid": current, "value": num(mB.group(1)),
+                secname, secid = current
+                out.append({"param": secname, "sid": secid, "mapped": True, "value": num(mB.group(1)),
                             "unit": (mB.group(2) or "").strip("."), "low": num(mB.group(3)),
                             "high": num(mB.group(4)), "page": pi, "raw": l})
                 current = None
@@ -240,17 +274,15 @@ def parse_values(text):
             # ---- formato A: misma línea con rango 'low - high' ----
             mA = re.match(r"(.+?)\s+[¬*•]?\s*([<>]?\d+[.,]?\d*)\s+([a-z/µu%]+)\s+([\d.,]+)\s*-\s*([\d.,]+)", nl)
             if mA:
-                label = mA.group(1)
-                sid = None
-                for pat, s_id, *_ in SERIES:
-                    if re.search(pat, label):
-                        sid = s_id; break
-                # incluir aunque sid sea None solo si el label matchea calcio/glucosa u otro conocido
-                known = any(re.search(pat, label) for pat, *_ in SERIES)
-                if known:
-                    out.append({"param": label.strip(), "sid": sid, "value": num(mA.group(2)),
-                                "unit": mA.group(3).strip("."), "low": num(mA.group(4)),
-                                "high": num(mA.group(5)), "page": pi, "raw": l})
+                label = mA.group(1).strip()
+                entry = match_entry(label)
+                # Se incluyen TODAS las filas con formato 'valor unidad low - high', estén o no
+                # mapeadas: así ningún parámetro desaparece en silencio de la tabla. Las no
+                # mapeadas quedan marcadas y generan un aviso ℹ️ en los chequeos.
+                out.append({"param": label, "sid": entry[1] if entry else None,
+                            "mapped": entry is not None, "value": num(mA.group(2)),
+                            "unit": mA.group(3).strip("."), "low": num(mA.group(4)),
+                            "high": num(mA.group(5)), "page": pi, "raw": l})
     return out
 
 
@@ -280,17 +312,27 @@ def run_checks(parsed, hist):
     """Devuelve lista de (nivel, mensaje). nivel: '🔴' detener / '🟡' revisar / 'ℹ️' info."""
     flags = []
     seen_ids = set()
+    unmapped = [r["param"] for r in parsed if not r.get("mapped", True)]
+    if unmapped:
+        flags.append(("ℹ️", f"{len(unmapped)} parámetro(s) sin serie ni rango conocido (igual van en la tabla "
+                            f"y se confirman como el resto): {', '.join(unmapped)}"))
     for row in parsed:
         sid = row["sid"]; val = row["value"]
         if sid: seen_ids.add(sid)
-        exp_unit, exp_low, exp_high = expected_for(sid) if sid else (None, None, None)
+        # Unidad y rango esperados: por serie (formato B) o por el label (formato A, incluye
+        # parámetros de solo nota como calcio, glucosa, proteínas, etc.).
+        if sid:
+            exp_unit, exp_low, exp_high = expected_for(sid)
+        else:
+            entry = match_entry(row["param"]) if row.get("mapped") else None
+            exp_unit, exp_low, exp_high = (entry[2], entry[3], entry[4]) if entry else (None, None, None)
         # unidad
-        if sid and exp_unit and row["unit"]:
+        if exp_unit and row["unit"]:
             if norm(row["unit"]) != exp_unit:
                 flags.append(("🟡", f"{row['param']}: unidad '{row['unit']}' ≠ esperada '{exp_unit}' "
                                     f"(¿cambio de unidad del laboratorio? verificar comparabilidad)"))
         # rango de referencia
-        if sid and exp_low is not None and row["low"] is not None and row["high"] is not None:
+        if exp_low is not None and row["low"] is not None and row["high"] is not None:
             if abs(row["low"]-exp_low) > 1e-9 or abs(row["high"]-exp_high) > 1e-9:
                 flags.append(("🟡", f"{row['param']}: rango del informe {row['low']}–{row['high']} "
                                     f"≠ rango conocido {exp_low}–{exp_high} (¿el laboratorio cambió el rango?)"))
@@ -385,7 +427,9 @@ def main():
                         elif r["value"] > r["high"]: est = "↑ alto"
                         else: est = "✓ en rango"
                     rng = f"{r['low']}-{r['high']}" if r["low"] is not None else "s/d"
-                    print(f"  {r['param'][:32]:32} {str(r['value']):>8} {r['unit'][:7]:>7} {rng:>14} {r['page']:>4}  {est}")
+                    tipo = r["sid"] if r["sid"] else ("nota" if r.get("mapped") else "NO MAPEADO")
+                    print(f"  {r['param'][:32]:32} {str(r['value']):>8} {r['unit'][:7]:>7} {rng:>14} {r['page']:>4}  {est:11} [{tipo}]")
+                print(f"  ({len(parsed)} filas parseadas — contrastar que el número coincida con las filas del PDF)")
 
             # ---- CHEQUEOS AUTOMÁTICOS ----
             flags = run_checks(parsed, hist) if parsed else []
