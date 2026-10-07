@@ -1,8 +1,8 @@
 # Proyecto: Dashboard médico de Teodoro
 
-**Paciente:** Teodoro Guerrero, Chihuahua macho, nacido **22 ago 2020**. Diagnósticos: ERC IRIS 1-2, ACVIM B1 (valvulopatía mitral leve), pancreatitis crónica. Tutor: Camilo Guerrero. Clínica: Nueva Madrid / laboratorio VetLab. Equipo tratante: veterinaria de cabecera (Loreto), nefrólogo (Dr. Eduardo Guzmán) y, desde ago 2026, endocrinología (interconsulta derivada por el nefrólogo por la T4 al alza).
+**Paciente:** Teodoro Guerrero, Chihuahua macho, nacido **22 ago 2020**. Diagnósticos: ERC IRIS 1-2, ACVIM B1 (valvulopatía mitral leve), pancreatitis crónica. Tutor: Camilo Guerrero. Clínica: Nueva Madrid / laboratorio VetLab. Equipo tratante: veterinaria de cabecera (Loreto), nefrólogo (Dr. Eduardo Guzmán) y, desde ago 2026, endocrinología (interconsulta derivada por el nefrólogo por la T4 al alza). **Tratamiento hepático vigente:** Hepatocan Forte, indicado por endocrinología por 1 mes tras el control de ago 2026; el examen de oct 2026 (archivo 45) fue el control posterior a ese mes.
 
-**Repo:** github.com/camwarrior/teodoro-examenes (rama `main`). **Deploy:** Vercel, framework preset **Other**, root `./`, sitio estático HTML + Chart.js vía CDN, sin build. Responsivo mobile-first (iPhone). **Archivos fuente:** 44 exámenes (lab, ecografías abdominales y cervical/tiroidea, ecocardiogramas, ECG, radiografías), nov 2023 – ago 2026, más una carpeta `/archivos/` con 183 imágenes WebP que alimentan la pestaña de archivos.
+**Repo:** github.com/camwarrior/teodoro-examenes (rama `main`). **Deploy:** Vercel, framework preset **Other**, root `./`, sitio estático HTML + Chart.js vía CDN, sin build. Responsivo mobile-first (iPhone). **Archivos fuente:** 45 exámenes (lab, ecografías abdominales y cervical/tiroidea, ecocardiogramas, ECG, radiografías), ago 2022 – oct 2026, más una carpeta `/archivos/` con 184 imágenes WebP que alimentan la pestaña de archivos.
 
 ## Estructura del dashboard (index.html)
 
@@ -16,7 +16,7 @@
 6. **Cardiología** — métricas ecocardiográficas, PAS, ecocardiografías/ECG.
 7. **Imágenes** — ecografías + radiografía con conclusiones.
 8. **Evolución** — línea de tiempo clínica (2022–2026) + resumen general.
-9. **Archivos** — lista de los 44 exámenes con visor de imágenes y descarga PDF. Ver sección dedicada más abajo.
+9. **Archivos** — lista de los 45 exámenes con visor de imágenes y descarga PDF. Ver sección dedicada más abajo.
 
 **Encabezado:** avatar circular con la ilustración de Teodoro (imagen incrustada en base64, sin dependencias externas). La edad se muestra junto a la fecha de nacimiento — p. ej. "Nacido 22 ago 2020 (6A0M)" — y se **calcula dinámicamente vía JS** a partir del 22 ago 2020 en cada carga. El favicon sigue siendo la huella 🐾 (opcional cambiarlo).
 
@@ -36,25 +36,26 @@
 
 ## Series de datos (verificadas contra los PDF fuente, todas las fechas)
 
-- **SDMA** (ref 1–14): Nov23=6, May24=33→40, Jul24=20, Ago24=25, Dic24=24, Jun25=14, Sep25=11, Ene26=14. *(No se midió en ago 2026.)*
-- **Creatinina** (0.6–2.0): Nov23=0.8, Ene24=0.6, Feb24=0.8, May24=4.0→2.2, Jul24=2.0, Ago24=1.6, Dic24=1.5, Jun25=1.3, Sep25=1.0, Ene26=1.4, Ago26=1.4
-- **NUS** (8–29): pico 122 en May24, resto en rango, Ene26=20.5, Ago26=26.9 (dentro de rango, cerca del límite)
-- **Fósforo** (2.9–5.3): picos 10.3/10.5 (Ene-Feb24), normal desde May24, Ene26=3.3, **Ago26=2.8 (levemente bajo el límite inferior)**
-- **PLI** (10–200): Nov23=48, May24=221.7/213.1, Jun24=270.3, Jul24=229, Ago24=273.6, Dic24=192.4, Jun25=311, Sep25=182.9, Ene26=197.4. *(No se midió en ago 2026.)*
-- **Leucocitos** (6k–17k): rango normal, mínimo 4460 (Jul24), Ene26=10380. *(Sin hemograma en ago 2026.)*
-- **Hematocrito** (40–60): pico 62 (Feb24), Ene26=45.1. *(Sin hemograma en ago 2026.)*
-- **Hemoglobina** (13–20): Ene26=15.2. *(Sin hemograma en ago 2026.)*
-- **ALT** (18–86): Nov23=438.9, Ene24=216.1, Feb24=116.9, May24=54/542, Jul24=128, Ago24=298.6, Dic24=236.5, Jun25=175.7, Sep25=302, Ene26=311, **Ago26=388 (sigue subiendo)**
-- **FA** (12–121): pico 669 (Jul24), Sep25=594, Ene26=213, Ago26=273
-- **AST** (12–42): Ene26=66, Ago26=61.7
-- **Colesterol** (133–367): en rango, Ene26=323, Ago26=252
-- **UPC** (0.1–0.5): May24=1.55→1.10, Jun24=0.63, Jul24=0.45, Ago24=0.42, Dic24=0.30, Jun25=0.58, Ago25=0.19, Ene26=0.12. *(No se midió orina en ago 2026.)*
+- **SDMA** (ref 1–14): Nov23=6, May24=33→40, Jul24=20, Ago24=25, Dic24=24, Jun25=14, Sep25=11, Ene26=14. *(No se midió en ago ni oct 2026.)*
+- **Creatinina** (0.6–2.0): Nov23=0.8, Ene24=0.6, Feb24=0.8, May24=4.0→2.2, Jul24=2.0, Ago24=1.6, Dic24=1.5, Jun25=1.3, Sep25=1.0, Ene26=1.4, Ago26=1.4, **Oct26=1.5** (en rango)
+- **NUS** (8–29): pico 122 en May24, resto en rango, Ene26=20.5, Ago26=26.9 (dentro de rango, cerca del límite), Oct26=24.4
+- **Fósforo** (2.9–5.3): picos 10.3/10.5 (Ene-Feb24), normal desde May24, Ene26=3.3, Ago26=2.8 (levemente bajo el límite inferior), **Oct26=2.9 (justo en el límite inferior; el lab lo marca con ✱)**
+- **PLI** (10–200): Nov23=48, May24=221.7/213.1, Jun24=270.3, Jul24=229, Ago24=273.6, Dic24=192.4, Jun25=311, Sep25=182.9, Ene26=197.4. *(No se midió en ago ni oct 2026.)*
+- **Leucocitos** (6k–17k): rango normal, mínimo 4460 (Jul24), Ene26=10380. *(Sin hemograma en ago ni oct 2026.)*
+- **Hematocrito** (40–60): pico 62 (Feb24), Ene26=45.1. *(Sin hemograma en ago ni oct 2026.)*
+- **Hemoglobina** (13–20): Ene26=15.2. *(Sin hemograma en ago ni oct 2026.)*
+- **ALT** (18–86): Nov23=438.9, Ene24=216.1, Feb24=116.9, May24=54/542, Jul24=128, Ago24=298.6, Dic24=236.5, Jun25=175.7, Sep25=302, Ene26=311, Ago26=388, **Oct26=252 — primer descenso en más de un año (control tras 1 mes de Hepatocan Forte), aunque sigue ~3× sobre el límite**
+- **FA** (12–121): pico 669 (Jul24), Sep25=594, Ene26=213, Ago26=273, **Oct26=183** (baja, sigue alta)
+- **AST** (12–42): Ene26=66, Ago26=61.7, **Oct26=46.5** (baja, sigue levemente alta)
+- **Colesterol** (133–367): en rango, Ene26=323, Ago26=252, Oct26=262
+- **UPC** (0.1–0.5): May24=1.55→1.10, Jun24=0.63, Jul24=0.45, Ago24=0.42, Dic24=0.30, Jun25=0.58, Ago25=0.19, Ene26=0.12. *(No se midió orina en ago ni oct 2026.)*
 - **PAS** (<140): Ago22=113, May24=143, Jul24=144, Sep24=136, Ene25=139, Jun25=141, Feb26=130
 
 **Valores no graficados (solo nota):**
-- **Calcio** (9–11.5 mg/dL): Ene26=8.4 ↓, Ago26=8.8 ↓ — levemente bajo el límite en ambos controles. No tiene gráfico propio; se registra como nota (decisión de Camilo).
-- **Glucosa** (70–120 mg/dL, con fluoruro): Ago26=65 ↓ — levemente baja. No graficada; solo nota.
+- **Calcio** (9–11.5 mg/dL): Ene26=8.4 ↓, Ago26=8.8 ↓, **Oct26=9.3 (vuelve a rango)**. No tiene gráfico propio; se registra como nota (decisión de Camilo).
+- **Glucosa** (70–120 mg/dL): Ago26=65 ↓ (tubo **con** fluoruro), Oct26=61 ↓ (tubo **sin** fluoruro). Ojo: el método/tubo cambió entre ambos controles; sin fluoruro la glucosa puede bajar en el tubo, así que no son estrictamente comparables. No graficada; solo nota.
 - **Otros del bioquímico ago 2026, todos en rango:** proteínas 6.4, albúmina 3.0, globulinas 3.4, bilirrubina total 0.11, GGT 5.2, urea 57.5.
+- **Otros del bioquímico oct 2026:** proteínas 6.6, albúmina 3.7, globulinas 2.9, GGT 4.9, urea 52.2 (en rango); bilirrubina total 0.3 (justo en el límite superior 0.1–0.3, marcada ✱ por el lab).
 
 ### Tiroides y electrolitos
 
@@ -76,9 +77,9 @@
 
 ## Conclusiones clave
 
-- 🟢 **Riñones:** recuperación notable de crisis aguda a ERC estable temprana; creatinina en rango, sin proteinuria, normotenso. **Corazón:** B1 sin progresión, sin medicación. **Sangre:** sin anemia. **Tiroides:** la T4 volvió a rango en ago 2026 (2.77) con TSH normal.
-- 🟡 **A vigilar:** SDMA de vuelta en el límite (14); PLI persistentemente activa; cálculos renales y barro biliar. **Tiroides:** la T4 había venido subiendo pero en ago 2026 bajó a 2.77 (en rango); TSH normal descarta hipotiroidismo; el eco cervical mostró tiroides de tamaño conservado con leve hiperecogenicidad del lóbulo derecho (tiroiditis leve) → seguir control según indique la endocrinóloga. **Nunca se ha medido T4 libre** (solo se recomienda cuando la T4 total sale alta). **Electrolitos:** Na/K/Cl en el límite alto (últimos datos de may 2026), compatible con deshidratación leve. **Fósforo** levemente bajo (2.8) y **calcio/glucosa** levemente bajos en ago 2026.
-- 🔴 **Conversar con veterinaria:** ALT en ascenso (388 en ago 2026, desde 311 en ene) + cambios hepáticos grasos en eco; ITU recurrente por E. coli con sensibilidad antibiótica decreciente.
+- 🟢 **Riñones:** recuperación notable de crisis aguda a ERC estable temprana; creatinina en rango (1.5 en oct 2026), sin proteinuria, normotenso. **Corazón:** B1 sin progresión, sin medicación. **Sangre:** sin anemia. **Tiroides:** la T4 volvió a rango en ago 2026 (2.77) con TSH normal.
+- 🟡 **A vigilar:** SDMA de vuelta en el límite (14); PLI persistentemente activa; cálculos renales y barro biliar. **Tiroides:** la T4 había venido subiendo pero en ago 2026 bajó a 2.77 (en rango); TSH normal descarta hipotiroidismo; el eco cervical mostró tiroides de tamaño conservado con leve hiperecogenicidad del lóbulo derecho (tiroiditis leve) → seguir control según indique la endocrinóloga. **Nunca se ha medido T4 libre** (solo se recomienda cuando la T4 total sale alta). **Electrolitos:** Na/K/Cl en el límite alto (últimos datos de may 2026), compatible con deshidratación leve. **Fósforo** en el límite inferior (2.8 en ago, 2.9 en oct 2026). **Calcio** volvió a rango en oct 2026 (9.3); **glucosa** levemente baja (61, muestra sin fluoruro).
+- 🔴 **Conversar con veterinaria:** hígado — la ALT venía en ascenso (311 → 388) y en oct 2026 **bajó a 252**, con FA (183) y AST (46.5) también a la baja, en el control tras 1 mes de Hepatocan Forte; aun así sigue ~3× sobre el límite y la eco muestra cambios hepáticos grasos (se mantiene en 🔴 por decisión de Camilo); ITU recurrente por E. coli con sensibilidad antibiótica decreciente.
 
 **Sobre tiroides (contexto para el equipo tratante):** no hay hipotiroidismo (sería T4 baja + TSH alta; Teodoro tiene lo contrario). El hipertiroidismo verdadero es muy raro en perros y poco probable sin signos clínicos. La deshidratación leve encaja con el patrón de electrolitos. El eco de ago 2026 no mostró nódulos ni aumento de tamaño relevante. Todo esto es contexto, no recomendación clínica.
 
@@ -86,14 +87,14 @@
 
 ## Pestaña Archivos (visor de exámenes)
 
-Permite ver cada uno de los 44 exámenes dentro del dashboard, sin descargar, y descargar un PDF por examen. Carga diferida total: ninguna imagen se baja hasta que se abre el examen.
+Permite ver cada uno de los 45 exámenes dentro del dashboard, sin descargar, y descargar un PDF por examen. Carga diferida total: ninguna imagen se baja hasta que se abre el examen.
 
 ### Formato real de los archivos fuente — DOS TIPOS
 
 **IMPORTANTE:** no todos los `.pdf` son iguales. Hay que revisar los *magic bytes* de cada archivo nuevo antes de procesarlo (`head -c8 archivo | od -An -tx1` o `file archivo`).
 
 1. **ZIP con extensión `.pdf`** (los 40 archivos originales, del 1 al 42 salvo los `.jpg`): firma `PK\x03\x04`, creados por una app de escaneo de iPhone. Cada uno contiene imágenes JPEG por página (`1.jpeg`, …) a **952×1260 px**, texto OCR por página (`1.txt`, …, no se usa) y `manifest.json`. Para **leer valores**: `unzip -o -q` y luego `cat *.txt > _all.txt` (NO usar `pdftotext`/`pdfinfo`, fallan en silencio). Para **imágenes**: extraer los JPEG internos.
-2. **PDF real** (`%PDF-`): a partir de los archivos **43 y 44** (agosto 2026), VetLab y la ecografista entregan PDFs de verdad. Aquí `pdftotext -layout` y `pdfinfo` **sí funcionan** para leer valores. Para **imágenes** no hay JPEG internos: hay que **rasterizar** las páginas con `pdftoppm -r 200 -png` y luego convertir a WebP.
+2. **PDF real** (`%PDF-`): a partir de los archivos **43 y 44** (agosto 2026) y **45** (octubre 2026), VetLab y la ecografista entregan PDFs de verdad. Aquí `pdftotext -layout` y `pdfinfo` **sí funcionan** para leer valores. Para **imágenes** no hay JPEG internos: hay que **rasterizar** las páginas con `pdftoppm -r 200 -png` y luego convertir a WebP.
 
 Los 2 archivos `.jpg` (radiografías 39 y 40) son imágenes JPEG reales.
 
@@ -103,9 +104,9 @@ Los ZIP abren bien en Windows/Edge y Google Drive por tolerancia de esos visores
 
 - **Desde ZIP:** se extraen los JPEG internos (ordenados por `(len(nombre), nombre)`).
 - **Desde PDF real:** se rasteriza cada página con `pdftoppm -r 200 -png`.
-- En ambos casos se redimensiona a **máx. 1400 px** en el lado mayor con LANCZOS, **solo si supera ese tamaño** (nunca se agranda — agrandar no añade información). Los archivos 43/44 (carta a 200 DPI ≈ 1700×2200) quedaron en **1082×1400**.
+- En ambos casos se redimensiona a **máx. 1400 px** en el lado mayor con LANCZOS, **solo si supera ese tamaño** (nunca se agranda — agrandar no añade información). Los archivos 43/44/45 (carta a 200 DPI ≈ 1700×2200) quedaron en **1082×1400**.
 - Se guardan como **WebP calidad 88, method=6**.
-- Total actual: **183 imágenes** (179 originales + 4 nuevas de 43/44). WebP q88 resultó 20% más liviano que el JPEG q78 inicial y con mejor calidad; WebP es más eficiente que JPEG, no es un intercambio calidad/peso.
+- Total actual: **184 imágenes** (179 originales + 4 de 43/44 + 1 de 45). WebP q88 resultó 20% más liviano que el JPEG q78 inicial y con mejor calidad; WebP es más eficiente que JPEG, no es un intercambio calidad/peso.
 - Compatibilidad WebP: universal en móviles y navegadores modernos (Chrome Android, Safari iOS 14+, Firefox, Edge).
 - **Ubicación y nombres:** carpeta `/archivos/` en la raíz del repo, patrón `{idx:02d}_{pagina:02d}.webp` (ej. `archivos/43_02.webp` = archivo 43, página 2). `idx` = número de prefijo del archivo fuente; página 1-indexada.
 
@@ -136,6 +137,7 @@ Casos verificados que ilustran la regla:
 - **Glucosa y colesterol:** van dentro del perfil bioquímico, no se listan sueltos.
 - **Perfil lipídico:** solo existe de verdad en #35 (tiene el encabezado + triglicéridos + HDL/LDL). En el resto, "colesterol" es parte del bioquímico.
 - **Archivo 43:** trae Perfil Bioquímico (incluye glucosa, colesterol, calcio, fósforo, enzimas hepáticas, renales, urea) + T4 Total + TSH. **No** trae hemograma, ni SDMA, ni electrolitos Na/K/Cl → codes = "Perfil Bioquímico · TSH · T4 Total".
+- **Archivo 45:** solo Perfil Bioquímico (sin T4/TSH, sin hemograma, sin SDMA/PLI, sin electrolitos) → codes = "Perfil Bioquímico".
 
 Siglas resueltas: **PLI** = Lipasa Pancreática Inmunoreactiva · **TLI** = TLI canino (inmunorreactividad tipo tripsina, examen digestivo, NO es T4 libre) · **UPC** = relación proteína/creatinina urinaria.
 
@@ -155,7 +157,7 @@ Siglas resueltas: **PLI** = Lipasa Pancreática Inmunoreactiva · **TLI** = TLI 
 - **Descarga PDF (botón ↓ en el header del visor):** genera un PDF real con todas las páginas en A4, usando jsPDF cargado desde CDN **solo al pedir la descarga**. Nombre del archivo = `{catLabel}_{fecha}.pdf`. El PDF conserva la calidad visual del visor; lo único que no incluye es el texto OCR (irrelevante).
 - **Relación con el swipe de pestañas:** mientras el visor está abierto, el swipe entre pestañas queda desactivado (`lbOpen()`), de modo que el swipe horizontal solo cambia de página dentro del examen y nunca de pestaña por detrás.
 
-### Mapa validado de los 44 archivos (verdad de referencia)
+### Mapa validado de los 45 archivos (verdad de referencia)
 
 | # | Fecha | Categoría | Título | Contenido / descripción |
 |---|---|---|---|---|
@@ -203,10 +205,11 @@ Siglas resueltas: **PLI** = Lipasa Pancreática Inmunoreactiva · **TLI** = TLI 
 | 42 | 30 may 2026 | sangre | Sangre / Bioquímica | Electrolitos · TSH · T4 Total |
 | 43 | 5 ago 2026 | sangre | Sangre / Bioquímica | Perfil Bioquímico · TSH · T4 Total |
 | 44 | 7 ago 2026 | eco | Informe ecográfico cervical (tiroides) | Descripción y conclusiones |
+| 45 | 2 oct 2026 | sangre | Sangre / Bioquímica | Perfil Bioquímico |
 
 ### Implementación en el código (referencia técnica)
 
-- Datos de archivos: array `ITEMS` en JS (dentro de un IIFE), cada ítem `{id, cat, catLabel, icon, color, dateLabel, codes, pages, embedded:true, images:[...]}` con rutas `archivos/XX_XX.webp`. Es JSON válido (claves con comillas dobles) → se puede validar con `json.loads` sobre el array. Orden: más reciente arriba (por eso 44 va antes que 43).
+- Datos de archivos: array `ITEMS` en JS (dentro de un IIFE), cada ítem `{id, cat, catLabel, icon, color, dateLabel, codes, pages, embedded:true, images:[...]}` con rutas `archivos/XX_XX.webp`. Es JSON válido (claves con comillas dobles) → se puede validar con `json.loads` sobre el array. Orden: más reciente arriba (por eso 45 va antes que 44, y 44 antes que 43).
 - Funciones globales expuestas para los `onclick`: `afOpenLb(idx)`, `afCloseLb()`, `afPage(d)`, `afDownload()`, `afSetFilter(f)`. Internas: `rFilters`, `rList`, `showPage`, `resetZoom`, `applyT`, `loadJsPDF`, `imgData`.
 - IDs HTML: `af-filters`, `af-list`, `lb`, `lbico`, `lbtitle`, `lbsub`, `lbstg`, `lbimg`, `lbpv`, `lbnx`, `lbcnt`, `lbhnt`, `lbdl`, `lbx`. El visor (`#lb`) es `position:fixed` con `inset:0` y respeta `safe-area-inset` (notch iPhone). `.lbstg` usa `touch-action:none` para controlar los gestos por JS.
 - jsPDF: `https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js`, se inyecta solo al primer uso.
@@ -231,6 +234,7 @@ Se reverificó **cada punto graficado** contra los PDF fuente, indicador por ind
 - **Verificado (correcto pese a apariencia):** el PAS "Jun25=141" parecía error porque el archivo se llama `28_19_6_2024`, pero su fecha interna es **19/26-06-2025** y menciona eventos de mayo 2025. El valor y la etiqueta están bien; **el nombre del archivo es el equivocado** (pendiente renombrar a 2025).
 - **Errata de origen (no afecta el dashboard):** el informe cardíaco en inglés (archivo 37) trae mal la fecha de nacimiento (16/11/2011) y el género ("Desconocido"). Son errores del PDF del laboratorio.
 - **Ago 2026 (archivos 43/44):** los 17 valores del bioquímico + T4 + TSH se extrajeron con `pdftotext -layout` y se contrastaron dos veces contra el render de la imagen. La edad que muestra el PDF del lab (5A9M0D) no coincide con la fecha de nacimiento real (22 ago 2020, que daría 5A11M) — es un error del registro del laboratorio, no afecta al dashboard (la edad se calcula desde la fecha real).
+- **Oct 2026 (archivo 45):** primera actualización con el protocolo de doble canal completo. Canal 1 (texto) y canal 2 (lectura visual independiente a 200 DPI) coincidieron en **15/15** valores, unidades, rangos y marcas ✱; round-trip sobre el index.html final OK. **Errata de origen:** el encabezado dice paciente "TEODMO" y edad "00A0M0D" (en el #43 decía TEODORO / 5A9M0D); **Camilo confirmó que la muestra es de Teodoro**. No afecta al dashboard.
 
 ## Notas de mantenimiento
 
@@ -243,8 +247,9 @@ Se reverificó **cada punto graficado** contra los PDF fuente, indicador por ind
 - **Edición de index.html:** cargar el archivo como string en Python y hacer `str_replace` con `assert` de unicidad por cada string objetivo antes de reemplazar; validar al final: `node --check` sobre el JS concatenado (o balance + `json.loads` del array `ITEMS` + chequeo de que cada `mk()` tenga `len(labels)==len(data)`).
 - **Preview obligatorio:** mostrar a Camilo los cambios propuestos y obtener su visto bueno explícito **antes** de cada commit/push. Su revisión ha detectado errores reales y es el mejor control de calidad.
 - **Documento canónico:** este `Análisis_exámenes_actualizado.md` es la fuente de verdad y se **regenera completo, de forma automática, al cierre de CADA actualización con exámenes nuevos, sin que Camilo lo pida** (mantener lo que no cambió, actualizar lo que evolucionó, agregar lo nuevo, eliminar lo que ya no aplica — ver paso 7 del Flujo). **Desde ago 2026 se mantiene sincronizado con `PROYECTO.md` del repo** (mismo contenido), y además se le entrega a Camilo la versión descargable para el Proyecto.
-- **Pendiente opcional:** exportación a Excel de todas las series (no iniciada); buscador simple sobre la lista de archivos (acordado, no implementado); cambiar favicon por la foto; renombrar archivo 28 (2024→2025); resumen clínico hepático de una página para coordinación con especialista (ofrecido, no confirmado); tarjeta del eco tiroides en la pestaña Imágenes (no hecho por decisión de Camilo; se puede agregar si se quiere).
-- **Token GitHub:** solo-repo, fine-grained (Contents: Read and write). **Quedó expuesto en varias conversaciones (incluida la de ago 2026); rotarlo cuanto antes** (revocar el actual y generar uno nuevo en GitHub → Settings → Developer settings → Personal access tokens).
+- **`procesar_examen.py` — bug conocido (oct 2026):** en la tabla de confirmación del PDF real de VetLab solo parsea 9 de 15 parámetros; omite proteínas totales, albúmina, globulinas, GGT, urea y bilirrubina (sí aparecen en el texto extraído). Mientras no se corrija, completar el canal 1 con `pdftotext -layout` directo y comparar fila por fila.
+- **Pendiente opcional:** corregir `procesar_examen.py` (bug anterior); actualizar la tarjeta de tendencia "Creatinina 4.0 → 1.0" de la pestaña Evolución (quedó con el mejor valor de sep 2025, no el último); exportación a Excel de todas las series (no iniciada); buscador simple sobre la lista de archivos (acordado, no implementado); cambiar favicon por la foto; renombrar archivo 28 (2024→2025); resumen clínico hepático de una página para coordinación con especialista (ofrecido, no confirmado); tarjeta del eco tiroides en la pestaña Imágenes (no hecho por decisión de Camilo; se puede agregar si se quiere).
+- **Token GitHub:** solo-repo, fine-grained (Contents: Read and write). **Quedó expuesto en varias conversaciones (incluidas las de ago y oct 2026); rotarlo cuanto antes**. En oct 2026 el acceso al repo se habilitó desde la propia sesión (add_repo), sin necesitar el token (revocar el actual y generar uno nuevo en GitHub → Settings → Developer settings → Personal access tokens).
 - Todo es material de apoyo, **no reemplaza el criterio veterinario**.
 
 ## Flujo para agregar exámenes nuevos (próximos controles)
@@ -260,6 +265,14 @@ Cuando llegue un examen nuevo, Camilo lo sube a Claude para actualizar indicador
 7. **PASO OBLIGATORIO DE CIERRE — SIEMPRE Y SIN QUE CAMILO LO PIDA.** Cada vez que haya una actualización de expediente con exámenes nuevos, al final de todo se regenera el documento canónico. La instrucción exacta es: *"Basándote en el `Análisis_exámenes_actualizado.md` del Proyecto y en todo lo trabajado en esta conversación, genera un nuevo `Análisis_exámenes_actualizado.md` completo que lo reemplace. Mantén lo que no cambió, actualiza lo que evolucionó, agrega lo nuevo y elimina lo que ya no aplica."* Luego se entrega como archivo descargable para el Proyecto y se sincroniza `PROYECTO.md` del repo con el mismo contenido. Esto es parte del flujo, no un extra opcional ni algo que Camilo deba solicitar.
 
 ## Historial de cambios
+
+**Sesión oct 2026 — Examen 45 (control hepático post-Hepatocan Forte):**
+1. Archivo **45** (2 oct 2026, VetLab): Perfil Bioquímico S/F, **PDF real**, 1 página → `archivos/45_01.webp`. Control tras 1 mes de Hepatocan Forte indicado por endocrinología.
+2. Verificación: canal 1 + canal 2 coinciden 15/15; sin alertas del script; round-trip OK. Errata del lab en el encabezado ("TEODMO", edad 00A0M0D) — Camilo confirmó que es Teodoro.
+3. Series con nuevo punto Oct 26: Creatinina (1.5), NUS (24.4), Fósforo (2.9), ALT (252), FA (183), AST (46.5), Colesterol (262). SDMA, PLI, hemograma, T4/TSH, electrolitos y UPC sin cambios (no medidos).
+4. **Cambio de tendencia hepática:** ALT 388 → 252 (primer descenso en más de un año), FA 273 → 183, AST 61.7 → 46.5. Tarjeta de tendencia ALT pasó de 🔴 "Empeorando" a 🟡 "Bajó, sigue alta"; conclusión hígado y 🔴 general reformulados (se mantiene en 🔴). Calcio vuelve a rango (9.3); glucosa 61 con tubo sin fluoruro.
+5. Textos: nuevo hito "Oct 2026 · 6 a 1 m" en la línea de tiempo; fósforo agregado al 🟡; correcciones de texto desactualizado aprobadas (conclusión renal "creatinina 1.0" → "1.5 en octubre 2026"; definición de Fósforo "dentro de rango" → "bajó al límite inferior en 2026"). Conteo 44 → 45 exámenes (184 imágenes); nuevo ítem al tope de `ITEMS`.
+6. Validación: `node --check` OK, `ITEMS` JSON de 45 elementos, todas las `mk()` balanceadas. Un commit a `main`; este `.md` regenerado y `PROYECTO.md` sincronizado.
 
 **Sesión ago 2026 — Exámenes 43 y 44 (interconsulta endocrinología):**
 1. Archivo **43** (5 ago 2026): perfil bioquímico + T4 Total + TSH. Archivo **44** (7 ago 2026): primera eco cervical/tiroidea. Ambos son **PDF reales** (no ZIP) → primer uso de rasterizado con `pdftoppm` + WebP.
