@@ -184,13 +184,14 @@ window.DATOS =
       {"fecha": "2026-01-29", "valor": 0.12, "archivo": 35}
     ]},
     "pas": {"nombre": "Presión sistólica", "unidad": "mmHg", "rango": [null, 140], "organo": "corazon", "puntos": [
-      {"fecha": "2022-08-31", "valor": 113.0, "archivo": 2},
-      {"fecha": "2024-05-27", "valor": 143.0, "archivo": 11},
-      {"fecha": "2024-07-19", "valor": 144.0, "archivo": 17},
-      {"fecha": "2024-09-09", "valor": 136.0, "archivo": 20},
-      {"fecha": "2025-01-07", "valor": 139.0, "archivo": 22},
-      {"fecha": "2025-06-19", "valor": 141.0, "archivo": 28},
-      {"fecha": "2026-02-11", "valor": 130.0, "archivo": 36}
+      {"fecha": "2022-08-31", "valor": 113.0, "archivo": 2, "pad": 67, "pam": 73},
+      {"fecha": "2024-05-27", "valor": 143.0, "archivo": 11, "pad": 68, "pam": 95},
+      {"fecha": "2024-07-19", "valor": 144.0, "archivo": 17, "pad": 75, "pam": 100},
+      {"fecha": "2024-09-09", "valor": 136.0, "archivo": 20, "pad": 71, "pam": 94},
+      {"fecha": "2025-01-07", "valor": 139.0, "archivo": 22, "pad": 69, "pam": 93},
+      {"fecha": "2025-05-15", "valor": 154, "archivo": 27, "pad": 96, "nota": "Medida durante el ecocardiograma; el informe no indica método ni condiciones."},
+      {"fecha": "2025-06-19", "valor": 141.0, "archivo": 28, "pad": 69, "pam": 94},
+      {"fecha": "2026-02-11", "valor": 130.0, "archivo": 36, "pad": 68, "pam": 86}
     ]},
     "t4": {"nombre": "T4 total", "unidad": "µg/dL", "rango": [1.3, 3.5], "organo": "tiroides", "nota": "El laboratorio bajó el límite superior de 3,8 (informes 2024-2025) a 3,5 (informes 2026, pacientes sin terapia).", "puntos": [
       {"fecha": "2024-01-03", "valor": 2.98, "archivo": 5},
