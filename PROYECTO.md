@@ -195,6 +195,7 @@ Lista del más reciente al más antiguo, agrupada por año, con filtros (Todos, 
 - **Corregido (jun 2026):** faltaba la creatinina de Ene26 (1.4, archivo 35).
 - **Verificado:** el PAS "Jun25=141" es correcto; el archivo 28 tiene nombre 2024 pero fecha interna 19/26-06-2025 (pendiente renombrar).
 - **Errata de origen:** el informe cardíaco en inglés (37) trae mal la fecha de nacimiento y el género.
+- **Errata de origen (archivo 9):** la ecografía es del 18-05-2024 ("Fecha ecográfica", la que usa el dashboard), pero el pie de cada página dice "Fecha Informe: 20-04-2024". Camilo confirmó que el pie es incorrecto. No afecta al dashboard.
 - **Ago 2026 (43/44):** 17 valores + T4 + TSH contrastados dos veces contra la imagen. Edad del lab (5A9M0D) errónea; no afecta.
 - **Corregido (oct 2026):** al gráfico de NUS le faltaba el punto del 24 may 2024 (22.8, archivo 10).
 - **Oct 2026 (45):** 15/15 valores coinciden entre canales; round-trip OK. Encabezado "TEODMO" / "00A0M0D" es errata del lab; Camilo confirmó que es Teodoro.
