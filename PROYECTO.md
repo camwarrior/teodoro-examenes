@@ -36,10 +36,12 @@ Tema claro de ficha clínica (fondo `#F3F4F1`, tinta `#16191B`, azul de series `
 **Navegación:** en escritorio (≥980 px), barra lateral con Resumen, los 8 órganos (con su estado) y Historial (línea de tiempo, imágenes, archivos). En móvil, encabezado con avatar y barra inferior fija (Resumen, Línea de tiempo, Imágenes, Archivos); a las fichas se entra desde el Resumen.
 
 1. **Resumen:** titular, conteo por estado, una fila por órgano (estado, nota corta, último valor del indicador principal, mini gráfico con el rango sombreado, fecha), "Último control" con botón al examen, y el "Resumen general en palabras simples" (Va bien / A vigilar / Conversar con la veterinaria). Órganos ordenados por estado (conversar, vigilar, estable).
-2. **Ficha de órgano** (8): titular, estado, selector de período (Todo / Último año / Desde 2025), un gráfico por serie (eje de tiempo real, franja del rango normal, puntos coloreados por estado, hitos punteados, último valor con su chip). Al tocar o hacer clic en un punto aparece su fecha, valor y un botón "Ver examen N" que abre el visor. Luego los bloques del órgano, "Qué significa cada indicador" + conclusión, imágenes relacionadas, exámenes con esos valores y enlaces al órgano anterior/siguiente.
+2. **Ficha de órgano** (8): titular, estado, selector de período (Todo / Último año / Desde 2025), un gráfico por serie (eje de tiempo real, franja del rango normal, puntos coloreados por estado, hitos punteados, último valor con su chip). Al tocar o hacer clic en un punto aparece su fecha, valor y un botón "Ver examen N" que abre el visor; tocar fuera del gráfico, cambiar el período o elegir un punto de otro gráfico lo quita (solo hay uno a la vez). Luego los bloques del órgano, "Qué significa cada indicador" + conclusión, imágenes relacionadas, exámenes con esos valores y enlaces al órgano anterior/siguiente.
 3. **Línea de tiempo:** tendencias clave y la línea de tiempo clínica (más reciente arriba).
 4. **Imágenes:** ecografías, radiografías y eco de tiroides con botones a sus archivos; qué significa cada examen y conclusión.
 5. **Archivos:** lista por año con filtros por tipo y el visor (ver sección dedicada).
+
+**Orden de las listas:** todo lo que es un registro con fecha se muestra del más reciente al más antiguo: diagnósticos IRIS, urocultivos, ecocardiografías/ECG, imágenes relacionadas, ecografías del páncreas, exámenes de cada ficha, línea de tiempo, Imágenes y Archivos. En `datos.js` los bloques se guardan en orden cronológico y el sitio los ordena al mostrarlos (función `recientes()`), así que al agregar un registro nuevo basta con sumarlo al final. Los gráficos van de izquierda (antiguo) a derecha (reciente).
 
 **Reparto por órgano:** Riñones (SDMA, creatinina, NUS, fósforo, calcio, diagnósticos IRIS) · Orina (UPC, proteínas en orina, urocultivos) · Hígado (ALT, FA, AST, colesterol, GGT, tratamiento) · Páncreas (PLI, glucosa, ecografías que describen el páncreas) · Tiroides (T4, TSH, eco cervical) · Electrolitos (sodio, potasio, cloro) · Corazón (presión sistólica, métricas ecocardiográficas, ecocardiografías y ECG) · Sangre (hematocrito, hemoglobina, leucocitos). Hitos: crisis renal (27 may 2024) en riñones, hígado, orina, páncreas, electrolitos y sangre; inicio de Hepatocan Forte (1 sep 2026, indicado tras el control del 5 ago 2026) en hígado.
 
@@ -231,6 +233,8 @@ Camilo sube el examen y pide actualizar el expediente. Pasos para el asistente:
 9. **PASO OBLIGATORIO DE CIERRE — SIEMPRE Y SIN QUE CAMILO LO PIDA.** *"Basándote en el `Análisis_exámenes_actualizado.md` del Proyecto y en todo lo trabajado en esta conversación, genera un nuevo `Análisis_exámenes_actualizado.md` completo que lo reemplace. Mantén lo que no cambió, actualiza lo que evolucionó, agrega lo nuevo y elimina lo que ya no aplica."* Entregarlo descargable para el Proyecto y sincronizar `PROYECTO.md` del repo con el mismo contenido.
 
 ## Historial de cambios
+
+**Sesión oct 2026 (ajustes tras publicar) — Orden y detalle del punto:** las tarjetas de diagnósticos IRIS, urocultivos y ecocardiografías/ECG pasan a mostrarse de la más reciente a la más antigua (revisadas además todas las demás listas); el examen sugerido al tocar un punto se borra al tocar fuera del gráfico, cambiar el período o elegir otro punto. Probado en escritorio y móvil.
 
 **Sesión oct 2026 — Rediseño por órgano y datos en un solo archivo:**
 1. Respaldo del sitio anterior en la rama `respaldo-v1-clasico`.
