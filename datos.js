@@ -744,21 +744,21 @@ window.DATOS =
           "titulo": "Ecocardiografía + ECG",
           "texto": "Sin alteraciones cardiológicas. Ritmo sinusal regular. FC 133 lpm. FA 40.96%",
           "tono": "ok",
-          "archivo": 2
+          "archivos": [2, 1]
         },
         {
           "fecha": "15 may 2025",
           "titulo": "Ecocardiografía + ECG",
           "texto": "Diagnóstico EDMVM ACVIM B1 (degeneración mixomatosa válvula mitral, regurgitación discreta)",
           "tono": "watch",
-          "archivo": 27
+          "archivos": [27, 26]
         },
         {
           "fecha": "11 feb 2026",
           "titulo": "Ecocardiograma + ECG",
           "texto": "ACVIM B1 sin cambios. Regurgitación mitral leve. Score MINE 4 (leve). Ritmo sinusal con arritmia respiratoria fisiológica. FC 66-166 lpm",
           "tono": "ok",
-          "archivo": 36
+          "archivos": [36, 38, 37]
         }
       ],
       "proteina_orina": {

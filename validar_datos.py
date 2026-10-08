@@ -127,10 +127,17 @@ def main():
     def chk_arch(lista, ruta):
         for x in lista:
             if x not in ids: err.append(f"{ruta}: archivo {x} no existe")
-    for x in C.get("bloques", {}).get("iris", []) + C.get("bloques", {}).get("urocultivos", []) + C.get("bloques", {}).get("ecocardiografias", []):
+    for x in C.get("bloques", {}).get("iris", []) + C.get("bloques", {}).get("urocultivos", []):
         chk_arch([x["archivo"]], "bloques")
-    for x in C.get("imagenes", {}).get("estudios", []):
-        chk_arch(x["archivos"], "imagenes")
+    # estudios con varios archivos (eco + ECG + informe; informe + imágenes): todos deben ser de la misma fecha
+    for ruta, lista in (("bloques.ecocardiografias", C.get("bloques", {}).get("ecocardiografias", [])),
+                        ("imagenes.estudios", C.get("imagenes", {}).get("estudios", []))):
+        for x in lista:
+            if not x.get("archivos"): err.append(f"{ruta} {x.get('fecha')}: falta la lista 'archivos'"); continue
+            chk_arch(x["archivos"], ruta)
+            for a_ in x["archivos"]:
+                if a_ in ids and ids[a_]["dateLabel"] != x["fecha"]:
+                    err.append(f"{ruta} {x['fecha']}: archivo {a_} es del {ids[a_]['dateLabel']}")
 
     # ---- versión (caché) ----
     ultima = max(fechas_ok) if fechas_ok else None
