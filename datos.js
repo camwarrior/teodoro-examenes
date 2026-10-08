@@ -765,7 +765,7 @@ window.DATOS =
       },
       "tratamiento": {
         "titulo": "Hepatocan Forte",
-        "texto": "Hepatoprotector indicado por endocrinología tras el control de agosto 2026, por un mes. El examen del 2 oct 2026 fue el control posterior.",
+        "texto": "Hepatoprotector indicado por endocrinología tras el control de agosto 2026. Comenzó el 1 sep 2026, por un mes; el examen del 2 oct 2026 fue el control posterior.",
         "nuevo": true
       },
       "ggt": {
@@ -794,9 +794,9 @@ window.DATOS =
         ]
       },
       {
-        "fecha": "2026-08-05",
+        "fecha": "2026-09-01",
         "texto": "Inicio Hepatocan Forte",
-        "detalle": "Indicado por endocrinología después del control del 5 ago 2026.",
+        "detalle": "Indicado por endocrinología tras el control del 5 ago 2026; comenzó el 1 sep 2026.",
         "organos": [
           "higado"
         ]
