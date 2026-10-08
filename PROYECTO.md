@@ -33,7 +33,7 @@ Tema claro de ficha clínica (fondo `#F3F4F1`, tinta `#16191B`, azul de series `
 
 **Rutas con enlace propio** (para mandar a un especialista directo a lo suyo): `#resumen` (inicio), `#rinones`, `#orina`, `#higado`, `#pancreas`, `#tiroides`, `#electrolitos`, `#corazon`, `#sangre`, `#linea-de-tiempo`, `#imagenes`, `#archivos`. Ej.: `teo.camiloworks.com/#higado`.
 
-**Navegación:** en escritorio (≥980 px), barra lateral con Resumen, los 8 órganos (con su estado) y Historial (línea de tiempo, imágenes, archivos). En móvil, encabezado con avatar y barra inferior fija (Resumen, Línea de tiempo, Imágenes, Archivos); a las fichas se entra desde el Resumen.
+**Navegación:** en escritorio (≥980 px), barra lateral con Resumen, el grupo **"Áreas de seguimiento"** con las 8 fichas (con su estado) y Historial (línea de tiempo, imágenes, archivos). Se llama "áreas" y no "órganos" porque orina, electrolitos y sangre no son órganos; en el resumen la columna se llama "Área". En el código y en `datos.js` se mantiene el nombre interno `organos`. En móvil, encabezado con avatar y barra inferior fija (Resumen, Línea de tiempo, Imágenes, Archivos); a las fichas se entra desde el Resumen.
 
 1. **Resumen:** titular, conteo por estado, una fila por órgano (estado, nota corta, último valor del indicador principal, mini gráfico con el rango sombreado, fecha), "Último control" con botón al examen, y el "Resumen general en palabras simples" (Va bien / A vigilar / Conversar con la veterinaria). Órganos ordenados por estado (conversar, vigilar, estable).
 2. **Ficha de órgano** (8): titular, estado, selector de período (Todo / Último año / Desde 2025), un gráfico por serie (eje de tiempo real, franja del rango normal, puntos coloreados por estado, hitos punteados, último valor con su chip). Al tocar o hacer clic en un punto aparece su fecha, valor y un botón "Ver examen N" que abre el visor; tocar fuera del gráfico, cambiar el período o elegir un punto de otro gráfico lo quita (solo hay uno a la vez). Luego los bloques del órgano, "Qué significa cada indicador" + conclusión, imágenes relacionadas, exámenes con esos valores y enlaces al órgano anterior/siguiente.
@@ -233,6 +233,8 @@ Camilo sube el examen y pide actualizar el expediente. Pasos para el asistente:
 9. **PASO OBLIGATORIO DE CIERRE — SIEMPRE Y SIN QUE CAMILO LO PIDA.** *"Basándote en el `Análisis_exámenes_actualizado.md` del Proyecto y en todo lo trabajado en esta conversación, genera un nuevo `Análisis_exámenes_actualizado.md` completo que lo reemplace. Mantén lo que no cambió, actualiza lo que evolucionó, agrega lo nuevo y elimina lo que ya no aplica."* Entregarlo descargable para el Proyecto y sincronizar `PROYECTO.md` del repo con el mismo contenido.
 
 ## Historial de cambios
+
+**Sesión oct 2026 (ajustes) — "Áreas de seguimiento":** en escritorio, el grupo del menú lateral pasa de "Órganos" a "Áreas de seguimiento" y la columna del resumen de "Órgano" a "Área" (decisión de Camilo: orina, electrolitos y sangre no son órganos). Nombres de las fichas, enlaces y datos sin cambios.
 
 **Sesión oct 2026 (ajustes tras publicar) — Orden y detalle del punto:** las tarjetas de diagnósticos IRIS, urocultivos y ecocardiografías/ECG pasan a mostrarse de la más reciente a la más antigua (revisadas además todas las demás listas); el examen sugerido al tocar un punto se borra al tocar fuera del gráfico, cambiar el período o elegir otro punto. Probado en escritorio y móvil.
 

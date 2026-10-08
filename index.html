@@ -402,7 +402,7 @@ function spark(key){
 
 /* ---------- Navegación lateral ---------- */
 function renderNav(){
-  var h='<a href="#resumen" data-r="resumen">Resumen</a><div class="grp">Órganos</div>';
+  var h='<a href="#resumen" data-r="resumen">Resumen</a><div class="grp">Áreas de seguimiento</div>';
   ORGS.forEach(function(o){h+='<a href="#'+o.id+'" data-r="'+o.id+'"><span class="dot '+o.estado+'" aria-hidden="true"></span>'+esc(o.nombre)+'<span class="cnt">'+ESTADO[o.estado]+'</span></a>';});
   h+='<div class="grp">Historial</div><a href="#linea-de-tiempo" data-r="linea-de-tiempo">Línea de tiempo</a><a href="#imagenes" data-r="imagenes">Imágenes</a><a href="#archivos" data-r="archivos">Archivos<span class="cnt">'+ITEMS.length+'</span></a>';
   document.getElementById('nav-side').innerHTML=h;
@@ -427,7 +427,7 @@ function renderResumen(){
     if(cnt[a[0]]) h+='<span class="pill '+a[0]+'">'+ICON[a[0]]+cnt[a[0]]+' '+a[1]+'</span>';
   });
   h+='</div><p class="small mst" style="margin-top:12px">Diagnósticos: '+esc(C.paciente.diagnosticos.join(', '))+'.</p>';
-  h+='<div class="card olist" role="list"><div class="ohead" aria-hidden="true"><span>Estado</span><span>Órgano</span><span>Último valor</span><span>Tendencia</span><span style="text-align:right">Fecha</span></div>';
+  h+='<div class="card olist" role="list"><div class="ohead" aria-hidden="true"><span>Estado</span><span>Área</span><span>Último valor</span><span>Tendencia</span><span style="text-align:right">Fecha</span></div>';
   ORGS.forEach(function(o){
     var s=SERIES[o.principal], p=ultimo(o.principal);
     h+='<a class="orow" role="listitem" href="#'+o.id+'">'
@@ -531,7 +531,7 @@ function renderOrgano(id){
   h+='<div class="card lst"><h2>Exámenes con estos valores ('+ar.length+')</h2>';
   ar.forEach(function(it){h+='<button class="it" type="button" data-arch="'+it.id+'"><span class="r1"><b>'+esc(it.dateLabel)+'</b><span>Archivo '+it.id+'</span></span><span class="r2">'+esc(it.codes.split(' · ').join(', '))+'</span></button>';});
   h+='</div></div></div>';
-  h+='<nav class="pn" aria-label="Otros órganos"><a class="card" href="#'+prev.id+'"><small>Anterior</small><b>'+esc(prev.nombre)+'</b></a><a class="card nx" href="#'+next.id+'"><small>Siguiente</small><b>'+esc(next.nombre)+'</b></a></nav>';
+  h+='<nav class="pn" aria-label="Otras áreas"><a class="card" href="#'+prev.id+'"><small>Anterior</small><b>'+esc(prev.nombre)+'</b></a><a class="card nx" href="#'+next.id+'"><small>Siguiente</small><b>'+esc(next.nombre)+'</b></a></nav>';
   h+='<p class="disc">Material de apoyo; no reemplaza el criterio de la veterinaria.</p>';
   var v=document.getElementById('v-organo'); v.innerHTML=h;
   drawCharts(v);
