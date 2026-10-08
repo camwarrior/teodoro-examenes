@@ -9,23 +9,24 @@ Hace la parte MECÁNICA y repetible de agregar exámenes nuevos, con VERIFICACI�
   3. Genera las imágenes WebP q88 (máx 1400 px, sin agrandar) con el nombre/índice correcto
      archivos/{idx:02d}_{pagina:02d}.webp (calcula el próximo índice desde /archivos/).
   4. PARSEA los valores (parámetro, valor, unidad, rango, página) y corre CHEQUEOS contra el
-     histórico de index.html:
+     histórico de datos.js (fuente única de datos del dashboard):
         - salto improbable respecto al último valor (posible decimal/dígito mal leído),
         - cambio de UNIDAD respecto a lo esperado (p. ej. ng/dL vs ng/mL),
         - cambio de RANGO de referencia del laboratorio (p. ej. T4 3,8 -> 3,5),
         - parámetros esperados que faltan.
-  5. Imprime una TABLA DE CONFIRMACIÓN por indicador (para contrastar contra el PDF) y un
-     borrador de ítem de ITEMS (categoría/codes/fecha marcados "REVISAR").
+  5. Imprime una TABLA DE CONFIRMACIÓN por indicador (para contrastar contra el PDF), un
+     borrador del ítem de "archivos" (categoría/codes/fecha marcados "REVISAR") y un borrador
+     de los puntos nuevos para cada serie de datos.js.
 
 Lo que NO hace (criterio humano + de Claude, con aprobación de Camilo):
-  - NO edita index.html, NO agrega puntos a las series, NO redacta textos clínicos.
+  - NO edita datos.js ni index.html, NO agrega puntos a las series, NO redacta textos clínicos.
   - NO hace commit ni push. NO decide codes/categoría/título finales (solo propone).
   - NO reemplaza los otros canales de verificación: la lectura VISUAL independiente de la
     imagen por parte de Claude, la reconciliación entre canales, la tabla de confirmación
-    para Camilo, y el round-trip posterior al escribir index.html.
+    para Camilo, y el round-trip posterior al escribir datos.js (validar_datos.py --nuevos).
 
 Uso (lo corre Claude tras clonar el repo):
-  python3 procesar_examen.py --archivos ./archivos --out ./archivos --index-html ./index.html <archivos...>
+  python3 procesar_examen.py --archivos ./archivos --out ./archivos --datos ./datos.js <archivos...>
 
 Filosofía: la seguridad viene de CANALES INDEPENDIENTES QUE FALLAN DISTINTO. Este script es
 UN canal (texto + chequeos automáticos). Para que un error pase inadvertido tendría que
@@ -57,7 +58,7 @@ MESES = {1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",
 
 # Mapa parámetro -> (id de serie mk, unidad esperada, rango esperado (low,high) o None).
 # Sirve para (a) mapear el valor a su serie histórica y (b) detectar cambios de unidad/rango.
-# Los que tienen id None no se grafican (solo nota): calcio, glucosa, etc.
+# El id es la clave de la serie en datos.js. Los que tienen id None no se grafican (solo nota).
 SERIES = [
     # (regex del parámetro normalizado, id_serie, unidad_esperada, ref_low, ref_high)
     # Primero los que NO deben caer en una serie de sangre aunque compartan palabras
@@ -65,25 +66,25 @@ SERIES = [
     # orina" iba a cCreat y HDL/LDL/VLDL colesterol iban a cCol.
     (r"creatinina en orina",                None,     "mg/dl", 40, 600),
     (r"^(hdl|ldl|vldl) colesterol|^colesterol (hdl|ldl|vldl)", None, "mg/dl", None, None),
-    (r"^creatinina",                        "cCreat", "mg/dl", 0.6, 2.0),
-    (r"nus|nitrogeno ureico",               "cNUS",   "mg/dl", 8, 29),
-    (r"^fosforo|(?<![a-z])fosforo",         "cFosf",  "mg/dl", 2.9, 5.3),
-    (r"(?<![a-z])alt(?![a-z])|alanino amino", "cALT", "ui/l", 18, 86),
-    (r"fosfatasa alcalina",                 "cFA",    "ui/l", 12, 121),
-    (r"(?<![a-z])ast(?![a-z])|aspartato amino", "cAST", "ui/l", 12, 42),
-    (r"^colesterol",                        "cCol",   "mg/dl", 133, 367),
-    (r"t4 total",                           "cT4",    "ug/dl", 1.3, 3.5),
-    (r"^tsh|(?<![a-z])tsh",                 "cTSH",   "ng/ml", 0.01, 0.6),
-    (r"sodio",                              "cNa",    "meq/l", 140, 150),
-    (r"potasio",                            "cK",     "meq/l", 3.5, 5.5),
-    (r"cloro",                              "cCl",    "meq/l", 107, 113),
-    (r"sdma",                               "cSDMA",  "ug/dl", 1, 14),
-    (r"pli|lipasa pancreatica",             "cPLI",   "ug/l", 10, 200),
-    (r"^hematocrito",                       "cHcto",  "%", 40, 60),
-    (r"^hemoglobina",                       "cHb",    "g/dl", 13, 20),
-    (r"^leucocitos",                        "cLeuco", "/ul", 6000, 17000),
-    (r"calcio",                             None,     "mg/dl", 9, 11.5),
-    (r"glucosa",                            None,     "mg/dl", 70, 120),
+    (r"^creatinina",                        "creatinina", "mg/dl", 0.6, 2.0),
+    (r"nus|nitrogeno ureico",               "nus",   "mg/dl", 8, 29),
+    (r"^fosforo|(?<![a-z])fosforo",         "fosforo",  "mg/dl", 2.9, 5.3),
+    (r"(?<![a-z])alt(?![a-z])|alanino amino", "alt", "ui/l", 18, 86),
+    (r"fosfatasa alcalina",                 "fa",    "ui/l", 12, 121),
+    (r"(?<![a-z])ast(?![a-z])|aspartato amino", "ast", "ui/l", 12, 42),
+    (r"^colesterol",                        "colesterol",   "mg/dl", 133, 367),
+    (r"t4 total",                           "t4",    "ug/dl", 1.3, 3.5),
+    (r"^tsh|(?<![a-z])tsh",                 "tsh",   "ng/ml", 0.01, 0.6),
+    (r"sodio",                              "sodio",    "meq/l", 140, 150),
+    (r"potasio",                            "potasio",     "meq/l", 3.5, 5.5),
+    (r"cloro",                              "cloro",    "meq/l", 107, 113),
+    (r"sdma",                               "sdma",  "ug/dl", 1, 14),
+    (r"pli|lipasa pancreatica",             "pli",   "ug/l", 10, 200),
+    (r"^hematocrito",                       "hematocrito",  "%", 40, 60),
+    (r"^hemoglobina",                       "hemoglobina",    "g/dl", 13, 20),
+    (r"^leucocitos",                        "leucocitos", "/ul", 6000, 17000),
+    (r"calcio",                             "calcio", "mg/dl", 9, 11.5),
+    (r"glucosa",                            "glucosa", "mg/dl", 70, 120),
     # Resto del perfil bioquímico VetLab (no graficados, solo nota). Antes faltaban aquí y la
     # tabla de confirmación los omitía en silencio (bug detectado con el archivo 45, oct 2026).
     (r"proteinas totales en orina",         None,     "mg/dl", 0, 10),
@@ -254,19 +255,19 @@ def parse_values(text):
             # ---- formato B: header de sección (sin valor+unidad en la misma línea) ----
             # (regex, nombre mostrado, id de serie o None si es solo nota)
             for secpat, secname, secid in [
-                    (r"t4 total", "T4 total", "cT4"),
-                    (r"(?<![a-z])tsh(?![a-z])", "TSH", "cTSH"),
-                    (r"sdma", "SDMA", "cSDMA"),
-                    (r"(?<![a-z])pli(?![a-z])|lipasa pancreatica", "PLI", "cPLI"),
+                    (r"t4 total", "T4 total", "t4"),
+                    (r"(?<![a-z])tsh(?![a-z])", "TSH", "tsh"),
+                    (r"sdma", "SDMA", "sdma"),
+                    (r"(?<![a-z])pli(?![a-z])|lipasa pancreatica", "PLI", "pli"),
                     (r"tli canino", "TLI canino", None),
                     (r"fructosamina", "Fructosamina", None),
-                    (r"^glucosa", "Glucosa", None)]:
+                    (r"^glucosa", "Glucosa", "glucosa")]:
                 if re.search(secpat, nl) and "resultado" not in nl and not re.search(r"\d+\s*(ug|ng|mg|ui|meq)", nl):
-                    current = (secname, secid)
+                    current = (secname, secid, tubo_de(nl))
             mB = re.match(r"resultado[:\s]+([<>]?\d+[.,]?\d*)\s*([a-z/µu%]+)?(?:\s+([\d.,]+)\s*-\s*([\d.,]+))?", nl)
             if mB and current:
-                secname, secid = current
-                out.append({"param": secname, "sid": secid, "mapped": True, "value": num(mB.group(1)),
+                secname, secid, tubo = current
+                out.append({"param": secname, "sid": secid, "mapped": True, "tubo": tubo, "value": num(mB.group(1)),
                             "unit": (mB.group(2) or "").strip("."), "low": num(mB.group(3)),
                             "high": num(mB.group(4)), "page": pi, "raw": l})
                 current = None
@@ -279,25 +280,40 @@ def parse_values(text):
                 # Se incluyen TODAS las filas con formato 'valor unidad low - high', estén o no
                 # mapeadas: así ningún parámetro desaparece en silencio de la tabla. Las no
                 # mapeadas quedan marcadas y generan un aviso ℹ️ en los chequeos.
-                out.append({"param": label, "sid": entry[1] if entry else None,
+                out.append({"param": label, "sid": entry[1] if entry else None, "tubo": tubo_de(label),
                             "mapped": entry is not None, "value": num(mA.group(2)),
                             "unit": mA.group(3).strip("."), "low": num(mA.group(4)),
                             "high": num(mA.group(5)), "page": pi, "raw": l})
     return out
 
 
-def parse_history(index_html_path):
-    """Último valor de cada serie mk('cX',[labels],[data],...) en index.html."""
+def tubo_de(texto):
+    """Para la glucosa: 'con fluoruro' / 'sin fluoruro' según el encabezado o la fila."""
+    t = norm(texto)
+    if "sin fluoruro" in t or " s/f" in t: return "sin fluoruro"
+    if "con fluoruro" in t or " c/f" in t: return "con fluoruro"
+    return None
+
+
+def cargar_datos(datos_path):
+    """Lee datos.js: la línea 'window.DATOS =' seguida de JSON estricto terminado en ';'."""
+    s = open(datos_path, encoding="utf-8").read()
+    m = re.search(r"^window\.DATOS =", s, re.M)
+    body = s[m.end():].strip()
+    assert body.endswith(";"), "datos.js debe terminar en ';'"
+    return json.loads(body[:-1])
+
+
+def parse_history(datos_path):
+    """Último valor de cada serie de datos.js. En glucosa solo cuentan las muestras con fluoruro
+    (las sin fluoruro salen artificialmente bajas y no sirven para detectar saltos)."""
     hist = {}
-    if not index_html_path or not os.path.exists(index_html_path):
+    if not datos_path or not os.path.exists(datos_path):
         return hist
-    s = open(index_html_path, encoding="utf-8").read()
-    for m in re.finditer(r"mk\('(\w+)',\[[^\]]*\],\[([^\]]*)\]", s):
-        cid = m.group(1)
-        vals = [v for v in m.group(2).split(",") if v.strip() not in ("", "null")]
-        if vals:
-            try: hist[cid] = float(vals[-1])
-            except: pass
+    for key, se in cargar_datos(datos_path)["series"].items():
+        pts = [p for p in se["puntos"] if key != "glucosa" or p.get("tubo") == "con fluoruro"]
+        if pts:
+            hist[key] = float(pts[-1]["valor"])
     return hist
 
 
@@ -336,8 +352,11 @@ def run_checks(parsed, hist):
             if abs(row["low"]-exp_low) > 1e-9 or abs(row["high"]-exp_high) > 1e-9:
                 flags.append(("🟡", f"{row['param']}: rango del informe {row['low']}–{row['high']} "
                                     f"≠ rango conocido {exp_low}–{exp_high} (¿el laboratorio cambió el rango?)"))
-        # salto improbable vs histórico
-        if sid and val is not None and sid in hist and hist[sid] not in (0, None):
+        # salto improbable vs histórico (la glucosa sin fluoruro no es comparable)
+        if sid == "glucosa" and row.get("tubo") != "con fluoruro":
+            flags.append(("ℹ️", f"{row['param']}: muestra {row.get('tubo') or 'sin tipo de tubo detectado'}; "
+                                f"va a la serie glucosa marcada así y no se compara con el histórico."))
+        elif sid and val is not None and sid in hist and hist[sid] not in (0, None):
             last = hist[sid]
             if last != 0:
                 ratio = val/last if last else None
@@ -349,10 +368,10 @@ def run_checks(parsed, hist):
         if val is None:
             flags.append(("🟡", f"{row['param']}: no se pudo leer un número claro en '{row['raw'][:60]}'. Revisar."))
     # esperados que faltan (solo si se detectó un bioquímico y faltan clásicos)
-    got_bioq = any(r["sid"] in ("cCreat","cALT","cCol") for r in parsed)
+    got_bioq = any(r["sid"] in ("creatinina","alt","colesterol") for r in parsed)
     if got_bioq:
         for pat, sid, *_ in SERIES:
-            if sid and sid in hist and sid not in seen_ids and sid in ("cCreat","cNUS","cFosf","cALT","cFA","cAST","cCol"):
+            if sid and sid in hist and sid not in seen_ids and sid in ("creatinina","nus","fosforo","alt","fa","ast","colesterol"):
                 flags.append(("ℹ️", f"{sid}: estaba en el histórico y no se detectó en este examen "
                                     f"(quizá no se midió, o no se parseó — verificar)."))
     return flags
@@ -363,17 +382,17 @@ def main():
     ap.add_argument("files", nargs="+")
     ap.add_argument("--archivos", default="./archivos")
     ap.add_argument("--out", default=None)
-    ap.add_argument("--index-html", default="./index.html", help="index.html para leer el histórico de series.")
+    ap.add_argument("--datos", default="./datos.js", help="datos.js para leer el histórico de series.")
     ap.add_argument("--dpi", type=int, default=200)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     out_dir = args.out or args.archivos
     if not args.dry_run: os.makedirs(out_dir, exist_ok=True)
-    hist = parse_history(args.index_html)
+    hist = parse_history(args.datos)
     idx = next_index(args.archivos)
     print(f"Próximo índice disponible en {args.archivos}: {idx}")
-    print(f"Histórico leído de {args.index_html}: {len(hist)} series\n")
+    print(f"Histórico leído de {args.datos}: {len(hist)} series\n")
 
     resumen = []
     for path in args.files:
@@ -431,6 +450,20 @@ def main():
                     print(f"  {r['param'][:32]:32} {str(r['value']):>8} {r['unit'][:7]:>7} {rng:>14} {r['page']:>4}  {est:11} [{tipo}]")
                 print(f"  ({len(parsed)} filas parseadas — contrastar que el número coincida con las filas del PDF)")
 
+            # ---- BORRADOR DE PUNTOS PARA datos.js ----
+            iso = None
+            if dlabel:
+                dd, mm, yy = dlabel.split()
+                inv = {v: k for k, v in MESES.items()}
+                iso = f"{int(yy):04d}-{inv[mm]:02d}-{int(dd):02d}"
+            borr = [r for r in parsed if r["sid"] and r["value"] is not None]
+            if borr:
+                print("\n  BORRADOR de puntos para datos.js (SOLO tras verificar y con aprobación de Camilo):")
+                for r in borr:
+                    pt = {"fecha": iso or "REVISAR", "valor": r["value"], "archivo": idx}
+                    if r["sid"] == "glucosa": pt["tubo"] = r.get("tubo") or "REVISAR"
+                    print(f"   {r['sid']:12} " + json.dumps(pt, ensure_ascii=False))
+
             # ---- CHEQUEOS AUTOMÁTICOS ----
             flags = run_checks(parsed, hist) if parsed else []
             print("\n  ── CHEQUEOS AUTOMÁTICOS (canal texto vs histórico) ──")
@@ -463,8 +496,8 @@ PROTOCOLO DE VERIFICACIÓN (NO automático — no se salta nunca):
   4) Cero invención: un número solo se usa si está en el texto Y en la imagen. Lo ilegible
      se marca "NO LEGIBLE — confirmar".
   5) Preview completo → aprobación explícita de Camilo → recién ahí commit/push.
-  6) ROUND-TRIP: tras escribir index.html, re-extraer cada valor nuevo del archivo final y
-     compararlo con el valor confirmado (atrapa valores puestos en la fila/fecha equivocada).
+  6) ROUND-TRIP: tras escribir datos.js, correr validar_datos.py --nuevos con los valores
+     confirmados (atrapa valores puestos en la serie/fecha equivocada).
 """)
 
 
