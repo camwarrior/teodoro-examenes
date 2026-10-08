@@ -486,7 +486,8 @@ function bloqueHtml(id, o){
 }
 /* Listas de tarjetas con fecha: siempre de la más reciente a la más antigua. */
 function isoDeTexto(t){var p=String(t).split(' ');var m=MES.indexOf(p[1]);if(p.length<3||m<0)return '';return p[2]+'-'+String(m+1).padStart(2,'0')+'-'+String(+p[0]).padStart(2,'0');}
-function botonesArch(ids,campo,clase){return ids.map(function(a){var it=ITEMS[itemIdx(a)];return '<button class="'+clase+'" type="button" data-arch="'+a+'">'+esc(it[campo])+'</button>';}).join('');}
+function etiquetaImg(it){return /^Informe /.test(it.catLabel)?it.catLabel.split(' ').slice(0,2).join(' '):it.codes;} /* 'Informe ecográfico abdominal' -> 'Informe ecográfico' */
+function botonesArch(ids,campo,clase){return ids.map(function(a){var it=ITEMS[itemIdx(a)];return '<button class="'+clase+'" type="button" data-arch="'+a+'">'+esc(typeof campo==='function'?campo(it):it[campo])+'</button>';}).join('');}
 function recientes(lista){return lista.slice().sort(function(a,b){var x=isoDeTexto(a.fecha),y=isoDeTexto(b.fecha);return x<y?1:(x>y?-1:0);});}
 function archivosDe(o){
   var ids={};
@@ -527,7 +528,7 @@ function renderOrgano(id){
   var est=recientes(C.imagenes.estudios.filter(function(x){return x.organos.indexOf(id)>=0;}));
   if(est.length){
     h+='<div class="card lst"><h2>Imágenes relacionadas</h2>';
-    est.forEach(function(x){h+='<div class="it"><span class="r1"><b>'+esc(x.titulo)+'</b><span>'+esc(x.fecha)+'</span></span><span class="r2">'+prose(esc(x.texto))+'</span><span class="lnks">'+botonesArch(x.archivos,'codes','lnk')+'</span></div>';});
+    est.forEach(function(x){h+='<div class="it"><span class="r1"><b>'+esc(x.titulo)+'</b><span>'+esc(x.fecha)+'</span></span><span class="r2">'+prose(esc(x.texto))+'</span><span class="lnks">'+botonesArch(x.archivos,etiquetaImg,'lnk')+'</span></div>';});
     h+='</div>';
   }
   var ar=archivosDe(o);
