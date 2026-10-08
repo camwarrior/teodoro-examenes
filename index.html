@@ -477,7 +477,7 @@ function bloqueHtml(id, o){
   } else if(id==='pancreas_imagenes'){
     var P=B.pancreas_imagenes;
     h+='<div class="sec"><h2>'+esc(P.titulo)+'</h2><div class="studies">';
-    P.estudios.forEach(function(x){h+='<div class="card study"><div class="r1"><b>Ecografía abdominal</b><span class="small">'+esc(x.fecha)+'</span></div><p>'+prose(esc(x.texto))+'</p><div class="ft"><button class="btn" type="button" data-arch="'+x.archivo+'">Ver informe</button></div></div>';});
+    P.estudios.forEach(function(x){h+='<div class="card study"><div class="r1"><b>Ecografía abdominal</b><span class="small">'+esc(x.fecha)+'</span></div><p>'+prose(esc(x.texto))+'</p><div class="ft">'+botonesArch([x.archivo],etiquetaImg,'btn')+'</div></div>';});
     h+='</div><p class="small" style="margin-top:10px">'+esc(P.nota)+'</p></div>';
   } else if(id==='tratamiento'){
     h+='<div class="sec"><div class="card bk" style="max-width:560px"><span class="d">Tratamiento</span><b>'+esc(B.tratamiento.titulo)+'</b><span class="m">'+esc(B.tratamiento.texto)+'</span></div></div>';
@@ -519,7 +519,7 @@ function renderOrgano(id){
   (o.bloques||[]).forEach(function(b){h+=bloqueHtml(b,o);});
   if(id==='tiroides'){
     var t=C.imagenes.tiroides;
-    h+='<div class="sec"><h2>'+esc(t.titulo)+'</h2><div class="card study"><div class="r1"><b>'+esc(t.titulo)+'</b><span class="small">'+esc(t.fecha)+'</span></div><p>'+prose(t.texto)+'</p><div class="ft"><button class="btn" type="button" data-arch="'+t.archivos[0]+'">Ver informe</button></div></div></div>';
+    h+='<div class="sec"><h2>'+esc(t.titulo)+'</h2><div class="card study"><div class="r1"><b>'+esc(t.titulo)+'</b><span class="small">'+esc(t.fecha)+'</span></div><p>'+prose(t.texto)+'</p><div class="ft">'+botonesArch(t.archivos,etiquetaImg,'btn')+'</div></div></div>';
   }
   h+='<div class="side2"><div class="card explain"><h2>Qué significa cada indicador</h2><dl class="defs">';
   o.definiciones.forEach(function(d){h+='<div><dt>'+esc(d.t)+'</dt><dd>'+prose(d.d)+'</dd></div>';});
@@ -650,7 +650,7 @@ function renderImagenes(){
   lista.sort(function(a,b){return itemIdx(a.archivos[0])-itemIdx(b.archivos[0]);});
   lista.forEach(function(x){
     h+='<div class="card study"><div class="r1"><b>'+esc(x.titulo)+'</b><span class="small">'+esc(x.fecha)+'</span></div><p>'+(x.html?prose(x.html):prose(esc(x.texto)))+'</p><div class="ft"><span class="pill '+x.tono+'" style="font-size:13px;padding:4px 10px">'+esc(x.etiqueta)+'</span>'
-      +x.archivos.map(function(a){var it=ITEMS[itemIdx(a)];return '<button class="btn" type="button" data-arch="'+a+'">'+esc(it.codes)+'</button>';}).join('')+'</div></div>';
+      +botonesArch(x.archivos,etiquetaImg,'btn')+'</div></div>';
   });
   h+='</div></div><div class="card explain sec"><h2>Qué significa cada examen</h2><dl class="defs">';
   I.definiciones.forEach(function(d){h+='<div><dt>'+esc(d.t)+'</dt><dd>'+prose(d.d)+'</dd></div>';});
