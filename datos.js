@@ -239,6 +239,37 @@ window.DATOS =
       {"fecha": "2025-06-05", "valor": 113.9, "archivo": 23},
       {"fecha": "2026-01-29", "valor": 115.5, "archivo": 35},
       {"fecha": "2026-05-30", "valor": 114.0, "archivo": 42}
+    ]},
+    "calcio": {"nombre": "Calcio", "unidad": "mg/dL", "rango": [9, 11.5], "organo": "rinones", "puntos": [
+      {"fecha": "2023-11-08", "valor": 9, "archivo": 3, "nota": "El laboratorio lo marcó fuera de rango (✱) aunque el valor impreso es 9, el límite inferior."},
+      {"fecha": "2024-01-03", "valor": 9.9, "archivo": 5},
+      {"fecha": "2024-02-07", "valor": 9.0, "archivo": 6},
+      {"fecha": "2024-05-14", "valor": 11.3, "archivo": 7},
+      {"fecha": "2024-05-24", "valor": 10.8, "archivo": 10},
+      {"fecha": "2024-07-11", "valor": 11.7, "archivo": 15},
+      {"fecha": "2024-08-30", "valor": 10.5, "archivo": 18},
+      {"fecha": "2024-12-28", "valor": 9.0, "archivo": 21},
+      {"fecha": "2025-06-05", "valor": 11, "archivo": 23},
+      {"fecha": "2025-09-01", "valor": 9.3, "archivo": 30},
+      {"fecha": "2026-01-29", "valor": 8.4, "archivo": 35},
+      {"fecha": "2026-08-05", "valor": 8.8, "archivo": 43},
+      {"fecha": "2026-10-02", "valor": 9.3, "archivo": 45}
+    ]},
+    "glucosa": {"nombre": "Glucosa", "unidad": "mg/dL", "rango": [70, 120], "organo": "pancreas", "nota": "Sin fluoruro, la glucosa se sigue consumiendo dentro del tubo y el valor sale artificialmente bajo. Solo las muestras con fluoruro son comparables entre sí.", "puntos": [
+      {"fecha": "2023-11-08", "valor": 91.5, "archivo": 3, "tubo": "con fluoruro"},
+      {"fecha": "2024-01-03", "valor": 112.8, "archivo": 5, "tubo": "con fluoruro"},
+      {"fecha": "2024-02-07", "valor": 91.3, "archivo": 6, "tubo": "con fluoruro"},
+      {"fecha": "2024-02-07", "valor": 4, "archivo": 6, "tubo": "sin fluoruro"},
+      {"fecha": "2024-05-14", "valor": 70.3, "archivo": 7, "tubo": "con fluoruro"},
+      {"fecha": "2024-05-24", "valor": 34, "archivo": 10, "tubo": "sin fluoruro"},
+      {"fecha": "2024-07-11", "valor": 75, "archivo": 15, "tubo": "sin fluoruro"},
+      {"fecha": "2024-08-30", "valor": 94.1, "archivo": 18, "tubo": "con fluoruro"},
+      {"fecha": "2024-12-28", "valor": 27, "archivo": 21, "tubo": "sin fluoruro"},
+      {"fecha": "2025-06-05", "valor": 96, "archivo": 23, "tubo": "sin fluoruro"},
+      {"fecha": "2025-09-01", "valor": 101.9, "archivo": 30, "tubo": "con fluoruro"},
+      {"fecha": "2026-01-29", "valor": 83.6, "archivo": 35, "tubo": "con fluoruro"},
+      {"fecha": "2026-08-05", "valor": 65, "archivo": 43, "tubo": "con fluoruro"},
+      {"fecha": "2026-10-02", "valor": 61, "archivo": 45, "tubo": "sin fluoruro"}
     ]}
   },
   "archivos": [
