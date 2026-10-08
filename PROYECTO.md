@@ -41,7 +41,7 @@ Tema claro de ficha clínica (fondo `#F3F4F1`, tinta `#16191B`, azul de series `
 4. **Imágenes:** ecografías, radiografías y eco de tiroides con botones a sus archivos; qué significa cada examen y conclusión.
 5. **Archivos:** lista por año con filtros por tipo y el visor (ver sección dedicada).
 
-**Reparto por órgano:** Riñones (SDMA, creatinina, NUS, fósforo, calcio, diagnósticos IRIS) · Orina (UPC, proteínas en orina, urocultivos) · Hígado (ALT, FA, AST, colesterol, GGT, tratamiento) · Páncreas (PLI, glucosa) · Tiroides (T4, TSH, eco cervical) · Electrolitos (sodio, potasio, cloro) · Corazón (presión sistólica, métricas ecocardiográficas, ecocardiografías y ECG) · Sangre (hematocrito, hemoglobina, leucocitos). Hitos: crisis renal (27 may 2024) en riñones, hígado, orina, páncreas, electrolitos y sangre; inicio de Hepatocan Forte (1 sep 2026, indicado tras el control del 5 ago 2026) en hígado.
+**Reparto por órgano:** Riñones (SDMA, creatinina, NUS, fósforo, calcio, diagnósticos IRIS) · Orina (UPC, proteínas en orina, urocultivos) · Hígado (ALT, FA, AST, colesterol, GGT, tratamiento) · Páncreas (PLI, glucosa, ecografías que describen el páncreas) · Tiroides (T4, TSH, eco cervical) · Electrolitos (sodio, potasio, cloro) · Corazón (presión sistólica, métricas ecocardiográficas, ecocardiografías y ECG) · Sangre (hematocrito, hemoglobina, leucocitos). Hitos: crisis renal (27 may 2024) en riñones, hígado, orina, páncreas, electrolitos y sangre; inicio de Hepatocan Forte (1 sep 2026, indicado tras el control del 5 ago 2026) en hígado.
 
 **Gestos en móvil:** dentro de una ficha, deslizar el dedo horizontalmente pasa al órgano siguiente (izquierda) o anterior (derecha), en el orden del resumen, con animación de 0,24 s (respeta `prefers-reduced-motion`). Se ignora el gesto si nace sobre un gráfico, el selector de período, los filtros o la tarjeta del punto, si el visor está abierto, o si no es claramente horizontal (|Δx| ≥ 60 px, |Δx| > 1,5·|Δy|, < 700 ms). El visor conserva su propio swipe entre páginas y el pellizco.
 
@@ -83,6 +83,7 @@ Tema claro de ficha clínica (fondo `#F3F4F1`, tinta `#16191B`, azul de series `
 
 - **Diagnósticos IRIS:** May24 AKI II → Jul24-Ene25 CKD etapa 2 → Jun25 CKD etapa 1 → Feb26 IRIS 1-2 (tarjetas en Riñones, cada una con su informe).
 - **Urocultivos:** negativos May/Jun/Jul24; E. coli >100k UFC/mL en Ago/Sep/Nov25 (sensibilidad reducida a Amoxi-Clav y Cefadroxilo en Nov).
+- **Páncreas por imagen:** solo las ecografías de 2024 lo describen, todas normales: 2 ene 2024 (archivo 4, isoecoico, espesor normal), 18 may 2024 (archivo 9, rama derecha 5.29 mm) y 10 jul 2024 (archivo 14, rama derecha 5.63 mm), verificadas en texto e imagen. Las de jun 2025 (24/25) y ene 2026 (33/34) no lo mencionan. Bloque `pancreas_imagenes` en la ficha de Páncreas.
 - **Eco:** masa renal + esplenomegalia (May24) → ERC crónica con nefrolitos/pielectasia + hepatopatía vacuolar + barro biliar (Jun25, Ene26). Rx May26 sin cambios. Eco cervical Ago26: tiroiditis leve.
 - **Ecocardiograma Feb26 (ACVIM B1):** LA/Ao 1.49, LVIDd 19.6 mm, LVIDs 12.3 mm, EF 70.2%, FS 37.1%, E/A 1.47, PAS 130 mmHg. Sin progresión.
 

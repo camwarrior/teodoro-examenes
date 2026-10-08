@@ -470,7 +470,9 @@ window.DATOS =
             "El punto a seguir es la PLI: lleva activa desde 2023 y sigue rondando el límite (197–311), lo que indica que la inflamación del páncreas no está del todo resuelta y necesita seguimiento."
           ]
         },
-        "bloques": []
+        "bloques": [
+          "pancreas_imagenes"
+        ]
       },
       {
         "id": "tiroides",
@@ -778,6 +780,27 @@ window.DATOS =
         ],
         "fecha": "2026-10-02",
         "archivo": 45
+      },
+      "pancreas_imagenes": {
+        "titulo": "Ecografías que describen el páncreas",
+        "estudios": [
+          {
+            "fecha": "10 jul 2024",
+            "archivo": 14,
+            "texto": "Imagen pancreática con forma y posición conservados. Ecogenicidad y ecotextura conservada. Tamaño conservado. Grosor rama derecha: 5.63 mm."
+          },
+          {
+            "fecha": "18 may 2024",
+            "archivo": 9,
+            "texto": "Imagen pancreática con forma y posición conservados. Ecogenicidad y ecotextura conservada. Tamaño conservado. Grosor rama derecha: 5.29 mm."
+          },
+          {
+            "fecha": "2 ene 2024",
+            "archivo": 4,
+            "texto": "Páncreas isoecoico respecto al tejido circundante, espesor normal."
+          }
+        ],
+        "nota": "Las ecografías de jun 2025 (archivos 24 y 25) y ene 2026 (archivos 33 y 34) no describen el páncreas."
       }
     },
     "hitos": [
@@ -814,8 +837,7 @@ window.DATOS =
             4
           ],
           "organos": [
-            "rinones",
-            "pancreas"
+            "rinones"
           ]
         },
         {

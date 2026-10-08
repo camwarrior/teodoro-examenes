@@ -472,6 +472,11 @@ function bloqueHtml(id, o){
   } else if(id==='ggt'){
     var g=B.ggt, e=estadoValor(g.valor,g.rango);
     h+='<div class="sec"><div class="card bk" style="max-width:420px"><span class="d">'+esc(g.nombre)+', '+fLarga(g.fecha)+'</span><b>'+num(g.valor)+' '+esc(g.unidad)+' <span class="chip '+e+'">'+EST_TXT[e]+'</span></b><span class="m">Rango '+rangoTxt(g.rango,g.unidad)+'</span></div></div>';
+  } else if(id==='pancreas_imagenes'){
+    var P=B.pancreas_imagenes;
+    h+='<div class="sec"><h2>'+esc(P.titulo)+'</h2><div class="studies">';
+    P.estudios.forEach(function(x){h+='<div class="card study"><div class="r1"><b>Ecografía abdominal</b><span class="small">'+esc(x.fecha)+'</span></div><p>'+prose(esc(x.texto))+'</p><div class="ft"><button class="btn" type="button" data-arch="'+x.archivo+'">Ver informe</button></div></div>';});
+    h+='</div><p class="small" style="margin-top:10px">'+esc(P.nota)+'</p></div>';
   } else if(id==='tratamiento'){
     h+='<div class="sec"><div class="card bk" style="max-width:560px"><span class="d">Tratamiento</span><b>'+esc(B.tratamiento.titulo)+'</b><span class="m">'+esc(B.tratamiento.texto)+'</span></div></div>';
   }
