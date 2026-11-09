@@ -3,7 +3,7 @@
 // se valida quitando ese prefijo y el ';' final y pasando el texto por json.loads.
 window.DATOS =
 {
-  "version": "2026-10-02",
+  "version": "2026-11-04",
   "series": {
     "sdma": {"nombre": "SDMA", "unidad": "µg/dL", "rango": [1, 14], "organo": "rinones", "puntos": [
       {"fecha": "2023-11-08", "valor": 6.0, "archivo": 3},
@@ -14,7 +14,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 24.0, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 14.0, "archivo": 23},
       {"fecha": "2025-09-01", "valor": 11.0, "archivo": 30},
-      {"fecha": "2026-01-29", "valor": 14.0, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 14.0, "archivo": 35},
+      {"fecha": "2026-11-04", "valor": 21.0, "archivo": 46}
     ]},
     "creatinina": {"nombre": "Creatinina", "unidad": "mg/dL", "rango": [0.6, 2.0], "organo": "rinones", "decimales": 1, "puntos": [
       {"fecha": "2023-11-08", "valor": 0.8, "archivo": 3},
@@ -29,7 +30,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 1.0, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 1.4, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 1.4, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 1.5, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 1.5, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 1.4, "archivo": 46}
     ]},
     "nus": {"nombre": "NUS", "unidad": "mg/dL", "rango": [8, 29], "organo": "rinones", "puntos": [
       {"fecha": "2023-11-08", "valor": 32.1, "archivo": 3},
@@ -44,7 +46,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 12.4, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 20.5, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 26.9, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 24.4, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 24.4, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 23.9, "archivo": 46}
     ]},
     "fosforo": {"nombre": "Fósforo", "unidad": "mg/dL", "rango": [2.9, 5.3], "organo": "rinones", "puntos": [
       {"fecha": "2023-11-08", "valor": 4.2, "archivo": 3},
@@ -59,7 +62,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 2.5, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 3.3, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 2.8, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 2.9, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 2.9, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 2.9, "archivo": 46}
     ]},
     "pli": {"nombre": "PLI", "unidad": "µg/L", "rango": [10, 200], "organo": "pancreas", "puntos": [
       {"fecha": "2023-11-08", "valor": 48.0, "archivo": 3},
@@ -71,7 +75,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 192.4, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 311.0, "archivo": 23},
       {"fecha": "2025-09-01", "valor": 182.9, "archivo": 30},
-      {"fecha": "2026-01-29", "valor": 197.4, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 197.4, "archivo": 35},
+      {"fecha": "2026-11-04", "valor": 210.0, "archivo": 46}
     ]},
     "leucocitos": {"nombre": "Leucocitos", "unidad": "/µL", "rango": [6000, 17000], "organo": "sangre", "puntos": [
       {"fecha": "2023-11-08", "valor": 8500.0, "archivo": 3},
@@ -84,7 +89,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 6250.0, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 8750.0, "archivo": 23},
       {"fecha": "2025-09-01", "valor": 13080.0, "archivo": 30},
-      {"fecha": "2026-01-29", "valor": 10380.0, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 10380.0, "archivo": 35},
+      {"fecha": "2026-11-04", "valor": 4570.0, "archivo": 46}
     ]},
     "hematocrito": {"nombre": "Hematocrito", "unidad": "%", "rango": [40, 60], "organo": "sangre", "puntos": [
       {"fecha": "2023-11-08", "valor": 54.6, "archivo": 3},
@@ -97,7 +103,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 56.5, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 55.1, "archivo": 23},
       {"fecha": "2025-09-01", "valor": 47.5, "archivo": 30},
-      {"fecha": "2026-01-29", "valor": 45.1, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 45.1, "archivo": 35},
+      {"fecha": "2026-11-04", "valor": 53.9, "archivo": 46}
     ]},
     "hemoglobina": {"nombre": "Hemoglobina", "unidad": "g/dL", "rango": [13, 20], "organo": "sangre", "decimales": 1, "puntos": [
       {"fecha": "2023-11-08", "valor": 19.0, "archivo": 3},
@@ -110,7 +117,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 19.4, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 18.7, "archivo": 23},
       {"fecha": "2025-09-01", "valor": 16.5, "archivo": 30},
-      {"fecha": "2026-01-29", "valor": 15.2, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 15.2, "archivo": 35},
+      {"fecha": "2026-11-04", "valor": 19.0, "archivo": 46}
     ]},
     "alt": {"nombre": "ALT", "unidad": "UI/L", "rango": [18, 86], "organo": "higado", "puntos": [
       {"fecha": "2023-11-08", "valor": 438.9, "archivo": 3},
@@ -125,7 +133,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 302.0, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 311.0, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 388.0, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 252.0, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 252.0, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 238.0, "archivo": 46}
     ]},
     "fa": {"nombre": "Fosfatasa alcalina", "unidad": "UI/L", "rango": [12, 121], "organo": "higado", "puntos": [
       {"fecha": "2023-11-08", "valor": 231.0, "archivo": 3},
@@ -140,7 +149,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 594.0, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 213.0, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 273.0, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 183.0, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 183.0, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 177.0, "archivo": 46}
     ]},
     "ast": {"nombre": "AST", "unidad": "UI/L", "rango": [12, 42], "organo": "higado", "puntos": [
       {"fecha": "2023-11-08", "valor": 110.1, "archivo": 3},
@@ -155,7 +165,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 63.0, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 66.0, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 61.7, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 46.5, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 46.5, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 52.2, "archivo": 46}
     ]},
     "colesterol": {"nombre": "Colesterol", "unidad": "mg/dL", "rango": [133, 367], "organo": "higado", "puntos": [
       {"fecha": "2023-11-08", "valor": 213.0, "archivo": 3},
@@ -170,7 +181,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 298.0, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 323.0, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 252.0, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 262.0, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 262.0, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 262.0, "archivo": 46}
     ]},
     "upc": {"nombre": "UPC", "unidad": "", "rango": [0.1, 0.5], "organo": "orina", "decimales": 2, "puntos": [
       {"fecha": "2024-05-18", "valor": 1.55, "archivo": 8},
@@ -198,14 +210,16 @@ window.DATOS =
       {"fecha": "2025-06-05", "valor": 3.18, "archivo": 23},
       {"fecha": "2026-01-29", "valor": 3.69, "archivo": 35},
       {"fecha": "2026-05-30", "valor": 3.97, "archivo": 42},
-      {"fecha": "2026-08-05", "valor": 2.77, "archivo": 43}
+      {"fecha": "2026-08-05", "valor": 2.77, "archivo": 43},
+      {"fecha": "2026-11-04", "valor": 2.83, "archivo": 46}
     ]},
     "tsh": {"nombre": "TSH", "unidad": "ng/mL", "rango": [0.01, 0.6], "organo": "tiroides", "nota": "El límite superior cambió de 0,5 a 0,6; la unidad figura como ng/dL en informes antiguos y ng/mL en los nuevos (probable errata del laboratorio; valores comparables).", "puntos": [
       {"fecha": "2024-01-03", "valor": 0.22, "archivo": 5},
       {"fecha": "2025-06-05", "valor": 0.3, "archivo": 23},
       {"fecha": "2026-01-29", "valor": 0.3, "archivo": 35},
       {"fecha": "2026-05-30", "valor": 0.18, "archivo": 42},
-      {"fecha": "2026-08-05", "valor": 0.23, "archivo": 43}
+      {"fecha": "2026-08-05", "valor": 0.23, "archivo": 43},
+      {"fecha": "2026-11-04", "valor": 0.28, "archivo": 46}
     ]},
     "sodio": {"nombre": "Sodio", "unidad": "mEq/L", "rango": [140, 150], "organo": "electrolitos", "decimales": 1, "puntos": [
       {"fecha": "2023-11-08", "valor": 145.5, "archivo": 3},
@@ -216,7 +230,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 150.2, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 148.8, "archivo": 23},
       {"fecha": "2026-01-29", "valor": 151.1, "archivo": 35},
-      {"fecha": "2026-05-30", "valor": 150.7, "archivo": 42}
+      {"fecha": "2026-05-30", "valor": 150.7, "archivo": 42},
+      {"fecha": "2026-11-04", "valor": 146.3, "archivo": 46}
     ]},
     "potasio": {"nombre": "Potasio", "unidad": "mEq/L", "rango": [3.5, 5.5], "organo": "electrolitos", "decimales": 1, "puntos": [
       {"fecha": "2023-11-08", "valor": 4.9, "archivo": 3},
@@ -227,7 +242,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 5.2, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 5.4, "archivo": 23},
       {"fecha": "2026-01-29", "valor": 5.8, "archivo": 35},
-      {"fecha": "2026-05-30", "valor": 5.6, "archivo": 42}
+      {"fecha": "2026-05-30", "valor": 5.6, "archivo": 42},
+      {"fecha": "2026-11-04", "valor": 4.8, "archivo": 46}
     ]},
     "cloro": {"nombre": "Cloro", "unidad": "mEq/L", "rango": [107, 113], "organo": "electrolitos", "decimales": 1, "puntos": [
       {"fecha": "2023-11-08", "valor": 108.9, "archivo": 3},
@@ -238,7 +254,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 115.4, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 113.9, "archivo": 23},
       {"fecha": "2026-01-29", "valor": 115.5, "archivo": 35},
-      {"fecha": "2026-05-30", "valor": 114.0, "archivo": 42}
+      {"fecha": "2026-05-30", "valor": 114.0, "archivo": 42},
+      {"fecha": "2026-11-04", "valor": 117.9, "archivo": 46}
     ]},
     "calcio": {"nombre": "Calcio", "unidad": "mg/dL", "rango": [9, 11.5], "organo": "rinones", "puntos": [
       {"fecha": "2023-11-08", "valor": 9, "archivo": 3, "nota": "El laboratorio lo marcó fuera de rango (✱) aunque el valor impreso es 9, el límite inferior."},
@@ -253,7 +270,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 9.3, "archivo": 30},
       {"fecha": "2026-01-29", "valor": 8.4, "archivo": 35},
       {"fecha": "2026-08-05", "valor": 8.8, "archivo": 43},
-      {"fecha": "2026-10-02", "valor": 9.3, "archivo": 45}
+      {"fecha": "2026-10-02", "valor": 9.3, "archivo": 45},
+      {"fecha": "2026-11-04", "valor": 10.0, "archivo": 46}
     ]},
     "glucosa": {"nombre": "Glucosa", "unidad": "mg/dL", "rango": [70, 120], "organo": "pancreas", "nota": "Sin fluoruro, la glucosa se sigue consumiendo dentro del tubo y el valor sale artificialmente bajo. Solo las muestras con fluoruro son comparables entre sí.", "puntos": [
       {"fecha": "2023-11-08", "valor": 91.5, "archivo": 3, "tubo": "con fluoruro"},
@@ -269,7 +287,8 @@ window.DATOS =
       {"fecha": "2025-09-01", "valor": 101.9, "archivo": 30, "tubo": "con fluoruro"},
       {"fecha": "2026-01-29", "valor": 83.6, "archivo": 35, "tubo": "con fluoruro"},
       {"fecha": "2026-08-05", "valor": 65, "archivo": 43, "tubo": "con fluoruro"},
-      {"fecha": "2026-10-02", "valor": 61, "archivo": 45, "tubo": "sin fluoruro"}
+      {"fecha": "2026-10-02", "valor": 61, "archivo": 45, "tubo": "sin fluoruro"},
+      {"fecha": "2026-11-04", "valor": 86.1, "archivo": 46, "tubo": "con fluoruro"}
     ]}
   },
   "contenido": {
@@ -293,17 +312,17 @@ window.DATOS =
           {
             "nivel": "ok",
             "titulo": "Va bien",
-            "html": "<strong>Riñones:</strong> superó una crisis grave y hoy está estable en etapa temprana, con creatinina normal, sin proteinuria y presión controlada. <strong>Corazón:</strong> valvulopatía leve que no ha progresado y no requiere medicación. <strong>Sangre:</strong> sin anemia, buenas defensas."
+            "html": "<strong>Riñones:</strong> superó una crisis grave y la creatinina se mantiene normal (1.4), sin proteinuria y con presión controlada; el SDMA subió (ver abajo). <strong>Corazón:</strong> valvulopatía leve que no ha progresado y no requiere medicación. <strong>Sangre:</strong> sin anemia."
           },
           {
             "nivel": "watch",
             "titulo": "A vigilar",
-            "html": "<strong>SDMA:</strong> volvió al límite (14) tras estar mejor, conviene seguir midiéndolo. <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía. <strong>Tiroides:</strong> la T4 había venido subiendo, pero en agosto 2026 bajó a 2.77, de vuelta en rango; la TSH normal descarta hipotiroidismo. El eco cervical mostró la tiroides de tamaño conservado con leve hiperecogenicidad del lóbulo derecho (tiroiditis leve). Conviene seguir el control según indique la endocrinóloga. <strong>Electrolitos:</strong> sodio, potasio y cloro en el límite alto, compatible con deshidratación leve. <strong>Fósforo:</strong> en el límite inferior (2.9 en octubre 2026)."
+            "html": "<strong>SDMA:</strong> subió a 21 en noviembre 2026, sobre el rango (1–14), con la creatinina normal. <strong>Leucocitos:</strong> bajo el rango en noviembre 2026 (4570, leucopenia moderada según el laboratorio, con morfología normal). <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía. <strong>Tiroides:</strong> la T4 había venido subiendo, pero desde agosto 2026 está de vuelta en rango (2.77 y 2.83 en noviembre); la TSH normal descarta hipotiroidismo. El eco cervical mostró la tiroides de tamaño conservado con leve hiperecogenicidad del lóbulo derecho (tiroiditis leve). Conviene seguir el control según indique la endocrinóloga. <strong>Electrolitos:</strong> sodio y potasio volvieron a rango en noviembre 2026; el cloro sigue alto (117.9). <strong>Fósforo:</strong> en el límite inferior (2.9 en octubre y noviembre 2026)."
           },
           {
             "nivel": "alert",
             "titulo": "Conversar con la veterinaria",
-            "html": "<strong>Hígado:</strong> la ALT bajó a 252 en octubre 2026 (desde 388 en agosto), en el control tras un mes de Hepatocan Forte, pero sigue elevada y la ecografía muestra cambios grasos. <strong>Infecciones urinarias:</strong> la misma bacteria reapareció tres veces en 2025, con sensibilidad antibiótica que empezó a reducirse. Estos dos puntos son los que más vale la pena plantear en el próximo control."
+            "html": "<strong>Hígado:</strong> con Hepatocan Forte, la ALT bajó de 388 (agosto) a 252 (octubre) y a 238 (noviembre 2026), pero sigue elevada, la AST subió levemente y la ecografía muestra cambios grasos. <strong>Infecciones urinarias:</strong> la misma bacteria reapareció tres veces en 2025, con sensibilidad antibiótica que empezó a reducirse. Estos dos puntos son los que más vale la pena plantear en el próximo control."
           }
         ],
         "nota": "Recuerda: este resumen es para ayudarte a entender los exámenes, no para reemplazar a tu veterinaria. Las decisiones de tratamiento siempre las toma ella con el examen físico de Teodoro."
@@ -313,9 +332,9 @@ window.DATOS =
       {
         "id": "rinones",
         "nombre": "Riñones",
-        "estado": "ok",
-        "nota": "Creatinina normal y sin proteinuria. SDMA justo en el límite (14).",
-        "titular": "Recuperación notable de la crisis de mayo 2024. Hoy, enfermedad renal crónica estable en etapa temprana.",
+        "estado": "watch",
+        "nota": "Creatinina normal (1.4). El SDMA subió a 21, sobre el rango.",
+        "titular": "Recuperación notable de la crisis de mayo 2024: enfermedad renal crónica en etapa temprana con creatinina normal. En noviembre 2026 el SDMA subió a 21, sobre el rango.",
         "principal": "creatinina",
         "series": [
           "sdma",
@@ -353,9 +372,9 @@ window.DATOS =
         ],
         "conclusion": {
           "titulo": "Conclusión renal",
-          "nivel": "ok",
+          "nivel": "watch",
           "parrafos": [
-            "Teodoro tuvo una crisis renal aguda grave en mayo 2024 (SDMA 40, creatinina 4.0), pero se ha recuperado muy bien: pasó de AKI grado II a enfermedad crónica estable en etapa 1-2, con la creatinina normal (1.5 en octubre 2026) y sin proteinuria en el último control. El SDMA en 14 está justo en el límite, así que conviene seguir vigilándolo, pero la tendencia general de los riñones ha sido claramente positiva."
+            "Teodoro tuvo una crisis renal aguda grave en mayo 2024 (SDMA 40, creatinina 4.0), pero se ha recuperado muy bien: pasó de AKI grado II a enfermedad crónica estable en etapa 1-2, con la creatinina normal (1.4 en noviembre 2026) y sin proteinuria en el último urianálisis. En noviembre 2026, sin embargo, el SDMA subió a 21, sobre el rango (1–14) y su valor más alto desde agosto 2024, mientras la creatinina se mantuvo normal. Un solo valor no define una tendencia, pero es un punto para revisar con el nefrólogo; la evolución general de los riñones desde la crisis sigue siendo positiva."
           ]
         },
         "bloques": [
@@ -402,8 +421,8 @@ window.DATOS =
         "id": "higado",
         "nombre": "Hígado",
         "estado": "alert",
-        "nota": "La ALT bajó desde 388 tras un mes de Hepatocan Forte, pero sigue alta.",
-        "titular": "Las tres enzimas bajaron en el control del 2 oct 2026, tras un mes de Hepatocan Forte. Siguen sobre el rango y la ecografía muestra cambios grasos.",
+        "nota": "La ALT y la FA siguen bajando con Hepatocan Forte; la AST subió levemente.",
+        "titular": "Con Hepatocan Forte, la ALT y la FA siguen bajando (238 y 177 en noviembre 2026), pero siguen sobre el rango; la AST subió a 52.2. La ecografía muestra cambios grasos.",
         "principal": "alt",
         "series": [
           "alt",
@@ -433,7 +452,7 @@ window.DATOS =
           "titulo": "Conclusión hígado",
           "nivel": "alert",
           "parrafos": [
-            "Esta es el área que más conviene conversar con la veterinaria. La ALT está elevada de forma persistente: venía subiendo (311 en enero 2026 y 388 en agosto 2026) y en octubre 2026, en el control tras un mes de Hepatocan Forte indicado por endocrinología, bajó a 252, el primer descenso en más de un año, aunque sigue unas 3 veces sobre el límite. La FA y la AST también bajaron (183 y 46.5). Esto coincide con lo que muestra la ecografía: un hígado agrandado con cambios grasos/esteroidales y bastante \"barro biliar\" en la vesícula. No es una urgencia inmediata, pero sí un punto de vigilancia activa que no debería pasarse por alto."
+            "Esta es el área que más conviene conversar con la veterinaria. La ALT está elevada de forma persistente: venía subiendo (311 en enero 2026 y 388 en agosto 2026) y en octubre 2026, en el control tras un mes de Hepatocan Forte indicado por endocrinología, bajó a 252, el primer descenso en más de un año. En noviembre 2026, con el tratamiento en curso, la ALT siguió bajando a 238 (todavía cerca de 3 veces sobre el límite) y la FA a 177, mientras la AST subió levemente, de 46.5 a 52.2. Esto coincide con lo que muestra la ecografía: un hígado agrandado con cambios grasos/esteroidales y bastante \"barro biliar\" en la vesícula. No es una urgencia inmediata, pero sí un punto de vigilancia activa que no debería pasarse por alto."
           ]
         },
         "bloques": [
@@ -478,8 +497,8 @@ window.DATOS =
         "id": "tiroides",
         "nombre": "Tiroides",
         "estado": "ok",
-        "nota": "La T4 volvió a rango en agosto; TSH normal.",
-        "titular": "La T4 venía subiendo y en agosto 2026 volvió a rango. TSH normal y tiroides de tamaño conservado en la ecografía.",
+        "nota": "La T4 se mantiene en rango (2.83 en noviembre); TSH normal.",
+        "titular": "La T4 venía subiendo y desde agosto 2026 está en rango (2.83 en noviembre). TSH normal y tiroides de tamaño conservado en la ecografía.",
         "principal": "t4",
         "series": [
           "t4",
@@ -499,7 +518,7 @@ window.DATOS =
           "titulo": "Conclusión tiroides",
           "nivel": "watch",
           "parrafos": [
-            "<strong>Importante sobre los rangos:</strong> el laboratorio cambió su valor de referencia de la T4 entre 2025 y 2026: los informes de 2024–2025 usaban un límite superior de <strong>3,8</strong> µg/dL, y los de 2026 usan <strong>3,5</strong> µg/dL (pacientes sin terapia). Por eso la T4 de enero 2026 (3.69) y la de mayo 2026 (3.97) figuran como altas bajo el criterio nuevo; con el criterio antiguo, 3.69 habría quedado dentro de rango. En <strong>agosto 2026</strong>, sin embargo, la T4 bajó a <strong>2.77</strong>, de vuelta dentro de rango con cualquiera de los dos criterios — un solo control no confirma una reversión definitiva, pero corta la tendencia al alza que se venía observando.",
+            "<strong>Importante sobre los rangos:</strong> el laboratorio cambió su valor de referencia de la T4 entre 2025 y 2026: los informes de 2024–2025 usaban un límite superior de <strong>3,8</strong> µg/dL, y los de 2026 usan <strong>3,5</strong> µg/dL (pacientes sin terapia). Por eso la T4 de enero 2026 (3.69) y la de mayo 2026 (3.97) figuran como altas bajo el criterio nuevo; con el criterio antiguo, 3.69 habría quedado dentro de rango. En <strong>agosto 2026</strong>, sin embargo, la T4 bajó a <strong>2.77</strong>, de vuelta dentro de rango con cualquiera de los dos criterios, y en <strong>noviembre 2026</strong> se mantuvo en rango (<strong>2.83</strong>): dos controles seguidos dentro de rango cortan la tendencia al alza que se venía observando.",
             "No hay hipotiroidismo (sería T4 baja con TSH alta; Teodoro tiene lo contrario). El hipertiroidismo verdadero es muy raro en perros y poco probable sin signos clínicos. Punto a conversar con el equipo tratante: el propio informe del laboratorio sugiere medir <strong>T4 libre</strong> cuando la T4 total sale elevada sin tratamiento; a la fecha nunca se ha medido.",
             "<strong>Eco cervical (7 ago 2026):</strong> por la interconsulta con endocrinología se realizó la primera ecografía de tiroides. La glándula tiene <strong>tamaño/volumen conservado</strong> (volumen total 0.157 cc; referencia 1–7 kg: 0.05–0.15 cc) y muestra una <strong>leve hiperecogenicidad con márgenes algo menos definidos en el lóbulo derecho</strong>, interpretada como cambios inespecíficos / tiroiditis leve, sin lesiones focales ni aumento significativo de tamaño. La ecografista recomienda un control ecográfico según criterio clínico."
           ]
@@ -510,8 +529,8 @@ window.DATOS =
         "id": "electrolitos",
         "nombre": "Electrolitos",
         "estado": "watch",
-        "nota": "Cloro sobre el rango desde 2024; sodio y potasio en el límite alto.",
-        "titular": "Sodio, potasio y cloro en el límite alto en los últimos controles; el cloro, sobre el rango desde 2024. Sin electrolitos desde mayo 2026.",
+        "nota": "Cloro alto (117.9); sodio y potasio en rango en noviembre 2026.",
+        "titular": "El cloro sigue sobre el rango, como desde 2024 (117.9 en noviembre 2026). El sodio y el potasio volvieron a rango.",
         "principal": "cloro",
         "series": [
           "sodio",
@@ -528,7 +547,7 @@ window.DATOS =
           "titulo": "Conclusión electrolitos",
           "nivel": "watch",
           "parrafos": [
-            "Los electrolitos están los tres en el límite alto, compatible con deshidratación leve por su condición renal; el cloro, de hecho, lleva alto de forma crónica desde 2024."
+            "En noviembre 2026 el sodio (146.3) y el potasio (4.8) volvieron a valores dentro de rango, lejos del límite alto de los controles anteriores. El cloro, en cambio, sigue alto (117.9), cerca de su máximo registrado (118 en junio 2024): lleva alto de forma crónica desde 2024."
           ]
         },
         "bloques": []
@@ -584,9 +603,9 @@ window.DATOS =
       {
         "id": "sangre",
         "nombre": "Sangre",
-        "estado": "ok",
-        "nota": "Sin anemia y con defensas normales.",
-        "titular": "Hemograma esencialmente normal: sin anemia y con buenas defensas. Último hemograma en enero 2026.",
+        "estado": "watch",
+        "nota": "Sin anemia. Leucocitos bajo el rango (4570) en noviembre 2026.",
+        "titular": "Sin anemia, pero con leucocitos bajo el rango en noviembre 2026 (leucopenia moderada según el laboratorio, con morfología normal).",
         "principal": "hematocrito",
         "series": [
           "hematocrito",
@@ -609,9 +628,9 @@ window.DATOS =
         ],
         "conclusion": {
           "titulo": "Conclusión sangre",
-          "nivel": "ok",
+          "nivel": "watch",
           "parrafos": [
-            "El hemograma de Teodoro es esencialmente normal: buenas defensas, sin anemia (algo muy positivo, porque la anemia es una complicación frecuente de la enfermedad renal)."
+            "En noviembre 2026 los leucocitos salieron bajo el rango (4570; referencia 6000–17000), con los linfocitos también bajos (868); el laboratorio lo informa como leucopenia moderada con morfología normal. Es un valor parecido al mínimo de julio 2024 (4460), que en los controles siguientes volvió a rango. No hay anemia: el hematocrito (53.9) y la hemoglobina (19.0) están en rango, algo muy positivo porque la anemia es una complicación frecuente de la enfermedad renal. Los leucocitos bajos son un punto para comentar con la veterinaria."
           ]
         },
         "bloques": []
@@ -767,19 +786,19 @@ window.DATOS =
       },
       "tratamiento": {
         "titulo": "Hepatocan Forte",
-        "texto": "Hepatoprotector indicado por endocrinología tras el control de agosto 2026. Comenzó el 1 sep 2026, por un mes; el examen del 2 oct 2026 fue el control posterior.",
+        "texto": "Hepatoprotector indicado por endocrinología tras el control de agosto 2026. Comenzó el 1 sep 2026; tras el control del 2 oct 2026 se mantiene por indicación. El examen del 4 nov 2026 se tomó con el tratamiento en curso.",
         "nuevo": true
       },
       "ggt": {
         "nombre": "GGT",
-        "valor": 4.9,
+        "valor": 3.5,
         "unidad": "UI/L",
         "rango": [
           2,
           10
         ],
-        "fecha": "2026-10-02",
-        "archivo": 45
+        "fecha": "2026-11-04",
+        "archivo": 46
       },
       "pancreas_imagenes": {
         "titulo": "Ecografías que describen el páncreas",
@@ -1024,19 +1043,24 @@ window.DATOS =
         "cuando": "Oct 2026 · 6 a 1 m",
         "texto": "Control tras 1 mes de Hepatocan Forte (indicado por endocrinología). Perfil bioquímico. Hígado: ALT 252 ↑ (baja desde 388), FA 183 ↑, AST 46.5 ↑, GGT 4.9. Renal: Creatinina 1.5, NUS 24.4, Fósforo 2.9 (límite inferior). Calcio 9.3 (vuelve a rango). Glucosa 61 ↓ (muestra sin fluoruro).",
         "tono": "watch"
+      },
+      {
+        "cuando": "Nov 2026 · 6 a 2 m",
+        "texto": "Control completo con Hepatocan Forte en curso. Riñones: SDMA 21 ↑ (sube desde 14), Creatinina 1.4, NUS 23.9, Fósforo 2.9 (límite inferior). Hígado: ALT 238 ↑ (sigue bajando), FA 177 ↑, AST 52.2 ↑ (sube), GGT 3.5. Páncreas: PLI 210 ↑. Hemograma: Leucocitos 4570 ↓ (leucopenia moderada según el laboratorio), Hematocrito 53.9 y Hemoglobina 19.0 en rango. Electrolitos: Na 146.3 y K 4.8 en rango, Cl 117.9 ↑. T4 2.83 y TSH 0.28 en rango. Glucosa 86.1 (con fluoruro) y Calcio 10 en rango. Panel de coagulación normal.",
+        "tono": "watch"
       }
     ],
     "tendencias": [
       {
         "t": "SDMA",
-        "v": "↓ Controlado",
-        "d": "40 → 14",
-        "tono": "ok"
+        "v": "↑ Subió",
+        "d": "40 → 14 → 21 (nov 26)",
+        "tono": "watch"
       },
       {
         "t": "Creatinina",
         "v": "↓ Mejoró",
-        "d": "4.0 → 1.5 (oct 26)",
+        "d": "4.0 → 1.4 (nov 26)",
         "tono": "ok"
       },
       {
@@ -1047,8 +1071,8 @@ window.DATOS =
       },
       {
         "t": "ALT",
-        "v": "↓ Bajó, sigue alta",
-        "d": "388 → 252 (oct 26)",
+        "v": "↓ Bajando, sigue alta",
+        "d": "388 → 238 (nov 26)",
         "tono": "watch"
       },
       {
@@ -1065,13 +1089,14 @@ window.DATOS =
       },
       {
         "t": "T4 total",
-        "v": "↓ Volvió a rango",
-        "d": "3.97 → 2.77 (ago 26)",
+        "v": "→ En rango",
+        "d": "3.97 → 2.83 (nov 26)",
         "tono": "ok"
       }
     ]
   },
   "archivos": [
+    {"id": 46, "cat": "sangre", "catLabel": "Sangre / Bioquímica", "icon": "🩸", "color": "#f87171", "dateLabel": "4 nov 2026", "codes": "Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · TSH · T4 Total · Panel de Coagulación", "pages": 5, "embedded": true, "images": ["archivos/46_01.webp", "archivos/46_02.webp", "archivos/46_03.webp", "archivos/46_04.webp", "archivos/46_05.webp"]},
     {"id": 45, "cat": "sangre", "catLabel": "Sangre / Bioquímica", "icon": "🩸", "color": "#f87171", "dateLabel": "2 oct 2026", "codes": "Perfil Bioquímico", "pages": 1, "embedded": true, "images": ["archivos/45_01.webp"]},
     {"id": 44, "cat": "eco", "catLabel": "Informe ecográfico cervical (tiroides)", "icon": "📡", "color": "#60a5fa", "dateLabel": "7 ago 2026", "codes": "Descripción y conclusiones", "pages": 2, "embedded": true, "images": ["archivos/44_01.webp", "archivos/44_02.webp"]},
     {"id": 43, "cat": "sangre", "catLabel": "Sangre / Bioquímica", "icon": "🩸", "color": "#f87171", "dateLabel": "5 ago 2026", "codes": "Perfil Bioquímico · TSH · T4 Total", "pages": 2, "embedded": true, "images": ["archivos/43_01.webp", "archivos/43_02.webp"]},

@@ -82,7 +82,7 @@ SERIES = [
     (r"pli|lipasa pancreatica",             "pli",   "ug/l", 10, 200),
     (r"^hematocrito",                       "hematocrito",  "%", 40, 60),
     (r"^hemoglobina",                       "hemoglobina",    "g/dl", 13, 20),
-    (r"^leucocitos",                        "leucocitos", "/ul", 6000, 17000),
+    (r"^(recuento )?leucocitos",            "leucocitos", "/ul", 6000, 17000),  # VetLab: "RECUENTO LEUCOCITOS" (nov 2026)
     (r"calcio",                             "calcio", "mg/dl", 9, 11.5),
     (r"glucosa",                            "glucosa", "mg/dl", 70, 120),
     # Resto del perfil bioquímico VetLab (no graficados, solo nota). Antes faltaban aquí y la
@@ -264,7 +264,9 @@ def parse_values(text):
                     (r"^glucosa", "Glucosa", "glucosa")]:
                 if re.search(secpat, nl) and "resultado" not in nl and not re.search(r"\d+\s*(ug|ng|mg|ui|meq)", nl):
                     current = (secname, secid, tubo_de(nl))
-            mB = re.match(r"resultado[:\s]+([<>]?\d+[.,]?\d*)\s*([a-z/µu%]+)?(?:\s+([\d.,]+)\s*-\s*([\d.,]+))?", nl)
+            # La marca de fuera de rango (✱, extraída como ¬ o *) puede ir entre "Resultado" y el
+            # valor: sin aceptarla, SDMA/PLI alterados quedaban sin mapear (archivo 46, nov 2026).
+            mB = re.match(r"resultado[:\s]+[¬*•✱]?\s*([<>]?\d+[.,]?\d*)\s*([a-z/µu%]+)?(?:\s+([\d.,]+)\s*-\s*([\d.,]+))?", nl)
             if mB and current:
                 secname, secid, tubo = current
                 out.append({"param": secname, "sid": secid, "mapped": True, "tubo": tubo, "value": num(mB.group(1)),
@@ -273,7 +275,9 @@ def parse_values(text):
                 current = None
                 continue
             # ---- formato A: misma línea con rango 'low - high' ----
-            mA = re.match(r"(.+?)\s+[¬*•]?\s*([<>]?\d+[.,]?\d*)\s+([a-z/µu%]+)\s+([\d.,]+)\s*-\s*([\d.,]+)", nl)
+            # Unidades: además de las simples (mg/dl, /ul, %), acepta "seg." y "x10^6/µl", que antes
+            # hacían saltar la fila completa (eritrocitos, TP y TTPK del archivo 46, nov 2026).
+            mA = re.match(r"(.+?)\s+[¬*•✱]?\s*([<>]?\d+[.,]?\d*)\s+(x10\^\d+/[a-zµu]+|[a-z/µu%]+\.?)\s+([\d.,]+)\s*-\s*([\d.,]+)", nl)
             if mA:
                 label = mA.group(1).strip()
                 entry = match_entry(label)
