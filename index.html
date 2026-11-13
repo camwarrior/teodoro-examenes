@@ -503,9 +503,10 @@ function renderOrgano(id){
     +[['todo','Todo'],['1a','Último año'],['2025','Desde 2025']].map(function(p){return '<button type="button" data-per="'+p[0]+'" class="'+(periodo===p[0]?'on':'')+'" aria-pressed="'+(periodo===p[0])+'">'+p[1]+'</button>';}).join('')
     +'</div></div>';
   h+='<div class="charts">';
+  var ANCHA_ARRIBA={orina:true}; /* en Orina el UPC va a lo ancho y debajo, proteína y creatinina en orina lado a lado */
   o.series.forEach(function(k, j){
     var s=SERIES[k], p=ultimo(k), e=estadoValor(p.valor,s.rango);
-    var wide=(o.series.length%2===1 && j===o.series.length-1);
+    var wide = ANCHA_ARRIBA[o.id] ? (o.series.length%2===1 && j===0) : (o.series.length%2===1 && j===o.series.length-1);
     h+='<section class="card ch'+(wide?' wide':'')+'" aria-label="'+esc(s.nombre)+'">'
       +'<div class="top"><div><h3>'+esc(s.nombre)+'</h3><span class="small">Rango normal '+rangoTxt(s.rango,s.unidad)+'</span></div>'
       +'<div class="now"><b>'+num(p.valor,s.decimales)+' <i>'+esc(s.unidad)+'</i></b><span class="chip '+e+'">'+EST_TXT[e]+'</span><span class="small">'+fLarga(p.fecha)+(p.tubo?', '+esc(p.tubo):'')+'</span></div></div>'
@@ -588,7 +589,8 @@ function drawCharts(root){
     });
     var vals=s.puntos.map(function(p){return p.valor;});
     var lo=s.rango[0], hi=s.rango[1];
-    var vmin=Math.min.apply(null,vals.concat(lo!=null?[lo]:[])), vmax=Math.max.apply(null,vals.concat(hi!=null?[hi]:[]));
+    var techo=s.eje_max!=null?s.eje_max:hi; /* eje_max: corta el eje cuando el límite superior del rango aplastaría el gráfico */
+    var vmin=Math.min.apply(null,vals.concat(lo!=null?[lo]:[])), vmax=Math.max.apply(null,vals.concat(techo!=null?[techo]:[]));
     var ch=new Chart(cv,{type:'scatter',data:{datasets:ds},plugins:[bandPlugin,hitoPlugin],
       options:{responsive:true,maintainAspectRatio:false,animation:false,
         layout:{padding:{top:6,right:8}},

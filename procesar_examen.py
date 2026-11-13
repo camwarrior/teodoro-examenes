@@ -64,7 +64,7 @@ SERIES = [
     # Primero los que NO deben caer en una serie de sangre aunque compartan palabras
     # (match_entry devuelve la primera coincidencia). Antes se mapeaban mal: "creatinina en
     # orina" iba a cCreat y HDL/LDL/VLDL colesterol iban a cCol.
-    (r"creatinina en orina",                None,     "mg/dl", 40, 600),
+    (r"creatinina en orina",                "creatinina_orina", "mg/dl", 40, 600),  # graficada desde nov 2026
     (r"^(hdl|ldl|vldl) colesterol|^colesterol (hdl|ldl|vldl)", None, "mg/dl", None, None),
     (r"^creatinina",                        "creatinina", "mg/dl", 0.6, 2.0),
     (r"nus|nitrogeno ureico",               "nus",   "mg/dl", 8, 29),
@@ -87,7 +87,7 @@ SERIES = [
     (r"glucosa",                            "glucosa", "mg/dl", 70, 120),
     # Resto del perfil bioquímico VetLab (no graficados, solo nota). Antes faltaban aquí y la
     # tabla de confirmación los omitía en silencio (bug detectado con el archivo 45, oct 2026).
-    (r"proteinas totales en orina",         None,     "mg/dl", 0, 10),
+    (r"proteinas totales en orina",         "proteina_orina", "mg/dl", 0, 10),  # graficada desde nov 2026
     (r"^proteinas totales",                 None,     "g/dl", 5.4, 7.5),
     (r"albumina",                           None,     "g/dl", 2.8, 4.0),
     (r"globulinas",                         None,     "g/dl", 2.7, 4.4),

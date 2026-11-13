@@ -195,6 +195,28 @@ window.DATOS =
       {"fecha": "2025-08-29", "valor": 0.19, "archivo": 29},
       {"fecha": "2026-01-29", "valor": 0.12, "archivo": 35}
     ]},
+    "proteina_orina": {"nombre": "Proteínas en orina", "unidad": "mg/dL", "rango": [0, 10], "organo": "orina", "decimales": 1, "puntos": [
+      {"fecha": "2024-05-18", "valor": 36.5, "archivo": 8},
+      {"fecha": "2024-05-24", "valor": 59.6, "archivo": 10},
+      {"fecha": "2024-06-03", "valor": 50.8, "archivo": 12},
+      {"fecha": "2024-07-11", "valor": 38.4, "archivo": 16},
+      {"fecha": "2024-08-30", "valor": 45.4, "archivo": 18},
+      {"fecha": "2024-12-28", "valor": 31.1, "archivo": 21},
+      {"fecha": "2025-06-05", "valor": 45.1, "archivo": 23},
+      {"fecha": "2025-08-29", "valor": 23.7, "archivo": 29},
+      {"fecha": "2026-01-29", "valor": 12.9, "archivo": 35}
+    ]},
+    "creatinina_orina": {"nombre": "Creatinina en orina", "unidad": "mg/dL", "rango": [40, 600], "organo": "orina", "decimales": 1, "eje_max": 150, "nota": "El rango normal llega hasta 600 mg/dL; el eje se corta más abajo para que se noten las diferencias entre controles.", "puntos": [
+      {"fecha": "2024-05-18", "valor": 23.6, "archivo": 8},
+      {"fecha": "2024-05-24", "valor": 54.1, "archivo": 10},
+      {"fecha": "2024-06-03", "valor": 80.7, "archivo": 12},
+      {"fecha": "2024-07-11", "valor": 85.2, "archivo": 16},
+      {"fecha": "2024-08-30", "valor": 108.7, "archivo": 18},
+      {"fecha": "2024-12-28", "valor": 102.5, "archivo": 21},
+      {"fecha": "2025-06-05", "valor": 78.4, "archivo": 23},
+      {"fecha": "2025-08-29", "valor": 125.1, "archivo": 29},
+      {"fecha": "2026-01-29", "valor": 106.4, "archivo": 35}
+    ]},
     "pas": {"nombre": "Presión sistólica", "unidad": "mmHg", "rango": [null, 140], "organo": "corazon", "puntos": [
       {"fecha": "2022-08-31", "valor": 113.0, "archivo": 2, "pad": 67, "pam": 73},
       {"fecha": "2024-05-27", "valor": 143.0, "archivo": 11, "pad": 68, "pam": 95},
@@ -389,7 +411,9 @@ window.DATOS =
         "titular": "La proteína en orina se normalizó, pero la misma bacteria apareció en tres urocultivos de 2025.",
         "principal": "upc",
         "series": [
-          "upc"
+          "upc",
+          "proteina_orina",
+          "creatinina_orina"
         ],
         "definiciones": [
           {
@@ -399,6 +423,10 @@ window.DATOS =
           {
             "t": "Proteínas en orina",
             "d": "La cantidad bruta de proteína detectada. Se usa junto al UPC, que es más confiable porque corrige según lo concentrada que esté la orina."
+          },
+          {
+            "t": "Creatinina en orina",
+            "d": "La creatinina que el riñón elimina por la orina. Por sí sola no mide daño renal: indica qué tan concentrada o diluida está la muestra, y es el denominador del UPC (proteína ÷ creatinina). Un valor bajo significa orina diluida."
           },
           {
             "t": "Urocultivo",
@@ -413,7 +441,6 @@ window.DATOS =
           ]
         },
         "bloques": [
-          "proteina_orina",
           "urocultivos"
         ]
       },
@@ -780,10 +807,6 @@ window.DATOS =
           "archivos": [36, 38, 37]
         }
       ],
-      "proteina_orina": {
-        "valor": "12.9 mg/dL",
-        "detalle": "Elevado ≤10 · Ene 2026"
-      },
       "tratamiento": {
         "titulo": "Hepatocan Forte",
         "texto": "Hepatoprotector indicado por endocrinología tras el control de agosto 2026. Comenzó el 1 sep 2026; tras el control del 2 oct 2026 se mantiene por indicación. El examen del 4 nov 2026 se tomó con el tratamiento en curso.",
