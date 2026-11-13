@@ -436,7 +436,21 @@ def run_checks_lab(parsed, hist, hist_lab, lab):
                                         f"Distinto laboratorio y método: puede ser real o del método. CONFIRMAR contra la imagen y con Camilo."))
                 else:
                     flags.append(("ℹ️", f"{row['param']}: último valor del laboratorio anterior {hist[sid]} → {val} en {lab} (x{ratio:.1f}); no comparables directamente."))
+    flags += chequeo_upc(parsed)
     return flags
+
+
+def chequeo_upc(parsed):
+    """Canal aritmético: si el informe trae proteína, creatinina y UPC, proteína ÷ creatinina debe dar
+    el UPC publicado (al redondeo del informe). Un dígito mal leído en cualquiera de los tres lo rompe."""
+    v = {r["sid"]: r["value"] for r in parsed if r["sid"] in ("proteina_orina", "creatinina_orina", "upc") and r["value"] is not None}
+    if len(v) < 3 or not v["creatinina_orina"]:
+        return [("🟡", "UPC: no se pudo hacer el chequeo proteína ÷ creatinina (falta alguno de los tres valores). Verificar a mano.")] \
+            if any(k in v for k in ("proteina_orina", "creatinina_orina", "upc")) else []
+    calc = v["proteina_orina"] / v["creatinina_orina"]
+    if abs(calc - v["upc"]) <= 0.0051:
+        return [("ℹ️", f"UPC: chequeo aritmético OK ({v['proteina_orina']} ÷ {v['creatinina_orina']} = {calc:.3f} ≈ {v['upc']} publicado).")]
+    return [("🔴", f"UPC: proteína ÷ creatinina = {calc:.3f}, pero el informe publica {v['upc']}. Algún valor está mal leído. CONFIRMAR contra la imagen.")]
 
 
 def expected_for(sid):

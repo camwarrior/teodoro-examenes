@@ -118,8 +118,8 @@ main{flex:1 1 auto;min-width:0;padding:32px 40px 64px}
 .ch .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .ch h3{font-size:17px}
 .ch .now{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
-.ch .now>*{white-space:nowrap}
-.ch .now{flex-shrink:0}
+.ch.conlab .now>*{white-space:nowrap}
+.ch.conlab .now{flex-shrink:0}
 .ch .now b{font-size:24px;line-height:1}
 .ch .now b i{font-style:normal;font-size:13px;font-weight:500;color:var(--muted)}
 .cv{position:relative;height:220px}
@@ -535,7 +535,7 @@ function renderOrgano(id){
     var s=SERIES[k], p=ultimo(k), e=estadoValor(p.valor,rangoDe(s,p));
     var cl=cambiosLab(s), hayOtro=s.puntos.some(function(x){return otroLab(s,x);});
     var wide = ANCHA_ARRIBA[o.id] ? (o.series.length%2===1 && j===0) : (o.series.length%2===1 && j===o.series.length-1);
-    h+='<section class="card ch'+(wide?' wide':'')+'" aria-label="'+esc(s.nombre)+'">'
+    h+='<section class="card ch'+(wide?' wide':'')+(s.lab?' conlab':'')+'" aria-label="'+esc(s.nombre)+'">'
       +'<div class="top"><div><h3>'+esc(s.nombre)+'</h3><span class="small">Rango normal '+rangoTxt(rangoDe(s,p),s.unidad)+(s.lab?' ('+esc(labDe(s,p))+')':'')+'</span></div>'
       +'<div class="now"><b>'+num(p.valor,s.decimales)+' <i>'+esc(s.unidad)+'</i></b><span class="chip '+e+'">'+EST_TXT[e]+'</span><span class="small">'+fLarga(p.fecha)+(p.tubo?', '+esc(p.tubo):'')+'</span></div></div>'
       +'<div class="cv"><canvas data-k="'+k+'" role="img" aria-label="Gráfico de '+esc(s.nombre)+'"></canvas></div>'
