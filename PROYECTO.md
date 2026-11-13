@@ -86,7 +86,7 @@ Tema claro de ficha clínica (fondo `#F3F4F1`, tinta `#16191B`, azul de series `
 ### Diagnósticos e imágenes
 
 - **Diagnósticos IRIS:** May24 AKI II → Jul24-Ene25 CKD etapa 2 → Jun25 CKD etapa 1 → Feb26 IRIS 1-2 (tarjetas en Riñones, cada una con su informe).
-- **Urocultivos:** negativos May/Jun/Jul24; E. coli >100k UFC/mL en Ago/Sep/Nov25 (sensibilidad reducida a Amoxi-Clav y Cefadroxilo en Nov).
+- **Urocultivos:** negativos May/Jun/Jul24; E. coli >100k UFC/mL en Ago/Sep/Nov25 (sensibilidad reducida a Amoxi-Clav y Cefadroxilo en Nov). Es lo que muestra hoy el sitio; los archivos tienen además más urocultivos sin cargar, incluido un E. coli resistente en ene 2026 (ver "Hallazgo pendiente" en Auditoría de datos).
 - **Páncreas por imagen:** solo las ecografías de 2024 lo describen, todas normales: 2 ene 2024 (archivo 4, isoecoico, espesor normal), 18 may 2024 (archivo 9, rama derecha 5.29 mm) y 10 jul 2024 (archivo 14, rama derecha 5.63 mm), verificadas en texto e imagen. Las de jun 2025 (24/25) y ene 2026 (33/34) no lo mencionan. Bloque `pancreas_imagenes` en la ficha de Páncreas.
 - **Eco:** masa renal + esplenomegalia (May24) → ERC crónica con nefrolitos/pielectasia + hepatopatía vacuolar + barro biliar (Jun25, Ene26). Rx May26 sin cambios. Eco cervical Ago26: tiroiditis leve.
 - **Ecocardiograma Feb26 (ACVIM B1):** LA/Ao 1.49, LVIDd 19.6 mm, LVIDs 12.3 mm, EF 70.2%, FS 37.1%, E/A 1.47, PAS 130 mmHg. Sin progresión.
