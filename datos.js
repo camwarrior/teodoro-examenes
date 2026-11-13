@@ -344,7 +344,7 @@ window.DATOS =
           {
             "nivel": "alert",
             "titulo": "Conversar con la veterinaria",
-            "html": "<strong>Hígado:</strong> con Hepatocan Forte, la ALT bajó de 388 (agosto) a 252 (octubre) y a 238 (noviembre 2026), pero sigue elevada, la AST subió levemente y la ecografía muestra cambios grasos. <strong>Infecciones urinarias:</strong> la misma bacteria reapareció tres veces en 2025, con sensibilidad antibiótica que empezó a reducirse. Estos dos puntos son los que más vale la pena plantear en el próximo control."
+            "html": "<strong>Hígado:</strong> con Hepatocan Forte, la ALT bajó de 388 (agosto) a 252 (octubre) y a 238 (noviembre 2026), pero sigue elevada, la AST subió levemente y la ecografía muestra cambios grasos. <strong>Infecciones urinarias:</strong> la misma bacteria (E. coli) apareció en cuatro urocultivos seguidos (agosto 2025 a enero 2026) y en el último ya fue resistente a tres antibióticos. Estos dos puntos son los que más vale la pena plantear en el próximo control."
           }
         ],
         "nota": "Recuerda: este resumen es para ayudarte a entender los exámenes, no para reemplazar a tu veterinaria. Las decisiones de tratamiento siempre las toma ella con el examen físico de Teodoro."
@@ -407,8 +407,8 @@ window.DATOS =
         "id": "orina",
         "nombre": "Orina",
         "estado": "alert",
-        "nota": "Proteína en orina normal. Infección por E. coli en 3 cultivos de 2025.",
-        "titular": "La proteína en orina se normalizó, pero la misma bacteria apareció en tres urocultivos de 2025.",
+        "nota": "UPC normal. E. coli en 4 urocultivos seguidos (ago 2025 – ene 2026).",
+        "titular": "El UPC se normalizó, pero la misma bacteria (E. coli) apareció en cuatro urocultivos seguidos; en enero 2026 ya fue resistente a tres antibióticos.",
         "principal": "upc",
         "series": [
           "upc",
@@ -437,7 +437,7 @@ window.DATOS =
           "titulo": "Conclusión orina",
           "nivel": "alert",
           "parrafos": [
-            "Buena noticia por un lado: el UPC mejoró muchísimo, de 1.55 en la crisis a 0.12 (normal) en el último control, lo que confirma que los riñones están reteniendo bien la proteína. El punto rojo es la infección urinaria recurrente: la misma bacteria (E. coli) apareció en tres cultivos seguidos durante 2025, y en noviembre ya mostraba sensibilidad reducida a dos antibióticos. Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos."
+            "Buena noticia por un lado: el UPC mejoró muchísimo, de 1.55 en la crisis a 0.12 (normal) en el último control, lo que confirma que los riñones están reteniendo bien la proteína. El punto rojo es la infección urinaria recurrente: después de seis urocultivos negativos (mayo 2024 a junio 2025), la misma bacteria (E. coli) apareció en cuatro cultivos seguidos, de agosto 2025 a enero 2026. En noviembre ya mostraba sensibilidad reducida a dos antibióticos y en enero fue resistente a tres (Amoxi-Clav, Cefadroxilo y Gentamicina). Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos."
           ]
         },
         "bloques": [
@@ -731,6 +731,27 @@ window.DATOS =
           "archivo": 16
         },
         {
+          "fecha": "30 ago 2024",
+          "resultado": "Negativo (48 h)",
+          "detalle": "",
+          "tono": "ok",
+          "archivo": 18
+        },
+        {
+          "fecha": "28 dic 2024",
+          "resultado": "Negativo (48 h)",
+          "detalle": "",
+          "tono": "ok",
+          "archivo": 21
+        },
+        {
+          "fecha": "5 jun 2025",
+          "resultado": "Negativo (48 h)",
+          "detalle": "",
+          "tono": "ok",
+          "archivo": 23
+        },
+        {
           "fecha": "29 ago 2025",
           "resultado": "E. coli >100k UFC/mL",
           "detalle": "Sensible: Amikacina, Amoxi-Clav, Enrofloxacino, Nitrofurantoína",
@@ -750,6 +771,13 @@ window.DATOS =
           "detalle": "Intermedio: Amoxi-Clav, Cefadroxilo",
           "tono": "alert",
           "archivo": 32
+        },
+        {
+          "fecha": "29 ene 2026",
+          "resultado": "E. coli >100k UFC/mL",
+          "detalle": "Resistente: Amoxi-Clav, Cefadroxilo, Gentamicina. Sensible: Amikacina, Enrofloxacino, Nitrofurantoína, Sulfa-trimetoprim",
+          "tono": "alert",
+          "archivo": 35
         }
       ],
       "ecocardio_metricas": [
@@ -1039,8 +1067,8 @@ window.DATOS =
       },
       {
         "cuando": "Ene 2026 · 5 a 5 m",
-        "texto": "SDMA 14 (vuelve al límite). UPC 0.12 (normal), sin proteinuria. ALT 311 ↑↑, FA 213 ↑, Calcio 8.4 ↓. PLI 197. Ecografía: progresión renal y barro biliar 2/3.",
-        "tono": "watch"
+        "texto": "SDMA 14 (vuelve al límite). UPC 0.12 (normal), sin proteinuria. ALT 311 ↑↑, FA 213 ↑, Calcio 8.4 ↓. PLI 197. Ecografía: progresión renal y barro biliar 2/3. Urocultivo: E. coli por 4ª vez seguida, resistente a Amoxi-Clav, Cefadroxilo y Gentamicina.",
+        "tono": "alert"
       },
       {
         "cuando": "Feb 2026 · 5 a 5 m",
@@ -1107,7 +1135,7 @@ window.DATOS =
       {
         "t": "ITU E. coli",
         "v": "⚠ Recurrente",
-        "d": "3 episodios 2025",
+        "d": "4 urocultivos seguidos (ago 2025 – ene 2026)",
         "tono": "alert"
       },
       {
