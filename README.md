@@ -6,7 +6,7 @@ Ficha clínica web con la evolución de los exámenes de laboratorio, cardiolog�
 
 - **Resumen** — estado de cada área de seguimiento, último valor y tendencia.
 - **Áreas de seguimiento** (órganos y grupos de indicadores), cada una con enlace propio: riñones (`#rinones`), orina (`#orina`), hígado (`#higado`), páncreas (`#pancreas`), tiroides (`#tiroides`), electrolitos (`#electrolitos`), corazón (`#corazon`) y sangre (`#sangre`).
-- **Línea de tiempo**, **imágenes** y **archivos** (los 45 exámenes con visor y descarga en PDF).
+- **Línea de tiempo**, **imágenes** y **archivos** (los 48 exámenes con visor y descarga en PDF).
 
 ## Archivos
 

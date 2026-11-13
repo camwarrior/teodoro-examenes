@@ -3,7 +3,7 @@
 // se valida quitando ese prefijo y el ';' final y pasando el texto por json.loads.
 window.DATOS =
 {
-  "version": "2026-11-04",
+  "version": "2026-11-12",
   "series": {
     "sdma": {"nombre": "SDMA", "unidad": "µg/dL", "rango": [1, 14], "organo": "rinones", "puntos": [
       {"fecha": "2023-11-08", "valor": 6.0, "archivo": 3},
@@ -184,7 +184,7 @@ window.DATOS =
       {"fecha": "2026-10-02", "valor": 262.0, "archivo": 45},
       {"fecha": "2026-11-04", "valor": 262.0, "archivo": 46}
     ]},
-    "upc": {"nombre": "UPC", "unidad": "", "rango": [0.1, 0.5], "organo": "orina", "decimales": 2, "puntos": [
+    "upc": {"nombre": "UPC", "unidad": "", "rango": [0.1, 0.5], "organo": "orina", "decimales": 2, "lab": "VetLab", "nota": "Desde el 12 nov 2026 la orina se analiza en el laboratorio Gammavet (química seca, autoanalizador VITROS 5600); antes, en VetLab (proteína por rojo de pirogalol y creatinina por Jaffe cinética). Son métodos distintos, así que los valores de un laboratorio no son directamente comparables con los del otro. El límite superior del UPC es 0.5 en ambos.", "puntos": [
       {"fecha": "2024-05-18", "valor": 1.55, "archivo": 8},
       {"fecha": "2024-05-24", "valor": 1.1, "archivo": 10},
       {"fecha": "2024-06-03", "valor": 0.63, "archivo": 12},
@@ -193,9 +193,10 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 0.3, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 0.58, "archivo": 23},
       {"fecha": "2025-08-29", "valor": 0.19, "archivo": 29},
-      {"fecha": "2026-01-29", "valor": 0.12, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 0.12, "archivo": 35},
+      {"fecha": "2026-11-12", "valor": 0.48, "archivo": 48, "lab": "Gammavet", "rango": [0, 0.5]}
     ]},
-    "proteina_orina": {"nombre": "Proteínas en orina", "unidad": "mg/dL", "rango": [0, 10], "organo": "orina", "decimales": 1, "puntos": [
+    "proteina_orina": {"nombre": "Proteínas en orina", "unidad": "mg/dL", "rango": [0, 10], "organo": "orina", "decimales": 1, "lab": "VetLab", "nota": "El rango normal es 0 a 10 mg/dL en VetLab (rojo de pirogalol) y 0 a 30 mg/dL en Gammavet (química seca, desde el 12 nov 2026). Cada punto se evalúa contra el rango de su propio informe; los valores de un laboratorio no son directamente comparables con los del otro.", "puntos": [
       {"fecha": "2024-05-18", "valor": 36.5, "archivo": 8},
       {"fecha": "2024-05-24", "valor": 59.6, "archivo": 10},
       {"fecha": "2024-06-03", "valor": 50.8, "archivo": 12},
@@ -204,9 +205,10 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 31.1, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 45.1, "archivo": 23},
       {"fecha": "2025-08-29", "valor": 23.7, "archivo": 29},
-      {"fecha": "2026-01-29", "valor": 12.9, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 12.9, "archivo": 35},
+      {"fecha": "2026-11-12", "valor": 40.1, "archivo": 48, "lab": "Gammavet", "rango": [0, 30]}
     ]},
-    "creatinina_orina": {"nombre": "Creatinina en orina", "unidad": "mg/dL", "rango": [40, 600], "organo": "orina", "decimales": 1, "eje_max": 150, "nota": "El rango normal llega hasta 600 mg/dL; el eje se corta más abajo para que se noten las diferencias entre controles.", "puntos": [
+    "creatinina_orina": {"nombre": "Creatinina en orina", "unidad": "mg/dL", "rango": [40, 600], "organo": "orina", "decimales": 1, "eje_max": 150, "lab": "VetLab", "nota": "El rango normal llega hasta 600 mg/dL en VetLab y hasta 280 mg/dL en Gammavet (desde el 12 nov 2026); el eje se corta más abajo para que se noten las diferencias entre controles.", "puntos": [
       {"fecha": "2024-05-18", "valor": 23.6, "archivo": 8},
       {"fecha": "2024-05-24", "valor": 54.1, "archivo": 10},
       {"fecha": "2024-06-03", "valor": 80.7, "archivo": 12},
@@ -215,7 +217,8 @@ window.DATOS =
       {"fecha": "2024-12-28", "valor": 102.5, "archivo": 21},
       {"fecha": "2025-06-05", "valor": 78.4, "archivo": 23},
       {"fecha": "2025-08-29", "valor": 125.1, "archivo": 29},
-      {"fecha": "2026-01-29", "valor": 106.4, "archivo": 35}
+      {"fecha": "2026-01-29", "valor": 106.4, "archivo": 35},
+      {"fecha": "2026-11-12", "valor": 84.1, "archivo": 48, "lab": "Gammavet", "rango": [50, 280]}
     ]},
     "pas": {"nombre": "Presión sistólica", "unidad": "mmHg", "rango": [null, 140], "organo": "corazon", "puntos": [
       {"fecha": "2022-08-31", "valor": 113.0, "archivo": 2, "pad": 67, "pam": 73},
@@ -334,7 +337,7 @@ window.DATOS =
           {
             "nivel": "ok",
             "titulo": "Va bien",
-            "html": "<strong>Riñones:</strong> superó una crisis grave y la creatinina se mantiene normal (1.4), sin proteinuria y con presión controlada; el SDMA subió (ver abajo). <strong>Corazón:</strong> valvulopatía leve que no ha progresado y no requiere medicación. <strong>Sangre:</strong> sin anemia."
+            "html": "<strong>Riñones:</strong> superó una crisis grave y la creatinina se mantiene normal (1.4), con el UPC dentro del rango (0.48 en noviembre 2026, cerca del límite de 0.5 y medido en un laboratorio nuevo) y con presión controlada; el SDMA subió (ver abajo). <strong>Corazón:</strong> valvulopatía leve que no ha progresado y no requiere medicación. <strong>Sangre:</strong> sin anemia."
           },
           {
             "nivel": "watch",
@@ -407,8 +410,8 @@ window.DATOS =
         "id": "orina",
         "nombre": "Orina",
         "estado": "alert",
-        "nota": "UPC normal. E. coli en 4 urocultivos seguidos (ago 2025 – ene 2026).",
-        "titular": "El UPC se normalizó, pero la misma bacteria (E. coli) apareció en cuatro urocultivos seguidos; en enero 2026 ya fue resistente a tres antibióticos.",
+        "nota": "UPC 0.48 en nov 2026, dentro del rango pero cerca del límite (laboratorio nuevo). E. coli en 4 urocultivos seguidos (ago 2025 – ene 2026); urocultivo de nov 2026 pendiente.",
+        "titular": "El UPC del 12 nov 2026 fue 0.48: dentro del rango (hasta 0.5), pero más alto que en enero y medido por primera vez en otro laboratorio. La misma bacteria (E. coli) apareció en cuatro urocultivos seguidos hasta enero 2026; el urocultivo de noviembre está pendiente.",
         "principal": "upc",
         "series": [
           "upc",
@@ -437,7 +440,7 @@ window.DATOS =
           "titulo": "Conclusión orina",
           "nivel": "alert",
           "parrafos": [
-            "Buena noticia por un lado: el UPC mejoró muchísimo, de 1.55 en la crisis a 0.12 (normal) en el último control, lo que confirma que los riñones están reteniendo bien la proteína. El punto rojo es la infección urinaria recurrente: después de seis urocultivos negativos (mayo 2024 a junio 2025), la misma bacteria (E. coli) apareció en cuatro cultivos seguidos, de agosto 2025 a enero 2026. En noviembre ya mostraba sensibilidad reducida a dos antibióticos y en enero fue resistente a tres (Amoxi-Clav, Cefadroxilo y Gentamicina). Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos."
+            "El UPC mejoró muchísimo después de la crisis: de 1.55 en mayo 2024 a 0.12 (normal) en enero 2026. En el control del 12 nov 2026 fue 0.48: sigue dentro del rango (hasta 0.5), pero es más alto. Ese examen se hizo por primera vez en otro laboratorio (Gammavet), con otro método, por lo que no se puede comparar directamente con los valores anteriores ni saber todavía cuánto de la diferencia es real; el próximo control en el mismo laboratorio lo aclarará. El punto rojo es la infección urinaria recurrente: después de seis urocultivos negativos (mayo 2024 a junio 2025), la misma bacteria (E. coli) apareció en cuatro cultivos seguidos, de agosto 2025 a enero 2026. En noviembre ya mostraba sensibilidad reducida a dos antibióticos y en enero fue resistente a tres (Amoxi-Clav, Cefadroxilo y Gentamicina). Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos. El urocultivo del 12 nov 2026 está pendiente."
           ]
         },
         "bloques": [
@@ -1097,7 +1100,7 @@ window.DATOS =
       },
       {
         "cuando": "Nov 2026 · 6 a 2 m",
-        "texto": "Control completo con Hepatocan Forte en curso. Riñones: SDMA 21 ↑ (sube desde 14), Creatinina 1.4, NUS 23.9, Fósforo 2.9 (límite inferior). Hígado: ALT 238 ↑ (sigue bajando), FA 177 ↑, AST 52.2 ↑ (sube), GGT 3.5. Páncreas: PLI 210 ↑. Hemograma: Leucocitos 4570 ↓ (leucopenia moderada según el laboratorio), Hematocrito 53.9 y Hemoglobina 19.0 en rango. Electrolitos: Na 146.3 y K 4.8 en rango, Cl 117.9 ↑. T4 2.83 y TSH 0.28 en rango. Glucosa 86.1 (con fluoruro) y Calcio 10 en rango. Panel de coagulación normal.",
+        "texto": "Control completo con Hepatocan Forte en curso. Riñones: SDMA 21 ↑ (sube desde 14), Creatinina 1.4, NUS 23.9, Fósforo 2.9 (límite inferior). Hígado: ALT 238 ↑ (sigue bajando), FA 177 ↑, AST 52.2 ↑ (sube), GGT 3.5. Páncreas: PLI 210 ↑. Hemograma: Leucocitos 4570 ↓ (leucopenia moderada según el laboratorio), Hematocrito 53.9 y Hemoglobina 19.0 en rango. Electrolitos: Na 146.3 y K 4.8 en rango, Cl 117.9 ↑. T4 2.83 y TSH 0.28 en rango. Glucosa 86.1 (con fluoruro) y Calcio 10 en rango. Panel de coagulación normal. Orina (12 nov, por cistocentesis, primer examen en el laboratorio Gammavet): UPC 0.48 (rango hasta 0.5), proteínas 40.1 ↑ (rango 0–30), creatinina en orina 84.1. Urianálisis: leucocitos y eritrocitos 0–2 por campo, bacterias en muy escasa cantidad, cilindros hialinos +. Urocultivo pendiente.",
         "tono": "watch"
       }
     ],
@@ -1116,9 +1119,9 @@ window.DATOS =
       },
       {
         "t": "UPC",
-        "v": "↓ Mejoró",
-        "d": "1.55 → 0.12",
-        "tono": "ok"
+        "v": "→ En rango, subió",
+        "d": "1.55 → 0.12 → 0.48 (nov 26, otro laboratorio)",
+        "tono": "watch"
       },
       {
         "t": "ALT",
@@ -1147,6 +1150,8 @@ window.DATOS =
     ]
   },
   "archivos": [
+    {"id": 48, "cat": "orina", "catLabel": "Orina", "icon": "💧", "color": "#fbbf24", "dateLabel": "12 nov 2026", "codes": "Análisis Funcional de Orina", "pages": 1, "embedded": true, "images": ["archivos/48_01.webp"]},
+    {"id": 47, "cat": "orina", "catLabel": "Orina", "icon": "💧", "color": "#fbbf24", "dateLabel": "12 nov 2026", "codes": "Urianálisis", "pages": 1, "embedded": true, "images": ["archivos/47_01.webp"]},
     {"id": 46, "cat": "sangre", "catLabel": "Sangre / Bioquímica", "icon": "🩸", "color": "#f87171", "dateLabel": "4 nov 2026", "codes": "Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · TSH · T4 Total · Panel de Coagulación", "pages": 5, "embedded": true, "images": ["archivos/46_01.webp", "archivos/46_02.webp", "archivos/46_03.webp", "archivos/46_04.webp", "archivos/46_05.webp"]},
     {"id": 45, "cat": "sangre", "catLabel": "Sangre / Bioquímica", "icon": "🩸", "color": "#f87171", "dateLabel": "2 oct 2026", "codes": "Perfil Bioquímico", "pages": 1, "embedded": true, "images": ["archivos/45_01.webp"]},
     {"id": 44, "cat": "eco", "catLabel": "Informe ecográfico cervical (tiroides)", "icon": "📡", "color": "#60a5fa", "dateLabel": "7 ago 2026", "codes": "Descripción y conclusiones", "pages": 2, "embedded": true, "images": ["archivos/44_01.webp", "archivos/44_02.webp"]},

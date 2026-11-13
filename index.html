@@ -118,6 +118,8 @@ main{flex:1 1 auto;min-width:0;padding:32px 40px 64px}
 .ch .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .ch h3{font-size:17px}
 .ch .now{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.ch .now>*{white-space:nowrap}
+.ch .now{flex-shrink:0}
 .ch .now b{font-size:24px;line-height:1}
 .ch .now b i{font-style:normal;font-size:13px;font-weight:500;color:var(--muted)}
 .cv{position:relative;height:220px}
@@ -127,6 +129,8 @@ main{flex:1 1 auto;min-width:0;padding:32px 40px 64px}
 .lg-dot{width:9px;height:9px;border-radius:50%;background:var(--series)}
 .lg-ring{width:9px;height:9px;border-radius:50%;border:2px solid var(--series);background:#fff}
 .lg-dash{width:16px;height:0;border-top:1.5px dashed var(--hito)}
+.lg-lab{width:16px;height:0;border-top:2px dashed #596067}
+.lg-diam{width:8px;height:8px;background:var(--series);transform:rotate(45deg);margin:0 2px}
 .pick{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;background:var(--ink);color:#fff}
 .pick small{display:block;font-size:12px;color:#C9CDD1}
 .pick b{font-size:16px}
@@ -323,7 +327,7 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-si
   <div class="lbft"><div id="lbcnt"></div><div class="lbhnt" id="lbhnt"></div></div>
 </div>
 
-<script src="datos.js?v=2026-11-04"></script>
+<script src="datos.js?v=2026-11-12"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 (function(){
@@ -374,6 +378,24 @@ function rangoTxt(r, u){
   return t + (u ? ' ' + u : '');
 }
 function ultimo(key){var p=SERIES[key].puntos;return p[p.length-1];}
+/* Rango y laboratorio de un punto: los suyos ('rango', 'lab') o, si no los trae, los de la serie.
+   Así cada valor se evalúa contra el rango del informe del que salió. */
+function rangoDe(s,p){return (p&&p.rango)||s.rango;}
+function labDe(s,p){return (p&&p.lab)||s.lab||null;}
+function otroLab(s,p){return !!(p&&p.lab&&p.lab!==s.lab);}
+/* Tramos consecutivos de puntos con el mismo rango: [{t, rango}] */
+function tramos(s,pts){
+  var out=[];
+  pts.forEach(function(p){var r=rangoDe(s,p),u=out[out.length-1];
+    if(!u||u.rango[0]!==r[0]||u.rango[1]!==r[1])out.push({t:ts(p.fecha),rango:r});});
+  return out;
+}
+/* Fechas en que la serie cambia de laboratorio */
+function cambiosLab(s){
+  var out=[],prev=null;
+  s.puntos.forEach(function(p,i){var l=labDe(s,p);if(i&&l!==prev)out.push({fecha:p.fecha,lab:l});prev=l;});
+  return out;
+}
 function orgById(id){for(var i=0;i<ORGS.length;i++)if(ORGS[i].id===id)return ORGS[i];return null;}
 function itemIdx(id){for(var i=0;i<ITEMS.length;i++)if(ITEMS[i].id===id)return i;return -1;}
 function edadTxt(){
@@ -387,17 +409,22 @@ function edadTxt(){
 function spark(key){
   var s=SERIES[key], pts=s.puntos.filter(function(p){return !p.tubo || p.tubo==='con fluoruro';});
   var W=150,H=36,P=4, xs=pts.map(function(p){return ts(p.fecha);}), vs=pts.map(function(p){return p.valor;});
-  var lo=s.rango[0], hi=s.rango[1];
-  var vmin=Math.min.apply(null, vs.concat(lo!=null?[lo]:[])), vmax=Math.max.apply(null, vs.concat(hi!=null?[hi]:[]));
+  var trs=tramos(s,pts), los=[], his=[];
+  trs.forEach(function(t){if(t.rango[0]!=null)los.push(t.rango[0]);if(t.rango[1]!=null)his.push(t.rango[1]);});
+  var vmin=Math.min.apply(null, vs.concat(los)), vmax=Math.max.apply(null, vs.concat(his));
   var pad=(vmax-vmin)*0.1||1; vmin-=pad; vmax+=pad;
   var x0=xs[0], x1=xs[xs.length-1];
   function X(t){return P+(t-x0)/((x1-x0)||1)*(W-2*P);}
   function Y(v){return P+(1-(v-vmin)/(vmax-vmin))*(H-2*P);}
   var d=pts.map(function(p,i){return (i?'L':'M')+X(xs[i]).toFixed(1)+' '+Y(p.valor).toFixed(1);}).join(' ');
-  var bt=hi!=null?Y(hi):0, bb=lo!=null?Y(lo):H; bt=Math.max(0,bt); bb=Math.min(H,bb);
+  var banda=trs.map(function(t,i){
+    var bt=t.rango[1]!=null?Y(t.rango[1]):0, bb=t.rango[0]!=null?Y(t.rango[0]):H; bt=Math.max(0,bt); bb=Math.min(H,bb);
+    var xa=i?X(t.t)-4:0, xb=i<trs.length-1?X(trs[i+1].t)-4:W;
+    return '<rect x="'+xa.toFixed(1)+'" y="'+bt.toFixed(1)+'" width="'+Math.max(0,xb-xa).toFixed(1)+'" height="'+Math.max(0,bb-bt).toFixed(1)+'" fill="#E2EDE5"/>';
+  }).join('');
   var e=pts[pts.length-1];
   return '<svg class="sp" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="'+esc(s.nombre)+' a lo largo del tiempo">'
-    +'<rect x="0" y="'+bt.toFixed(1)+'" width="'+W+'" height="'+Math.max(0,bb-bt).toFixed(1)+'" fill="#E2EDE5"/>'
+    +banda
     +'<path d="'+d+'" fill="none" stroke="#1E4F8F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'
     +'<circle cx="'+X(xs[xs.length-1]).toFixed(1)+'" cy="'+Y(e.valor).toFixed(1)+'" r="3.2" fill="#1E4F8F" stroke="#fff" stroke-width="1.5"/></svg>';
 }
@@ -505,13 +532,16 @@ function renderOrgano(id){
   h+='<div class="charts">';
   var ANCHA_ARRIBA={orina:true}; /* en Orina el UPC va a lo ancho y debajo, proteína y creatinina en orina lado a lado */
   o.series.forEach(function(k, j){
-    var s=SERIES[k], p=ultimo(k), e=estadoValor(p.valor,s.rango);
+    var s=SERIES[k], p=ultimo(k), e=estadoValor(p.valor,rangoDe(s,p));
+    var cl=cambiosLab(s), hayOtro=s.puntos.some(function(x){return otroLab(s,x);});
     var wide = ANCHA_ARRIBA[o.id] ? (o.series.length%2===1 && j===0) : (o.series.length%2===1 && j===o.series.length-1);
     h+='<section class="card ch'+(wide?' wide':'')+'" aria-label="'+esc(s.nombre)+'">'
-      +'<div class="top"><div><h3>'+esc(s.nombre)+'</h3><span class="small">Rango normal '+rangoTxt(s.rango,s.unidad)+'</span></div>'
+      +'<div class="top"><div><h3>'+esc(s.nombre)+'</h3><span class="small">Rango normal '+rangoTxt(rangoDe(s,p),s.unidad)+(s.lab?' ('+esc(labDe(s,p))+')':'')+'</span></div>'
       +'<div class="now"><b>'+num(p.valor,s.decimales)+' <i>'+esc(s.unidad)+'</i></b><span class="chip '+e+'">'+EST_TXT[e]+'</span><span class="small">'+fLarga(p.fecha)+(p.tubo?', '+esc(p.tubo):'')+'</span></div></div>'
       +'<div class="cv"><canvas data-k="'+k+'" role="img" aria-label="Gráfico de '+esc(s.nombre)+'"></canvas></div>'
-      +'<div class="legend"><span><span class="lg-sq"></span>Rango normal</span>'+(k==='glucosa'?'<span><span class="lg-dot"></span>Con fluoruro</span><span><span class="lg-ring"></span>Sin fluoruro</span>':'')+hitosDe(o.id).map(function(x){return '<span><span class="lg-dash"></span>'+esc(x.texto)+' ('+fMes(x.fecha)+')</span>';}).join('')+'</div>'
+      +'<div class="legend"><span><span class="lg-sq"></span>Rango normal</span>'+(k==='glucosa'?'<span><span class="lg-dot"></span>Con fluoruro</span><span><span class="lg-ring"></span>Sin fluoruro</span>':'')+hitosDe(o.id).map(function(x){return '<span><span class="lg-dash"></span>'+esc(x.texto)+' ('+fMes(x.fecha)+')</span>';}).join('')
+        +cl.map(function(x){return '<span><span class="lg-lab"></span>Cambio de laboratorio ('+fMes(x.fecha)+')</span>';}).join('')
+        +(hayOtro?'<span><span class="lg-diam"></span>'+esc(labDe(s,p))+'</span>':'')+'</div>'
       +'<div class="pickbox" data-k="'+k+'"></div>'
       +(s.nota?'<p class="nota">'+prose(esc(s.nota))+'</p>':'')
       +'</section>';
@@ -545,10 +575,25 @@ function hitosDe(id){return (C.hitos||[]).filter(function(h){return h.organos.in
 
 /* ---------- Gráficos grandes (Chart.js) ---------- */
 var bandPlugin={id:'banda',beforeDatasetsDraw:function(ch,args,opt){
-  var r=opt.rango; if(!r)return; var y=ch.scales.y, a=ch.chartArea, c=ch.ctx;
-  var top=r[1]!=null?y.getPixelForValue(r[1]):a.top, bot=r[0]!=null?y.getPixelForValue(r[0]):a.bottom;
-  top=Math.max(a.top,top); bot=Math.min(a.bottom,bot); if(bot<=top)return;
-  c.save(); c.fillStyle='#E2EDE5'; c.fillRect(a.left,top,a.right-a.left,bot-top); c.restore();
+  var trs=opt.tramos; if(!trs||!trs.length)return; var x=ch.scales.x, y=ch.scales.y, a=ch.chartArea, c=ch.ctx;
+  /* Cada tramo empieza un poco antes de su primer punto (CORTE px), para que el punto quede dentro de su franja. */
+  trs.forEach(function(t,i){
+    var r=t.rango;
+    var top=r[1]!=null?y.getPixelForValue(r[1]):a.top, bot=r[0]!=null?y.getPixelForValue(r[0]):a.bottom;
+    top=Math.max(a.top,top); bot=Math.min(a.bottom,bot); if(bot<=top)return;
+    var xa=i?x.getPixelForValue(t.t)-CORTE:a.left, xb=i<trs.length-1?x.getPixelForValue(trs[i+1].t)-CORTE:a.right;
+    xa=Math.max(a.left,Math.min(a.right,xa)); xb=Math.max(a.left,Math.min(a.right,xb)); if(xb<=xa)return;
+    c.save(); c.fillStyle='#E2EDE5'; c.fillRect(xa,top,xb-xa,bot-top); c.restore();
+  });
+}};
+var CORTE=10;
+/* Línea de cambio de laboratorio: misma posición que el corte de la franja. */
+var labPlugin={id:'labs',afterDatasetsDraw:function(ch,args,opt){
+  var ls=opt.lista||[], x=ch.scales.x, a=ch.chartArea, c=ch.ctx;
+  ls.forEach(function(l){
+    var px=x.getPixelForValue(ts(l.fecha))-CORTE; if(px<a.left||px>a.right)return;
+    c.save(); c.strokeStyle='#596067'; c.setLineDash([6,4]); c.lineWidth=1.5; c.beginPath(); c.moveTo(px,a.top); c.lineTo(px,a.bottom); c.stroke(); c.restore();
+  });
 }};
 var hitoPlugin={id:'hitos',afterDatasetsDraw:function(ch,args,opt){
   var hs=opt.lista||[], x=ch.scales.x, a=ch.chartArea, c=ch.ctx;
@@ -582,16 +627,19 @@ function drawCharts(root){
     var ds=groups.map(function(g){
       var pts=s.puntos.filter(function(p){return g[0]===null || p.tubo===g[0];});
       var data=pts.map(function(p){return {x:ts(p.fecha),y:p.valor,p:p};});
-      var cols=pts.map(function(p){return COL[estadoValor(p.valor,s.rango)];});
+      var cols=pts.map(function(p){return COL[estadoValor(p.valor,rangoDe(s,p))];});
+      var rombo=pts.map(function(p){return otroLab(s,p);}); /* puntos de otro laboratorio: rombo en vez de círculo */
       return {data:data, showLine:g[1], borderColor:'#1E4F8F', borderWidth:2, tension:0, label:g[0]||s.nombre,
-        pointRadius:function(c){return c.dataIndex===data.length-1&&g[1]?5:3.5;}, pointHoverRadius:7, pointHitRadius:12,
+        pointStyle:rombo.map(function(r){return r?'rectRot':'circle';}),
+        pointRadius:function(c){var b=c.dataIndex===data.length-1&&g[1]?5:3.5;return rombo[c.dataIndex]?b+1.5:b;}, pointHoverRadius:7, pointHitRadius:12,
         pointBackgroundColor:g[1]?cols:'#FFFFFF', pointBorderColor:g[1]?'#FFFFFF':cols, pointBorderWidth:g[1]?1.5:2};
     });
     var vals=s.puntos.map(function(p){return p.valor;});
-    var lo=s.rango[0], hi=s.rango[1];
-    var techo=s.eje_max!=null?s.eje_max:hi; /* eje_max: corta el eje cuando el límite superior del rango aplastaría el gráfico */
-    var vmin=Math.min.apply(null,vals.concat(lo!=null?[lo]:[])), vmax=Math.max.apply(null,vals.concat(techo!=null?[techo]:[]));
-    var ch=new Chart(cv,{type:'scatter',data:{datasets:ds},plugins:[bandPlugin,hitoPlugin],
+    var trs=tramos(s,s.puntos), los=[], his=[];
+    trs.forEach(function(t){if(t.rango[0]!=null)los.push(t.rango[0]);if(t.rango[1]!=null)his.push(t.rango[1]);});
+    var techo=s.eje_max!=null?[s.eje_max]:his; /* eje_max: corta el eje cuando el límite superior del rango aplastaría el gráfico */
+    var vmin=Math.min.apply(null,vals.concat(los)), vmax=Math.max.apply(null,vals.concat(techo));
+    var ch=new Chart(cv,{type:'scatter',data:{datasets:ds},plugins:[bandPlugin,hitoPlugin,labPlugin],
       options:{responsive:true,maintainAspectRatio:false,animation:false,
         layout:{padding:{top:6,right:8}},
         interaction:{mode:'nearest',intersect:false,axis:'x'},
@@ -603,12 +651,12 @@ function drawCharts(root){
           y:{suggestedMin:Math.max(0,vmin-(vmax-vmin)*0.08),suggestedMax:vmax+(vmax-vmin)*0.08,grid:{color:'#ECEEEA'},border:{display:false},
              ticks:{color:'#596067',font:{size:11},maxTicksLimit:5,callback:function(v){return num(+v.toFixed(3));}}}
         },
-        plugins:{legend:{display:false},banda:{rango:s.rango},hitos:{lista:hs},
+        plugins:{legend:{display:false},banda:{tramos:trs},hitos:{lista:hs},labs:{lista:cambiosLab(s)},
           tooltip:{backgroundColor:'#16191B',titleFont:{weight:'600'},footerFont:{weight:'400'},padding:10,displayColors:false,
             callbacks:{
               title:function(it){return fLarga(it[0].raw.p.fecha);},
               label:function(it){var p=it.raw.p;var t=num(p.valor,s.decimales)+' '+s.unidad;if(p.pad)t+=' (diastólica '+p.pad+(p.pam?', media '+p.pam:'')+')';return t;},
-              afterLabel:function(it){var p=it.raw.p;var a=[];if(p.tubo)a.push('Muestra '+p.tubo);a.push(EST_TXT[estadoValor(p.valor,s.rango)]);return a.join('. ');},
+              afterLabel:function(it){var p=it.raw.p;var a=[];if(p.tubo)a.push('Muestra '+p.tubo);a.push(EST_TXT[estadoValor(p.valor,rangoDe(s,p))]);if(s.lab)a.push('Laboratorio '+labDe(s,p));return a.join('. ');},
               footer:function(it){return 'Archivo '+it[0].raw.p.archivo;}
             }}
         },
@@ -622,6 +670,7 @@ function showPick(k,p){
   clearPick();
   var s=SERIES[k], box=document.querySelector('.pickbox[data-k="'+k+'"]'); if(!box)return;
   var extra=[]; if(p.pad)extra.push('Diastólica '+p.pad+(p.pam?', media '+p.pam:'')+' mmHg'); if(p.tubo)extra.push('Muestra '+p.tubo); if(p.nota)extra.push(p.nota);
+  if(s.lab)extra.push('Laboratorio '+labDe(s,p)+', rango normal '+rangoTxt(rangoDe(s,p),s.unidad));
   box.innerHTML='<div class="pick"><div><small>'+fLarga(p.fecha)+'</small><b>'+num(p.valor,s.decimales)+' '+esc(s.unidad)+'</b></div><button type="button" data-arch="'+p.archivo+'">Ver examen '+p.archivo+'</button>'+(extra.length?'<span class="note">'+esc(extra.join('. '))+'</span>':'')+'</div>';
 }
 function setPeriodo(p){

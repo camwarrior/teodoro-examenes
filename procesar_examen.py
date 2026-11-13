@@ -64,6 +64,7 @@ SERIES = [
     # Primero los que NO deben caer en una serie de sangre aunque compartan palabras
     # (match_entry devuelve la primera coincidencia). Antes se mapeaban mal: "creatinina en
     # orina" iba a cCreat y HDL/LDL/VLDL colesterol iban a cCol.
+    (r"relacion prot",                      "upc", "", 0.1, 0.5),  # "Relación Proteína/Creatinina" (Gammavet); en VetLab la fila no trae unidad y no la toma el formato A
     (r"creatinina en orina",                "creatinina_orina", "mg/dl", 40, 600),  # graficada desde nov 2026
     (r"^(hdl|ldl|vldl) colesterol|^colesterol (hdl|ldl|vldl)", None, "mg/dl", None, None),
     (r"^creatinina",                        "creatinina", "mg/dl", 0.6, 2.0),
@@ -87,7 +88,8 @@ SERIES = [
     (r"glucosa",                            "glucosa", "mg/dl", 70, 120),
     # Resto del perfil bioquímico VetLab (no graficados, solo nota). Antes faltaban aquí y la
     # tabla de confirmación los omitía en silencio (bug detectado con el archivo 45, oct 2026).
-    (r"proteinas totales en orina",         "proteina_orina", "mg/dl", 0, 10),  # graficada desde nov 2026
+    (r"proteinas? (totales )?en orina",     "proteina_orina", "mg/dl", 0, 10),  # graficada desde nov 2026; Gammavet: "Proteína en Orina"
+    (r"microalbuminuria",                   None,     "mg/dl", 0, 20),  # solo nota (no graficada)
     (r"^proteinas totales",                 None,     "g/dl", 5.4, 7.5),
     (r"albumina",                           None,     "g/dl", 2.8, 4.0),
     (r"globulinas",                         None,     "g/dl", 2.7, 4.4),
@@ -186,6 +188,7 @@ def save_webp(im, out_path):
 
 def guess_date(text):
     for p in [r"FECHA RECEPCION[:\s]*(\d{1,2})[/-](\d{1,2})[/-](\d{4})",
+              r"Recepci[oó]n Muestra\s*:\s*(\d{1,2})[/-](\d{1,2})[/-](\d{4})",  # Gammavet
               r"Fecha de estudio[:\s]*(\d{1,2})[/-](\d{1,2})[/-](\d{4})",
               r"Fecha[:\s]*(\d{1,2})[/-](\d{1,2})[/-](\d{4})"]:
         m = re.search(p, text, re.I)
@@ -291,6 +294,68 @@ def parse_values(text):
     return out
 
 
+# ---------------------------------------------------------------------------------------------
+# Formato Gammavet (orina desde el 12 nov 2026). El nombre del laboratorio va solo en el logo
+# (imagen), así que se reconoce por el diseño del informe: encabezado "Recepción Muestra" /
+# "Fecha de Validación", una fila "EXAMEN ... RESULTADO ... UNIDAD" y filas
+#   'Nombre : [▲/▼] resultado   (unidad)   low - high'   con coma decimal.
+# ---------------------------------------------------------------------------------------------
+TITULOS_GAMMAVET = [("analisis funcional de orina", "Análisis Funcional de Orina"),
+                    ("urianalisis", "Urianálisis"), ("urocultivo", "Urocultivo")]
+
+
+def es_gammavet(text):
+    t = norm(text)
+    return ("recepcion muestra" in t and "fecha de validacion" in t
+            and re.search(r"examen\s+resultado", t) is not None)
+
+
+def parse_gammavet(text):
+    """Devuelve (titulo, filas numéricas, filas cualitativas, pie).
+    Numéricas: mismo formato que parse_values (+ 'flag' ▲/▼ y 'lab'). Cualitativas: (param, resultado, unidad, pág)."""
+    num_rows, cual_rows, pie, titulo = [], [], [], None
+    for pi, page in enumerate(text.split("\f"), start=1):
+        lines = page.splitlines()
+        reglas = [i for i, l in enumerate(lines) if l.strip().startswith("_____")]
+        if len(reglas) >= 2 and titulo is None:
+            for l in lines[reglas[1] + 1:]:
+                if l.strip() and not l.strip().startswith("_____"):
+                    titulo = l.strip(); break
+        en_tabla = False
+        for line in lines:
+            l = line.strip()
+            if not l: continue
+            nl = norm(l)
+            if re.match(r"examen\s+resultado", nl): en_tabla = True; continue
+            if nl.startswith(("metodo analitico", "tipo de muestra", "examen procesado")):
+                en_tabla = False; pie.append(l); continue
+            if not en_tabla or l.startswith(("(", "*", "_")) or nl.startswith("el resultado de este examen"): continue
+            m = re.match(r"^([^:]+?)\s*:\s+(.+?)(?:\s{2,}\(([^)]*)\))?(?:\s{2,}(\d+(?:[.,]\d+)?)\s*-\s*(\d+(?:[.,]\d+)?))?\s*$", l) \
+                or re.match(r"^([^:]+?)\s{3,}(\S.*?)(?:\s{2,}\(([^)]*)\))?(?:\s{2,}(\d+(?:[.,]\d+)?)\s*-\s*(\d+(?:[.,]\d+)?))?\s*$", l)
+            if not m:
+                if not re.search(r"\s{3,}", l): continue  # subtítulo de sección (ANALISIS FISICO, etc.)
+                cual_rows.append((l, "NO PARSEADO — leer en la imagen", "", pi)); continue
+            label, res, unit, low, high = [(g or "").strip() for g in m.groups()]
+            mv = re.match(r"^([▲▼])?\s*([<>]?\d+(?:[.,]\d+)?)$", res)
+            if mv:
+                nlabel = norm(label).strip("* ")
+                entry = match_entry(nlabel)
+                num_rows.append({"param": label, "sid": entry[1] if entry else None, "tubo": None,
+                                 "mapped": entry is not None, "value": num(mv.group(2)), "unit": unit,
+                                 "low": num(low) if low else None, "high": num(high) if high else None,
+                                 "page": pi, "raw": l, "flag": mv.group(1) or "", "lab": "Gammavet"})
+            else:
+                cual_rows.append((label, res, unit, pi))
+    return titulo, num_rows, cual_rows, pie
+
+
+def codes_gammavet(titulo):
+    t = norm(titulo or "")
+    for kw, label in TITULOS_GAMMAVET:
+        if kw in t: return [label]
+    return [(titulo or "REVISAR").title() + "  ← título no reconocido, REVISAR"]
+
+
 def tubo_de(texto):
     """Para la glucosa: 'con fluoruro' / 'sin fluoruro' según el encabezado o la fila."""
     t = norm(texto)
@@ -319,6 +384,59 @@ def parse_history(datos_path):
         if pts:
             hist[key] = float(pts[-1]["valor"])
     return hist
+
+
+def parse_history_lab(datos_path):
+    """Último punto de cada serie por laboratorio: {(serie, lab): (valor, [low, high])}.
+    El laboratorio de un punto es su campo 'lab' o, si no tiene, el 'lab' de la serie; el rango,
+    su campo 'rango' o el de la serie. Sirve para comparar cada valor contra su mismo laboratorio."""
+    out = {}
+    if not datos_path or not os.path.exists(datos_path):
+        return out
+    for key, se in cargar_datos(datos_path)["series"].items():
+        for p in se["puntos"]:
+            if key == "glucosa" and p.get("tubo") != "con fluoruro": continue
+            lab = p.get("lab") or se.get("lab")
+            out[(key, lab)] = (float(p["valor"]), p.get("rango") or se.get("rango"))
+    return out
+
+
+def run_checks_lab(parsed, hist, hist_lab, lab):
+    """Chequeos para un informe de un laboratorio con nombre (hoy Gammavet): cada valor se compara
+    contra el último punto DEL MISMO laboratorio; contra el de otro laboratorio solo se informa el
+    salto (no son directamente comparables), pero un salto >=3x igual detiene para confirmar."""
+    flags = []
+    unmapped = [r["param"] for r in parsed if not r.get("mapped", True)]
+    if unmapped:
+        flags.append(("ℹ️", f"{len(unmapped)} parámetro(s) sin serie conocida (van en la tabla y se confirman igual): {', '.join(unmapped)}"))
+    for row in parsed:
+        sid, val = row["sid"], row["value"]
+        if val is None:
+            flags.append(("🟡", f"{row['param']}: no se pudo leer un número claro en '{row['raw'][:60]}'. Revisar.")); continue
+        if not sid: continue
+        exp_unit, vl_low, vl_high = expected_for(sid)
+        if exp_unit and row["unit"] and norm(row["unit"]) != exp_unit:
+            flags.append(("🟡", f"{row['param']}: unidad '{row['unit']}' ≠ esperada '{exp_unit}' (verificar comparabilidad)"))
+        if row["low"] is None or row["high"] is None:
+            flags.append(("🟡", f"{row['param']}: el informe no trae rango de referencia legible. Confirmar en la imagen."))
+        prev = hist_lab.get((sid, lab))
+        if prev:
+            last, rng = prev
+            if rng and row["low"] is not None and (rng[0] != row["low"] or rng[1] != row["high"]):
+                flags.append(("🟡", f"{row['param']}: rango del informe {row['low']}–{row['high']} ≠ rango anterior de {lab} {rng[0]}–{rng[1]} (¿el laboratorio cambió el rango?)"))
+            if last and (val / last >= JUMP_FACTOR or val / last <= 1 / JUMP_FACTOR):
+                flags.append(("🔴", f"{row['param']}: salto grande {last} → {val} (x{val/last:.1f}) dentro de {lab}. Posible error de lectura. CONFIRMAR contra la imagen."))
+        else:
+            flags.append(("🟡", f"{row['param']}: PRIMER valor de {lab} en la serie '{sid}'. Rango del informe {row['low']}–{row['high']} "
+                                f"(serie: {vl_low}–{vl_high}); se guarda con 'lab' y 'rango' en el punto. Sin histórico comparable del mismo laboratorio."))
+            if sid in hist and hist[sid]:
+                ratio = val / hist[sid]
+                if ratio >= JUMP_FACTOR or ratio <= 1 / JUMP_FACTOR:
+                    flags.append(("🔴", f"{row['param']}: salto grande {hist[sid]} (laboratorio anterior) → {val} ({lab}) (x{ratio:.1f}). "
+                                        f"Distinto laboratorio y método: puede ser real o del método. CONFIRMAR contra la imagen y con Camilo."))
+                else:
+                    flags.append(("ℹ️", f"{row['param']}: último valor del laboratorio anterior {hist[sid]} → {val} en {lab} (x{ratio:.1f}); no comparables directamente."))
+    return flags
 
 
 def expected_for(sid):
@@ -394,6 +512,7 @@ def main():
     out_dir = args.out or args.archivos
     if not args.dry_run: os.makedirs(out_dir, exist_ok=True)
     hist = parse_history(args.datos)
+    hist_lab = parse_history_lab(args.datos)
     idx = next_index(args.archivos)
     print(f"Próximo índice disponible en {args.archivos}: {idx}")
     print(f"Histórico leído de {args.datos}: {len(hist)} series\n")
@@ -411,6 +530,12 @@ def main():
             cat = guess_category(base, text)
             codes = detect_codes(text) if cat in ("sangre","orina","uro") else []
             parsed = parse_values(text) if cat in ("sangre","orina","uro") else []
+            lab, cual, pie = None, [], []
+            if cat in ("sangre","orina","uro") and es_gammavet(text):
+                lab = "Gammavet"
+                titulo, parsed, cual, pie = parse_gammavet(text)
+                codes = codes_gammavet(titulo)
+                print("  FORMATO: Gammavet (reconocido por el diseño; el nombre del laboratorio va solo en el logo: CONFIRMAR en la imagen)")
 
             if kind == "zip":   imgs = images_from_zip(path)
             elif kind == "pdf": imgs = images_from_pdf(path, wd, args.dpi)
@@ -451,8 +576,16 @@ def main():
                         else: est = "✓ en rango"
                     rng = f"{r['low']}-{r['high']}" if r["low"] is not None else "s/d"
                     tipo = r["sid"] if r["sid"] else ("nota" if r.get("mapped") else "NO MAPEADO")
-                    print(f"  {r['param'][:32]:32} {str(r['value']):>8} {r['unit'][:7]:>7} {rng:>14} {r['page']:>4}  {est:11} [{tipo}]")
+                    marca = f" marca del lab: {r['flag']}" if r.get("flag") else ""
+                    print(f"  {r['param'][:32]:32} {str(r['value']):>8} {r['unit'][:7]:>7} {rng:>14} {r['page']:>4}  {est:11} [{tipo}]{marca}")
                 print(f"  ({len(parsed)} filas parseadas — contrastar que el número coincida con las filas del PDF)")
+            if cual:
+                print("\n  ── RESULTADOS CUALITATIVOS (no van a series; contrastar contra la imagen) ──")
+                for lab_, res_, uni_, pg_ in cual:
+                    print(f"  {lab_[:34]:34} {res_[:30]:30} {uni_[:10]:10} pág {pg_}")
+                print(f"  ({len(cual)} filas cualitativas)")
+            for l_ in pie:
+                print(f"  PIE DEL INFORME: {l_}")
 
             # ---- BORRADOR DE PUNTOS PARA datos.js ----
             iso = None
@@ -466,10 +599,15 @@ def main():
                 for r in borr:
                     pt = {"fecha": iso or "REVISAR", "valor": r["value"], "archivo": idx}
                     if r["sid"] == "glucosa": pt["tubo"] = r.get("tubo") or "REVISAR"
+                    if r.get("lab"):  # otro laboratorio: el punto lleva su laboratorio y el rango de su informe
+                        pt["lab"] = r["lab"]; pt["rango"] = [r["low"], r["high"]]
                     print(f"   {r['sid']:12} " + json.dumps(pt, ensure_ascii=False))
 
             # ---- CHEQUEOS AUTOMÁTICOS ----
-            flags = run_checks(parsed, hist) if parsed else []
+            if lab:
+                flags = run_checks_lab(parsed, hist, hist_lab, lab) if parsed else []
+            else:
+                flags = run_checks(parsed, hist) if parsed else []
             print("\n  ── CHEQUEOS AUTOMÁTICOS (canal texto vs histórico) ──")
             if not flags:
                 print("  ✔ Sin alertas automáticas. (Igual: verificar visualmente y con Camilo.)")

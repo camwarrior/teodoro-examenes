@@ -16,6 +16,13 @@ nuevos.json es la lista de valores que Camilo aprobó, por ejemplo:
   [{"serie": "alt", "fecha": "2026-10-02", "valor": 252, "archivo": 45},
    {"serie": "glucosa", "fecha": "2026-10-02", "valor": 61, "archivo": 45, "tubo": "sin fluoruro"}]
 Cada uno debe existir exactamente una vez en datos.js, en esa serie, fecha y archivo.
+Si el valor viene de otro laboratorio, lleva además "lab" y "rango" (los del informe), que también
+deben coincidir:  {"serie": "upc", "fecha": "2026-11-12", "valor": 0.48, "archivo": 48,
+                   "lab": "Gammavet", "rango": [0, 0.5]}
+
+Laboratorio y rango por punto: una serie puede declarar su laboratorio habitual ("lab") y cada punto
+puede traer el suyo ("lab") y el rango de su propio informe ("rango"). Un punto de un laboratorio
+distinto al de la serie DEBE traer su rango: el sitio evalúa cada valor contra el rango de su informe.
 
 Sale con código 1 si hay errores (❌). Los avisos (ℹ️) no bloquean, pero hay que leerlos.
 """
@@ -36,6 +43,13 @@ def cargar(path):
     if not body.endswith(";"):
         raise SystemExit("❌ datos.js debe terminar en ';'")
     return json.loads(body[:-1])
+
+
+def rango_ok(r):
+    """Rango válido: lista de 2, cada uno número o null, con mínimo < máximo si están los dos."""
+    if not isinstance(r, list) or len(r) != 2: return False
+    if any(x is not None and (isinstance(x, bool) or not isinstance(x, (int, float))) for x in r): return False
+    return r[0] is None or r[1] is None or r[0] < r[1]
 
 
 def iso_de_label(label):
@@ -91,6 +105,9 @@ def main():
         for campo in ("nombre", "unidad", "rango", "organo", "puntos"):
             if campo not in se: err.append(f"serie {k}: falta '{campo}'")
         if len(se.get("rango", [])) != 2: err.append(f"serie {k}: rango debe tener 2 valores")
+        elif not rango_ok(se["rango"]): err.append(f"serie {k}: rango inválido {se['rango']}")
+        if "lab" in se and not (isinstance(se["lab"], str) and se["lab"].strip()):
+            err.append(f"serie {k}: 'lab' debe ser un texto no vacío")
         f_prev = ""
         for i, p in enumerate(se["puntos"]):
             n += 1
@@ -107,6 +124,16 @@ def main():
             f_prev = p.get("fecha", "")
             if k == "glucosa" and p.get("tubo") not in TUBOS:
                 err.append(f"glucosa[{i}]: falta 'tubo' (con fluoruro / sin fluoruro)")
+            # laboratorio y rango propios del punto
+            if "lab" in p:
+                if not (isinstance(p["lab"], str) and p["lab"].strip()):
+                    err.append(f"{k}[{i}]: 'lab' debe ser un texto no vacío")
+                elif "lab" not in se:
+                    err.append(f"{k}[{i}]: tiene 'lab' pero la serie no declara su laboratorio habitual ('lab')")
+                elif p["lab"] != se["lab"] and "rango" not in p:
+                    err.append(f"{k}[{i}]: es de otro laboratorio ({p['lab']}) y no trae el 'rango' de su informe")
+            if "rango" in p and not rango_ok(p["rango"]):
+                err.append(f"{k}[{i}]: rango inválido {p['rango']}")
 
     # ---- contenido ----
     C = D.get("contenido", {})
@@ -156,7 +183,7 @@ def main():
         for p in se["puntos"]:
             for c in ("valor", "pad", "pam"):
                 if c in p: conocidos.add(round(float(p[c]), 4))
-        for r in se["rango"]:
+        for r in se["rango"] + [x for p in se["puntos"] for x in p.get("rango", [])]:
             if r is not None: conocidos.add(round(float(r), 4))
     B = C.get("bloques", {})
     if "ggt" in B: conocidos.add(round(float(B["ggt"]["valor"]), 4))
@@ -179,7 +206,8 @@ def main():
         for x in json.load(open(a.nuevos, encoding="utf-8")):
             pts = D["series"].get(x["serie"], {}).get("puntos", [])
             hit = [p for p in pts if p["fecha"] == x["fecha"] and p["archivo"] == x["archivo"]
-                   and abs(p["valor"] - x["valor"]) < 1e-9 and p.get("tubo") == x.get("tubo")]
+                   and abs(p["valor"] - x["valor"]) < 1e-9 and p.get("tubo") == x.get("tubo")
+                   and p.get("lab") == x.get("lab") and p.get("rango") == x.get("rango")]
             if len(hit) != 1:
                 err.append(f"round-trip: {x} aparece {len(hit)} veces en datos.js (debe ser 1)")
         if not any(e.startswith("round-trip") for e in err):
