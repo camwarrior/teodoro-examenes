@@ -330,7 +330,7 @@ window.DATOS =
       ]
     },
     "resumen": {
-      "titular": "Hígado y orina son los temas para conversar con la veterinaria. Lo demás está estable o en observación.",
+      "titular": "Hígado es el tema para conversar con la veterinaria. Lo demás está estable o en observación.",
       "general": {
         "intro": "Teodoro tiene tres temas crónicos que conviven y se vigilan juntos: <strong>los riñones</strong> (lo principal), <strong>el páncreas/hígado</strong> (de donde nació todo) y <strong>el corazón</strong> (un hallazgo más reciente y leve). Esta es la lectura de cada uno:",
         "bloques": [
@@ -342,12 +342,12 @@ window.DATOS =
           {
             "nivel": "watch",
             "titulo": "A vigilar",
-            "html": "<strong>SDMA:</strong> subió a 21 en noviembre 2026, sobre el rango (1–14), con la creatinina normal. <strong>Leucocitos:</strong> bajo el rango en noviembre 2026 (4570, leucopenia moderada según el laboratorio, con morfología normal). <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía. <strong>Tiroides:</strong> la T4 había venido subiendo, pero desde agosto 2026 está de vuelta en rango (2.77 y 2.83 en noviembre); la TSH normal descarta hipotiroidismo. El eco cervical mostró la tiroides de tamaño conservado con leve hiperecogenicidad del lóbulo derecho (tiroiditis leve). Conviene seguir el control según indique la endocrinóloga. <strong>Electrolitos:</strong> sodio y potasio volvieron a rango en noviembre 2026; el cloro sigue alto (117.9). <strong>Fósforo:</strong> en el límite inferior (2.9 en octubre y noviembre 2026)."
+            "html": "<strong>SDMA:</strong> subió a 21 en noviembre 2026, sobre el rango (1–14), con la creatinina normal. <strong>Leucocitos:</strong> bajo el rango en noviembre 2026 (4570, leucopenia moderada según el laboratorio, con morfología normal). <strong>Páncreas:</strong> la PLI sigue activa desde 2023. <strong>Cálculos renales y barro biliar:</strong> presentes y en seguimiento por ecografía. <strong>Tiroides:</strong> la T4 había venido subiendo, pero desde agosto 2026 está de vuelta en rango (2.77 y 2.83 en noviembre); la TSH normal descarta hipotiroidismo. El eco cervical mostró la tiroides de tamaño conservado con leve hiperecogenicidad del lóbulo derecho (tiroiditis leve). Conviene seguir el control según indique la endocrinóloga. <strong>Electrolitos:</strong> sodio y potasio volvieron a rango en noviembre 2026; el cloro sigue alto (117.9). <strong>Fósforo:</strong> en el límite inferior (2.9 en octubre y noviembre 2026). <strong>Infecciones urinarias:</strong> la misma bacteria (E. coli) apareció en cuatro urocultivos seguidos (agosto 2025 a enero 2026) y en el de enero ya fue resistente a tres antibióticos; el urocultivo del 12 nov 2026 fue negativo."
           },
           {
             "nivel": "alert",
             "titulo": "Conversar con la veterinaria",
-            "html": "<strong>Hígado:</strong> con Hepatocan Forte, la ALT bajó de 388 (agosto) a 252 (octubre) y a 238 (noviembre 2026), pero sigue elevada, la AST subió levemente y la ecografía muestra cambios grasos. <strong>Infecciones urinarias:</strong> la misma bacteria (E. coli) apareció en cuatro urocultivos seguidos (agosto 2025 a enero 2026) y en el último ya fue resistente a tres antibióticos. Estos dos puntos son los que más vale la pena plantear en el próximo control."
+            "html": "<strong>Hígado:</strong> con Hepatocan Forte, la ALT bajó de 388 (agosto) a 252 (octubre) y a 238 (noviembre 2026), pero sigue elevada, la AST subió levemente y la ecografía muestra cambios grasos. Es el punto que más vale la pena plantear en el próximo control."
           }
         ],
         "nota": "Recuerda: este resumen es para ayudarte a entender los exámenes, no para reemplazar a tu veterinaria. Las decisiones de tratamiento siempre las toma ella con el examen físico de Teodoro."
@@ -409,9 +409,9 @@ window.DATOS =
       {
         "id": "orina",
         "nombre": "Orina",
-        "estado": "alert",
-        "nota": "UPC 0.48 en nov 2026, dentro del rango pero cerca del límite (laboratorio nuevo). E. coli en 4 urocultivos seguidos (ago 2025 – ene 2026); urocultivo de nov 2026 pendiente.",
-        "titular": "El UPC del 12 nov 2026 fue 0.48: dentro del rango (hasta 0.5), pero más alto que en enero y medido por primera vez en otro laboratorio. La misma bacteria (E. coli) apareció en cuatro urocultivos seguidos hasta enero 2026; el urocultivo de noviembre está pendiente.",
+        "estado": "watch",
+        "nota": "UPC 0.48 en nov 2026, dentro del rango pero cerca del límite (laboratorio nuevo). Urocultivo del 12 nov 2026 negativo, el primero tras 4 seguidos con E. coli (ago 2025 – ene 2026).",
+        "titular": "El UPC del 12 nov 2026 fue 0.48: dentro del rango (hasta 0.5), pero más alto que en enero y medido por primera vez en otro laboratorio. La misma bacteria (E. coli) apareció en cuatro urocultivos seguidos hasta enero 2026; el urocultivo del 12 de noviembre fue negativo.",
         "principal": "upc",
         "series": [
           "upc",
@@ -438,9 +438,9 @@ window.DATOS =
         ],
         "conclusion": {
           "titulo": "Conclusión orina",
-          "nivel": "alert",
+          "nivel": "watch",
           "parrafos": [
-            "El UPC mejoró muchísimo después de la crisis: de 1.55 en mayo 2024 a 0.12 (normal) en enero 2026. En el control del 12 nov 2026 fue 0.48: sigue dentro del rango (hasta 0.5), pero es más alto. Ese examen se hizo por primera vez en otro laboratorio (Gammavet), con otro método, por lo que no se puede comparar directamente con los valores anteriores ni saber todavía cuánto de la diferencia es real; el próximo control en el mismo laboratorio lo aclarará. El punto rojo es la infección urinaria recurrente: después de seis urocultivos negativos (mayo 2024 a junio 2025), la misma bacteria (E. coli) apareció en cuatro cultivos seguidos, de agosto 2025 a enero 2026. En noviembre ya mostraba sensibilidad reducida a dos antibióticos y en enero fue resistente a tres (Amoxi-Clav, Cefadroxilo y Gentamicina). Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos. El urocultivo del 12 nov 2026 está pendiente."
+            "El UPC mejoró muchísimo después de la crisis: de 1.55 en mayo 2024 a 0.12 (normal) en enero 2026. En el control del 12 nov 2026 fue 0.48: sigue dentro del rango (hasta 0.5), pero es más alto. Ese examen se hizo por primera vez en otro laboratorio (Gammavet), con otro método, por lo que no se puede comparar directamente con los valores anteriores ni saber todavía cuánto de la diferencia es real; el próximo control en el mismo laboratorio lo aclarará. El punto a vigilar es la infección urinaria recurrente: después de seis urocultivos negativos (mayo 2024 a junio 2025), la misma bacteria (E. coli) apareció en cuatro cultivos seguidos, de agosto 2025 a enero 2026. En noviembre ya mostraba sensibilidad reducida a dos antibióticos y en enero fue resistente a tres (Amoxi-Clav, Cefadroxilo y Gentamicina). Las infecciones urinarias repetidas pueden dañar los riñones, así que es importante seguirlas de cerca y completar siempre los tratamientos. El urocultivo del 12 nov 2026 (laboratorio Gammavet) fue negativo: no hubo desarrollo bacteriano a las 48 horas. Es el primer urocultivo negativo desde junio 2025."
           ]
         },
         "bloques": [
@@ -781,6 +781,13 @@ window.DATOS =
           "detalle": "Resistente: Amoxi-Clav, Cefadroxilo, Gentamicina. Sensible: Amikacina, Enrofloxacino, Nitrofurantoína, Sulfa-trimetoprim",
           "tono": "alert",
           "archivo": 35
+        },
+        {
+          "fecha": "12 nov 2026",
+          "resultado": "Negativo (48 h)",
+          "detalle": "Laboratorio Gammavet",
+          "tono": "ok",
+          "archivo": 49
         }
       ],
       "ecocardio_metricas": [
@@ -1100,7 +1107,7 @@ window.DATOS =
       },
       {
         "cuando": "Nov 2026 · 6 a 2 m",
-        "texto": "Control completo con Hepatocan Forte en curso. Riñones: SDMA 21 ↑ (sube desde 14), Creatinina 1.4, NUS 23.9, Fósforo 2.9 (límite inferior). Hígado: ALT 238 ↑ (sigue bajando), FA 177 ↑, AST 52.2 ↑ (sube), GGT 3.5. Páncreas: PLI 210 ↑. Hemograma: Leucocitos 4570 ↓ (leucopenia moderada según el laboratorio), Hematocrito 53.9 y Hemoglobina 19.0 en rango. Electrolitos: Na 146.3 y K 4.8 en rango, Cl 117.9 ↑. T4 2.83 y TSH 0.28 en rango. Glucosa 86.1 (con fluoruro) y Calcio 10 en rango. Panel de coagulación normal. Orina (12 nov, por cistocentesis, primer examen en el laboratorio Gammavet): UPC 0.48 (rango hasta 0.5), proteínas 40.1 ↑ (rango 0–30), creatinina en orina 84.1. Urianálisis: leucocitos y eritrocitos 0–2 por campo, bacterias en muy escasa cantidad, cilindros hialinos +. Urocultivo pendiente.",
+        "texto": "Control completo con Hepatocan Forte en curso. Riñones: SDMA 21 ↑ (sube desde 14), Creatinina 1.4, NUS 23.9, Fósforo 2.9 (límite inferior). Hígado: ALT 238 ↑ (sigue bajando), FA 177 ↑, AST 52.2 ↑ (sube), GGT 3.5. Páncreas: PLI 210 ↑. Hemograma: Leucocitos 4570 ↓ (leucopenia moderada según el laboratorio), Hematocrito 53.9 y Hemoglobina 19.0 en rango. Electrolitos: Na 146.3 y K 4.8 en rango, Cl 117.9 ↑. T4 2.83 y TSH 0.28 en rango. Glucosa 86.1 (con fluoruro) y Calcio 10 en rango. Panel de coagulación normal. Orina (12 nov, por cistocentesis, primer examen en el laboratorio Gammavet): UPC 0.48 (rango hasta 0.5), proteínas 40.1 ↑ (rango 0–30), creatinina en orina 84.1. Urianálisis: leucocitos y eritrocitos 0–2 por campo, bacterias en muy escasa cantidad, cilindros hialinos +. Urocultivo: negativo (sin desarrollo bacteriano a las 48 horas).",
         "tono": "watch"
       }
     ],
@@ -1137,9 +1144,9 @@ window.DATOS =
       },
       {
         "t": "ITU E. coli",
-        "v": "⚠ Recurrente",
-        "d": "4 urocultivos seguidos (ago 2025 – ene 2026)",
-        "tono": "alert"
+        "v": "→ Negativo en nov 2026",
+        "d": "Tras 4 urocultivos seguidos con E. coli (ago 2025 – ene 2026)",
+        "tono": "watch"
       },
       {
         "t": "T4 total",
@@ -1150,6 +1157,7 @@ window.DATOS =
     ]
   },
   "archivos": [
+    {"id": 49, "cat": "orina", "catLabel": "Urocultivo", "icon": "🧫", "color": "#fcd34d", "dateLabel": "12 nov 2026", "codes": "Urocultivo", "pages": 1, "embedded": true, "images": ["archivos/49_01.webp"]},
     {"id": 48, "cat": "orina", "catLabel": "Orina", "icon": "💧", "color": "#fbbf24", "dateLabel": "12 nov 2026", "codes": "Análisis Funcional de Orina", "pages": 1, "embedded": true, "images": ["archivos/48_01.webp"]},
     {"id": 47, "cat": "orina", "catLabel": "Orina", "icon": "💧", "color": "#fbbf24", "dateLabel": "12 nov 2026", "codes": "Urianálisis", "pages": 1, "embedded": true, "images": ["archivos/47_01.webp"]},
     {"id": 46, "cat": "sangre", "catLabel": "Sangre / Bioquímica", "icon": "🩸", "color": "#f87171", "dateLabel": "4 nov 2026", "codes": "Hemograma · Perfil Bioquímico · SDMA · Electrolitos · PLI · TSH · T4 Total · Panel de Coagulación", "pages": 5, "embedded": true, "images": ["archivos/46_01.webp", "archivos/46_02.webp", "archivos/46_03.webp", "archivos/46_04.webp", "archivos/46_05.webp"]},

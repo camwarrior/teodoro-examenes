@@ -596,7 +596,7 @@ def main():
             if cual:
                 print("\n  ── RESULTADOS CUALITATIVOS (no van a series; contrastar contra la imagen) ──")
                 for lab_, res_, uni_, pg_ in cual:
-                    print(f"  {lab_[:34]:34} {res_[:30]:30} {uni_[:10]:10} pág {pg_}")
+                    print(f"  {lab_[:34]:34} {res_}  {uni_}  pág {pg_}")
                 print(f"  ({len(cual)} filas cualitativas)")
             for l_ in pie:
                 print(f"  PIE DEL INFORME: {l_}")
