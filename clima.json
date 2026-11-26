@@ -7,11 +7,12 @@
   "principal": "330019",
   "dias": {},
   "ultimo_intento": {
-    "cuando": "2026-11-26T17:35-03:00",
+    "cuando": "2026-11-26T17:45-03:00",
     "ok": false,
     "nuevos": [],
     "avisos": [
-      "Faltan los secretos DMC_USUARIO y/o DMC_TOKEN en GitHub."
+      "La respuesta de la estación 330019 no trae 'estaciones/330019' (claves: ['pais', 'organismo', 'fechaCreacion', 'timezone', 'producto', 'status', 'datosEstacion', 'datos']).",
+      "La respuesta de la estación 330020 no trae 'estaciones/330020' (claves: ['pais', 'organismo', 'fechaCreacion', 'timezone', 'producto', 'status', 'datosEstacion', 'datos'])."
     ],
     "faltan": []
   }
