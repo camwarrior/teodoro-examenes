@@ -5,14 +5,34 @@
     "330020": "Quinta Normal, Santiago"
   },
   "principal": "330019",
-  "dias": {},
+  "dias": {
+    "2026-11-24": {
+      "min": 11.5,
+      "max": 27.8,
+      "min_hora": "2026-11-24 06:56:00",
+      "max_hora": "2026-11-24 16:35:00",
+      "datos": 1398,
+      "estacion": "330019"
+    },
+    "2026-11-25": {
+      "min": 13.4,
+      "max": 31.8,
+      "min_hora": "2026-11-25 05:54:00",
+      "max_hora": "2026-11-25 15:57:00",
+      "datos": 1417,
+      "estacion": "330019"
+    }
+  },
   "ultimo_intento": {
-    "cuando": "2026-11-26T17:45-03:00",
-    "ok": false,
-    "nuevos": [],
+    "cuando": "2026-11-26T17:47-03:00",
+    "ok": true,
+    "nuevos": [
+      "2026-11-24 (330019): mín 11.5, máx 27.8",
+      "2026-11-25 (330019): mín 13.4, máx 31.8"
+    ],
     "avisos": [
-      "La respuesta de la estación 330019 no trae 'estaciones/330019' (claves: ['pais', 'organismo', 'fechaCreacion', 'timezone', 'producto', 'status', 'datosEstacion', 'datos']).",
-      "La respuesta de la estación 330020 no trae 'estaciones/330020' (claves: ['pais', 'organismo', 'fechaCreacion', 'timezone', 'producto', 'status', 'datosEstacion', 'datos'])."
+      "2026-11-23: 330019 tiene el día incompleto (649 de 1417 mediciones)",
+      "2026-11-23: 330020 tiene el día incompleto (649 de 1364 mediciones)"
     ],
     "faltan": []
   }
