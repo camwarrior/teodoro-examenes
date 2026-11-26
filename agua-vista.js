@@ -94,7 +94,7 @@
   function enviar(op, btn) {
     var pinEl = document.getElementById('ag-pin');
     var pin = (pinEl && pinEl.value) || pinGuardado();
-    if (!pin) { S.aviso = { tipo: 'error', txt: 'Escribe el PIN para guardar.' }; render(); return; }
+    if (!pin) { S.aviso = { tipo: 'error', txt: 'Escribe el PIN para guardar.' }; render(); var pe = document.getElementById('ag-pin'); if (pe) pe.focus(); return; }
     var recordar = document.getElementById('ag-recordar');
     if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
     op.pin = pin;
@@ -106,7 +106,7 @@
           S.aviso = { tipo: 'error', txt: x.j.error || 'No se pudo guardar.' };
         } else {
           if (!recordar || recordar.checked) guardarPin(pin);
-          S.agua = x.j.agua; S.editId = null; S.abiertoForm = false;
+          S.agua = x.j.agua; S.editId = null; S.abiertoForm = false; S.limpiar = true;
           S.aviso = { tipo: 'ok', txt: 'Guardado. ' + resumenMensaje(op) };
         }
         render();
@@ -314,7 +314,13 @@
   function render() {
     var v = document.getElementById('v-agua'); if (!v) return;
     if (!S.cargado) { v.innerHTML = '<p class="eyebrow">Registro temporal</p><h1 class="h1">Agua y clima</h1><p class="lead" style="margin-top:8px">Cargando…</p>'; return; }
+    /* Conserva lo escrito si la página se redibuja por un aviso (PIN faltante, error, etc.).
+       Solo se limpia después de un guardado exitoso. */
+    var previos = {};
+    if (!S.limpiar) v.querySelectorAll('input[id]').forEach(function (el) { previos[el.id] = el.type === 'checkbox' ? el.checked : el.value; });
+    S.limpiar = false;
     v.innerHTML = html();
+    Object.keys(previos).forEach(function (id) { var el = document.getElementById(id); if (!el) return; if (el.type === 'checkbox') el.checked = previos[id]; else el.value = previos[id]; });
     dibujar();
     var q = document.getElementById('ag-quedo'); if (q) { q.addEventListener('input', calcVivo); calcVivo(); }
   }
