@@ -1,0 +1,48 @@
+# Temperatura real del día (mínima y máxima) desde la Dirección Meteorológica de Chile.
+# Corre dos veces al día; la segunda vez solo rellena lo que haya faltado. Escribe clima.json.
+name: Clima diario (DMC)
+
+on:
+  schedule:
+    - cron: '17 12 * * *'   # ~09:17 en Santiago (08:17 en invierno)
+    - cron: '17 18 * * *'   # ~15:17, por si la primera falló
+  workflow_dispatch:
+  # TEMPORAL, solo mientras se prueba en la rama agua-clima. Se quita antes de pasar a main.
+  push:
+    branches: [agua-clima]
+    paths: ['scripts/clima_dmc.py', '.github/workflows/clima.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clima
+  cancel-in-progress: false
+
+jobs:
+  clima:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Descargar temperaturas de la DMC
+        id: dmc
+        env:
+          DMC_USUARIO: ${{ secrets.DMC_USUARIO }}
+          DMC_TOKEN: ${{ secrets.DMC_TOKEN }}
+        run: python3 scripts/clima_dmc.py
+
+      - name: Guardar clima.json
+        if: always()
+        run: |
+          git config user.name "clima-dmc[bot]"
+          git config user.email "clima-dmc@users.noreply.github.com"
+          git add clima.json
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git commit -m "Clima: temperaturas DMC $(TZ=America/Santiago date +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            sleep 5
+          done
+          exit 1

@@ -224,6 +224,58 @@ main{flex:1 1 auto;min-width:0;padding:32px 40px 64px}
 
 footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);max-width:80ch}
 
+/* ---------- Agua y clima (pestaña temporal, lógica en agua-vista.js) ---------- */
+.ag-aviso{margin-top:16px;padding:12px 16px;border-radius:10px;font-size:15px;font-weight:600}
+.ag-aviso.ok{background:var(--ok-bg);color:var(--ok)}.ag-aviso.error{background:var(--alert-bg);color:var(--alert)}
+.ag-form{margin-top:20px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;max-width:720px}
+.ag-fhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.ag-fhead b{display:block;font-size:17px}
+.ag-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:end}
+.ag-f{display:flex;flex-direction:column;gap:5px;font-size:14px;color:var(--ink2);font-weight:600}
+.ag-f.ag-w{grid-column:1/-1}
+.ag-f input{font:inherit;font-weight:500;font-size:18px;min-height:46px;padding:8px 12px;border:1px solid #CDD1CA;border-radius:9px;background:var(--surface);color:var(--ink);width:100%}
+.ag-f input:focus{outline:2px solid var(--series);outline-offset:1px}
+.ag-chk{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink2);min-height:46px}
+.ag-chk input{width:18px;height:18px}
+.ag-calc{font-size:16px;color:var(--ink2);min-height:24px}
+.ag-calc b{color:var(--ink)}
+.ag-calc.err,.ag-warn-in{color:var(--alert)}
+.ag-warn{background:var(--watch-bg);color:var(--watch);padding:10px 12px;border-radius:9px;font-size:14px}
+.ag-mas summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--series);min-height:32px;display:flex;align-items:center}
+.ag-mas[open] summary{margin-bottom:8px}
+.ag-acc{display:flex;flex-wrap:wrap;gap:10px}
+.btn.prim{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.prim:hover{background:#2C3136}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ag-del{color:var(--alert);margin-left:auto}
+.ag-lnk{border:0;background:none;color:var(--series);font-weight:600;cursor:pointer;padding:4px}
+.ag-pinok{display:flex;align-items:center;gap:4px}
+.ag-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px;max-width:720px}
+.ag-tiles .mt b i{font-style:normal;font-size:13px;font-weight:500;color:var(--muted)}
+.ag-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:24px}
+.ag-charts{margin-top:14px}
+.ag-cv2{height:180px}
+.ag-vacio{margin-top:14px;padding:18px 20px;color:var(--ink2)}
+.ag-tw{overflow-x:auto}
+.ag-t{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+.ag-t th{font-size:13px;font-weight:600;color:var(--muted);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.ag-t td{padding:10px 12px;border-top:1px solid var(--line2);vertical-align:top;white-space:nowrap}
+.ag-t td span{display:block;font-size:12px;color:var(--muted)}
+.ag-t td.ag-nt{white-space:normal;min-width:180px;color:var(--ink2)}
+.ag-t tr[data-ag-edit]{cursor:pointer}
+.ag-t tr[data-ag-edit]:hover,.ag-t tr.on{background:var(--soft)}
+.ag-t tr.ag-open td{color:var(--muted)}
+.ag-editc{margin-top:12px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;max-width:720px;border-color:var(--series)}
+@media(max-width:979px){
+  .ag-grid{grid-template-columns:1fr 1fr}
+  .ag-tiles{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .ag-tiles .mt{padding:10px}
+  .ag-tiles .mt b{font-size:17px}
+  .ag-form{padding:16px}
+}
+.ag-t td span.ag-nm{display:none}
+@media(max-width:600px){.ag-raw,.ag-t .ag-nt{display:none}.ag-t{min-width:0}.ag-t td,.ag-t th{padding:10px 8px}.ag-t td:first-child{white-space:normal}.ag-t td span.ag-nm{display:block;margin-top:3px;max-width:42ch}}
+
 /* ---------- Animación de cambio de ficha (móvil, solo con swipe) ---------- */
 @keyframes slInR{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
 @keyframes slInL{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
@@ -301,6 +353,7 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-si
       <div class="af-filters" id="af-filters" role="group" aria-label="Filtrar por tipo"></div>
       <div class="af-list" id="af-list"></div>
     </section>
+    <section class="view" id="v-agua" aria-label="Agua y clima"></section>
     <footer id="pie"></footer>
   </main>
 </div>
@@ -310,6 +363,7 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-si
   <a href="#linea-de-tiempo" data-r="linea-de-tiempo"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M6 4v14M6 7h10M6 12h7M6 17h9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Línea de tiempo</a>
   <a href="#imagenes" data-r="imagenes"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="11" cy="11" r="2.2" fill="currentColor"/></svg>Imágenes</a>
   <a href="#archivos" data-r="archivos"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 6h5l1.8 2H18v9H4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Archivos</a>
+  <a href="#agua" data-r="agua"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 3.5c3 3.6 5 6.4 5 9a5 5 0 0 1-10 0c0-2.6 2-5.4 5-9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Agua</a>
 </nav>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbtitle">
@@ -329,6 +383,7 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-si
 
 <script src="datos.js?v=2026-11-12"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="agua-vista.js?v=2026-11-26"></script>
 <script>
 (function(){
 'use strict';
@@ -433,7 +488,8 @@ function spark(key){
 function renderNav(){
   var h='<a href="#resumen" data-r="resumen">Resumen</a><div class="grp">Áreas de seguimiento</div>';
   ORGS.forEach(function(o){h+='<a href="#'+o.id+'" data-r="'+o.id+'"><span class="dot '+o.estado+'" aria-hidden="true"></span>'+esc(o.nombre)+'<span class="cnt">'+ESTADO[o.estado]+'</span></a>';});
-  h+='<div class="grp">Historial</div><a href="#linea-de-tiempo" data-r="linea-de-tiempo">Línea de tiempo</a><a href="#imagenes" data-r="imagenes">Imágenes</a><a href="#archivos" data-r="archivos">Archivos<span class="cnt">'+ITEMS.length+'</span></a>';
+  h+='<div class="grp">Historial</div><a href="#linea-de-tiempo" data-r="linea-de-tiempo">Línea de tiempo</a><a href="#imagenes" data-r="imagenes">Imágenes</a><a href="#archivos" data-r="archivos">Archivos<span class="cnt">'+ITEMS.length+'</span></a>'
+    +'<div class="grp grp-agua">Registro temporal</div><a href="#agua" data-r="agua">Agua y clima</a>';
   document.getElementById('nav-side').innerHTML=h;
   document.getElementById('dx-side').innerHTML='<b>Diagnósticos</b>'+C.paciente.diagnosticos.map(function(d){return '<span>'+esc(d).replace(/(\d)-(\d)/g,'$1\u2011$2')+'</span>';}).join('');
   var ed=edadTxt();
@@ -716,7 +772,7 @@ function renderPie(){
 }
 
 /* ---------- Rutas ---------- */
-var VIEWS=['resumen','linea-de-tiempo','imagenes','archivos'];
+var VIEWS=['resumen','linea-de-tiempo','imagenes','archivos','agua'];
 var current=null;
 function route(anim){
   var r=(location.hash||'#resumen').slice(1);
@@ -725,11 +781,12 @@ function route(anim){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on','sl-r','sl-l');});
   var v=document.getElementById(isOrg?'v-organo':'v-'+r);
   if(isOrg) renderOrgano(r); else { charts.forEach(function(c){c.destroy();}); charts=[]; }
+  if(window.AguaVista){ if(r==='agua') window.AguaVista.mostrar(); else window.AguaVista.destruir(); }
   v.classList.add('on');
   if(anim && window.matchMedia('(max-width:979px)').matches){void v.offsetWidth; v.classList.add(anim>0?'sl-r':'sl-l');}
   document.querySelectorAll('[data-r]').forEach(function(a){var on=a.getAttribute('data-r')===r||(isOrg&&a.getAttribute('data-r')==='resumen'&&a.closest('.tabbar'));a.classList.toggle('on',!!on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   var o=isOrg?orgById(r):null;
-  document.title=(o?o.nombre+' · ':(r!=='resumen'?({'linea-de-tiempo':'Línea de tiempo','imagenes':'Imágenes','archivos':'Archivos'})[r]+' · ':''))+'Teodoro · Expediente médico';
+  document.title=(o?o.nombre+' · ':(r!=='resumen'?({'linea-de-tiempo':'Línea de tiempo','imagenes':'Imágenes','archivos':'Archivos','agua':'Agua y clima'})[r]+' · ':''))+'Teodoro · Expediente médico';
   if(current!==null) window.scrollTo(0,0);
   current=r;
 }
