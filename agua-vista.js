@@ -147,7 +147,7 @@
     } else if (S.apiError) {
       h += '<div class="ag-fhead"><div><b>Registrar medición</b><span class="small">Por ahora no se puede guardar: ' + esc(S.apiError) + '</span></div></div>';
     } else if (ab && c.some(function (r) { return r.fecha === hoy; })) {
-      h += '<div class="ag-fhead"><div><b>El ' + esc(fCorta(hoy)) + ' ya está cerrado</b><span class="small">Serviste ' + num(ab.servi + suma(ab.agregados)) + '. El próximo cierre es mañana cerca de las 22:00. Para cambiar algo, toca la fila en la tabla.</span></div></div>'
+      h += '<div class="ag-fhead"><div><b>El ' + esc(fCorta(hoy)) + ' ya está cerrado</b><span class="small">Serviste ' + num(ab.servi + suma(ab.agregados)) + '. El próximo cierre es mañana, cuando acuestes a Teo. Para cambiar algo, toca la fila en la tabla.</span></div></div>'
         + pinHtml(pinOk)
         + '<details class="ag-mas"><summary>Agregué agua</summary><p class="small" style="margin:6px 0 8px">Pon el plato en la balanza, tara, echa el agua y anota lo que marca.</p>'
         + '<div class="ag-grid">' + campo('ag-agregado', 'Agregué', 'ml agregados') + '</div>'

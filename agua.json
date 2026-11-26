@@ -1,7 +1,7 @@
 {
   "activo": true,
   "inicio": "2026-11-26",
-  "metodo": "Medición diaria cerca de las 22:00 con balanza de cocina (1 g = 1 ml). Se pesa el plato con el agua al servir y al día siguiente con el agua restante; si se agrega agua entre medio, se pesa lo agregado. Consumo = servido + agregado - restante. No descuenta la evaporación.",
+  "metodo": "Medición una vez al día, en la noche al acostarse Teo (normalmente entre las 22:00 y las 23:00), con balanza de cocina (1 g = 1 ml). Se pesa el plato con el agua al servir y al día siguiente con el agua restante; si se agrega agua entre medio, se pesa lo agregado. Consumo = servido + agregado - restante. No descuenta la evaporación.",
   "registros": [
     {
       "id": "2026-11-26-1",
