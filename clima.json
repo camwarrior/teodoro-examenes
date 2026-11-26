@@ -5,6 +5,42 @@
   },
   "principal": "330019",
   "dias": {
+    "2026-11-20": {
+      "min": 12.5,
+      "max": 24.8,
+      "min_hora": "2026-11-20 04:54",
+      "max_hora": "2026-11-20 15:45",
+      "datos": 24,
+      "estacion": "330019",
+      "fuente": "histórico diario"
+    },
+    "2026-11-21": {
+      "min": 13.3,
+      "max": 23.7,
+      "min_hora": "2026-11-21 06:43",
+      "max_hora": "2026-11-21 16:36",
+      "datos": 24,
+      "estacion": "330019",
+      "fuente": "histórico diario"
+    },
+    "2026-11-22": {
+      "min": 10.3,
+      "max": 25.7,
+      "min_hora": "2026-11-22 06:51",
+      "max_hora": "2026-11-22 15:09",
+      "datos": 24,
+      "estacion": "330019",
+      "fuente": "histórico diario"
+    },
+    "2026-11-23": {
+      "min": 12.5,
+      "max": 25.3,
+      "min_hora": "2026-11-23 06:34",
+      "max_hora": "2026-11-23 15:55",
+      "datos": 24,
+      "estacion": "330019",
+      "fuente": "histórico diario"
+    },
     "2026-11-24": {
       "min": 11.5,
       "max": 27.8,
@@ -23,15 +59,16 @@
     }
   },
   "ultimo_intento": {
-    "cuando": "2026-11-26T17:47-03:00",
+    "cuando": "2026-11-26T18:16-03:00",
     "ok": true,
     "nuevos": [
-      "2026-11-24 (330019): mín 11.5, máx 27.8",
-      "2026-11-25 (330019): mín 13.4, máx 31.8"
+      "2026-11-20: mín 12.5, máx 24.8 (histórico diario)",
+      "2026-11-21: mín 13.3, máx 23.7 (histórico diario)",
+      "2026-11-22: mín 10.3, máx 25.7 (histórico diario)",
+      "2026-11-23: mín 12.5, máx 25.3 (histórico diario)"
     ],
     "avisos": [
-      "2026-11-23: 330019 tiene el día incompleto (649 de 1417 mediciones)",
-      "2026-11-23: 330020 tiene el día incompleto (649 de 1364 mediciones)"
+      "2026-11-23: el resumen trae el día incompleto (619 de 1417 mediciones); se busca en el histórico"
     ],
     "faltan": []
   }
