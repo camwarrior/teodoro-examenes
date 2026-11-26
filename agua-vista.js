@@ -29,7 +29,7 @@
   function fLarga(iso) { var x = dt(iso); return x.d + ' ' + MES[x.m - 1] + ' ' + x.y; }
   function fCorta(iso) { var x = dt(iso); return DIA[new Date(utc(iso)).getUTCDay()] + ' ' + x.d + ' ' + MES[x.m - 1]; }
   function diasEntre(a, b) { return Math.round((utc(b) - utc(a)) / 864e5); }
-  /* Misma regla que el servidor: fecha en Santiago de la hora actual menos 5 horas. */
+  /* Misma regla que el servidor para el cierre: fecha en Santiago de la hora actual menos 5 horas. */
   function jornada() {
     var d = new Date(Date.now() - 5 * 3600e3);
     return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
@@ -37,7 +37,8 @@
   function suma(l) { return (l || []).reduce(function (s, a) { return s + a.ml; }, 0); }
   function r1(x) { return Math.round(x * 10) / 10; }
   function consumo(r) { return r.quedo == null ? null : r1(r.servi + suma(r.agregados) - r.quedo); }
-  function dias(r) { return r.fecha ? diasEntre(r.desde, r.fecha) : null; }
+  function dias(r) { return r.hasta ? Math.max(1, diasEntre(r.fecha, r.hasta) + 1) : null; }
+  function hoyCal() { return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
   function leerNum(v) { v = String(v == null ? '' : v).replace(',', '.').trim(); if (v === '') return null; var n = Number(v); return isFinite(n) ? n : NaN; }
   function guardarPin(p) { try { if (p) localStorage.setItem('teo_pin_agua', p); else localStorage.removeItem('teo_pin_agua'); } catch (e) {} }
   function pinGuardado() { try { return localStorage.getItem('teo_pin_agua') || ''; } catch (e) { return ''; } }
@@ -45,7 +46,7 @@
   function registros() { return (S.agua && S.agua.registros) || []; }
   function cerrados() { return registros().filter(function (r) { return r.quedo != null; }); }
   function abierto() { return registros().filter(function (r) { return r.quedo == null; })[0] || null; }
-  function completos() { return cerrados().filter(function (r) { return dias(r) === 1; }); }
+  function completos() { return cerrados().filter(function (r) { return dias(r) === 1 && !r.parcial; }); }
   function temp(iso) { return (S.clima && S.clima.dias && S.clima.dias[iso]) || null; }
   function pesoEn(iso) {
     var p = null;
@@ -65,16 +66,10 @@
     var fin = c[c.length - 1].fecha, ini = sumarDias(fin, -(+S.rango) + 1);
     return c.filter(function (r) { return r.fecha >= ini; });
   }
-  /* Día con el que quedará el registro abierto: hoy si hoy aún no se cierra; si no, mañana. */
-  function cierreDe(ab) {
-    var hoy = jornada(), cerradoHoy = cerrados().some(function (r) { return r.fecha === hoy; });
-    var f = cerradoHoy ? sumarDias(hoy, 1) : hoy;
-    return f < ab.desde ? ab.desde : f;
-  }
   function etiquetaDias(r) {
     var d = dias(r);
-    if (d === 0) return 'día parcial';
     if (d > 1) return d + ' días';
+    if (r.parcial) return 'día parcial';
     return '';
   }
 
@@ -125,7 +120,7 @@
       return r ? 'Consumo del ' + fLarga(r.fecha) + ': ' + num(consumo(r)) + ' ml.' : '';
     }
     if (op.op === 'agregar') return 'Se sumaron ' + num(leerNum(op.ml)) + ' ml.';
-    if (op.op === 'iniciar') return 'Registro iniciado.';
+    if (op.op === 'iniciar') return 'Agua del día registrada.';
     if (op.op === 'eliminar') return 'Registro eliminado.';
     return 'Registro corregido.';
   }
@@ -146,19 +141,12 @@
       h += '<div class="ag-fhead"><div><b>Registrar medición</b><span class="small">Solo para quien tiene el PIN.</span></div><button class="btn" type="button" data-ag="abrir-form">Registrar</button></div>';
     } else if (S.apiError) {
       h += '<div class="ag-fhead"><div><b>Registrar medición</b><span class="small">Por ahora no se puede guardar: ' + esc(S.apiError) + '</span></div></div>';
-    } else if (ab && c.some(function (r) { return r.fecha === hoy; })) {
-      h += '<div class="ag-fhead"><div><b>El ' + esc(fCorta(hoy)) + ' ya está cerrado</b><span class="small">Serviste ' + num(ab.servi + suma(ab.agregados)) + '. El próximo cierre es mañana, cuando acuestes a Teo. Para cambiar algo, toca la fila en la tabla.</span></div></div>'
-        + pinHtml(pinOk)
-        + '<details class="ag-mas"><summary>Agregué agua</summary><p class="small" style="margin:6px 0 8px">Pon el plato en la balanza, tara, echa el agua y anota lo que marca.</p>'
-        + '<div class="ag-grid">' + campo('ag-agregado', 'Agregué', 'ml agregados') + '</div>'
-        + '<div class="ag-acc"><button class="btn" type="button" data-ag="agregar">Guardar agregado</button></div></details>';
     } else if (ab) {
-      var tot = ab.servi + suma(ab.agregados), dd = diasEntre(ab.desde, hoy);
-      h += '<div class="ag-fhead"><div><b>Cerrar el día ' + esc(fCorta(hoy)) + '</b><span class="small">Abierto desde el ' + esc(fCorta(ab.desde)) + '. Serviste ' + num(ab.servi) + (ab.agregados.length ? ' y agregaste ' + num(suma(ab.agregados)) + ' (total ' + num(tot) + ')' : '') + '.</span></div></div>'
-        + (dd > 1 ? '<p class="ag-warn">Este registro está abierto hace ' + dd + ' días. Si lo cierras ahora, el consumo cubrirá ' + dd + ' días y se mostrará como promedio diario.</p>' : '')
+      var tot = ab.servi + suma(ab.agregados), dd = diasEntre(ab.fecha, hoy) + 1;
+      h += '<div class="ag-fhead"><div><b>Cerrar el ' + esc(fCorta(ab.fecha)) + '</b><span class="small">Al acostar a Teo, pesa el plato con el agua que quedó. Serviste ' + num(ab.servi) + (ab.agregados.length ? ' y agregaste ' + num(suma(ab.agregados)) + ' (total ' + num(tot) + ')' : '') + '.</span></div></div>'
+        + (dd > 1 ? '<p class="ag-warn">Este día quedó abierto desde el ' + esc(fCorta(ab.fecha)) + '. Si lo cierras ahora, el consumo cubrirá ' + dd + ' días y se mostrará como promedio diario.</p>' : '')
         + '<div class="ag-grid">'
         + campo('ag-quedo', 'Quedó', 'Plato con el agua que quedó')
-        + campo('ag-servi', 'Serví para mañana', 'Plato con agua nueva (opcional)')
         + '</div>'
         + '<p class="ag-calc" id="ag-calc" aria-live="polite"></p>'
         + '<details class="ag-mas"><summary>Nota o peso de Teo</summary><div class="ag-grid">'
@@ -171,13 +159,23 @@
         + '<div class="ag-grid">' + campo('ag-agregado', 'Agregué', 'ml agregados') + '</div>'
         + '<div class="ag-acc"><button class="btn" type="button" data-ag="agregar">Guardar agregado</button></div></details>';
     } else {
-      h += '<div class="ag-fhead"><div><b>Iniciar el registro</b><span class="small">No hay un día abierto. Pesa el plato con el agua recién servida.</span></div></div>'
+      var hc = hoyCal();
+      if (registros().some(function (r) { return r.fecha === hc; })) {
+        h += '<div class="ag-fhead"><div><b>El ' + esc(fCorta(hc)) + ' ya está registrado</b><span class="small">Mañana, cuando le sirvas el agua, toca aquí "Servir el agua del día". Para cambiar algo de hoy, toca su fila en la tabla.</span></div></div>';
+        h += '</section>';
+        return h + resto(ab, c);
+      }
+      h += '<div class="ag-fhead"><div><b>Servir el agua del ' + esc(fCorta(hc)) + '</b><span class="small">Pesa el plato con el agua recién servida (en la mañana, o en la madrugada si Teo se levanta).</span></div></div>'
         + '<div class="ag-grid">' + campo('ag-inicio', 'Serví', 'Plato con agua') + '</div>'
         + pinHtml(pinOk)
-        + '<div class="ag-acc"><button class="btn prim" type="button" data-ag="iniciar">Iniciar</button></div>';
+        + '<div class="ag-acc"><button class="btn prim" type="button" data-ag="iniciar">Guardar</button></div>';
     }
     h += '</section>';
+    return h + resto(ab, c);
+  }
 
+  function resto(ab, c) {
+    var h = '';
     /* Resumen */
     var p7 = promedio(ultimosCompletos(7)), p30 = promedio(ultimosCompletos(30)), ul = c[c.length - 1], pz = ul ? pesoEn(ul.fecha) : null;
     h += '<div class="ag-tiles">'
@@ -206,7 +204,7 @@
     var pesoCol = hayPeso();
     h += '<div class="sec"><h2>Registro día por día</h2><div class="card ag-tw"><table class="ag-t"><thead><tr><th>Día</th><th class="ag-raw">Serví</th><th class="ag-raw">Agregué</th><th class="ag-raw">Quedó</th><th>Consumo</th>' + (pesoCol ? '<th>ml/kg</th>' : '') + '<th>Mín</th><th>Máx</th><th class="ag-nt">Nota</th></tr></thead><tbody>';
     if (ab) {
-      h += '<tr class="ag-open' + (S.editId === ab.id ? ' on' : '') + '" data-ag-edit="' + esc(ab.id) + '"><td><b>En curso</b><span>se cerrará como el ' + esc(fCorta(cierreDe(ab))) + '</span></td><td class="ag-raw">' + num(ab.servi) + '</td><td class="ag-raw">' + (ab.agregados.length ? num(suma(ab.agregados)) : '') + '</td><td class="ag-raw"></td><td>' + '<span>serviste ' + num(ab.servi + suma(ab.agregados)) + '</span></td>' + (pesoCol ? '<td></td>' : '') + '<td></td><td></td><td class="ag-nt">' + esc(ab.nota) + '</td></tr>';
+      h += '<tr class="ag-open' + (S.editId === ab.id ? ' on' : '') + '" data-ag-edit="' + esc(ab.id) + '"><td><b>' + esc(fCorta(ab.fecha)) + '</b><span>en curso</span></td><td class="ag-raw">' + num(ab.servi) + '</td><td class="ag-raw">' + (ab.agregados.length ? num(suma(ab.agregados)) : '') + '</td><td class="ag-raw"></td><td>' + '<span>serviste ' + num(ab.servi + suma(ab.agregados)) + '</span></td>' + (pesoCol ? '<td></td>' : '') + '<td></td><td></td><td class="ag-nt">' + esc(ab.nota) + '</td></tr>';
     }
     R.slice().reverse().forEach(function (r) {
       var t = temp(r.fecha), d = dias(r), cons = consumo(r), pz2 = pesoEn(r.fecha), et = etiquetaDias(r);
@@ -214,7 +212,7 @@
       h += '<tr data-ag-edit="' + esc(r.id) + '"' + (S.editId === r.id ? ' class="on"' : '') + '><td><b>' + esc(fCorta(r.fecha)) + '</b>' + (et ? '<span>' + et + '</span>' : '') + (nt ? '<span class="ag-nm">' + nt + '</span>' : '') + '</td>'
         + '<td class="ag-raw">' + num(r.servi) + '</td><td class="ag-raw">' + (r.agregados.length ? num(suma(r.agregados)) : '') + '</td><td class="ag-raw">' + num(r.quedo) + '</td>'
         + '<td><b>' + num(cons) + '</b>' + (d > 1 ? '<span>' + num(cons / d, 0) + '/día</span>' : '') + '</td>'
-        + (pesoCol ? '<td>' + (pz2 && d === 1 ? num(cons / pz2, 0) : '') + '</td>' : '')
+        + (pesoCol ? '<td>' + (pz2 && d === 1 && !r.parcial ? num(cons / pz2, 0) : '') + '</td>' : '')
         + '<td>' + (t ? num(t.min, 1) + '°' : '') + '</td><td>' + (t ? num(t.max, 1) + '°' : '') + '</td>'
         + '<td class="ag-nt">' + nt + '</td></tr>';
     });
@@ -252,6 +250,7 @@
       + (r.quedo != null ? '<label class="ag-f"><span>Quedó</span><input id="ed-quedo" type="text" inputmode="decimal" value="' + num(r.quedo) + '"></label>' : '')
       + '<label class="ag-f"><span>Peso de Teo kg</span><input id="ed-peso" type="text" inputmode="decimal" value="' + (r.peso_teo ? num(r.peso_teo) : '') + '"></label>'
       + '<label class="ag-f ag-w"><span>Nota</span><input id="ed-nota" type="text" maxlength="300" value="' + esc(r.nota) + '"></label>'
+      + '<label class="ag-chk ag-w"><input id="ed-parcial" type="checkbox"' + (r.parcial ? ' checked' : '') + '> Día parcial (no cuenta en los promedios)</label>'
       + '</div>' + (pinGuardado() ? '' : pinHtml(false))
       + '<div class="ag-acc"><button class="btn prim" type="button" data-ag="corregir" data-id="' + esc(r.id) + '">Guardar corrección</button><button class="btn" type="button" data-ag="cancelar">Cancelar</button><button class="btn ag-del" type="button" data-ag="eliminar" data-id="' + esc(r.id) + '">Eliminar</button></div></div>';
   }
@@ -262,11 +261,11 @@
     var q = leerNum(document.getElementById('ag-quedo').value), tot = r1(ab.servi + suma(ab.agregados));
     if (q == null) { el.innerHTML = 'Consumo = ' + num(tot) + ' − quedó.'; el.className = 'ag-calc'; return null; }
     if (isNaN(q)) { el.textContent = 'Escribe solo números.'; el.className = 'ag-calc err'; return null; }
-    var c = r1(tot - q), hoy = jornada(), d = diasEntre(ab.desde, hoy);
+    var c = r1(tot - q), hoy = jornada(), d = Math.max(1, diasEntre(ab.fecha, hoy) + 1);
     if (c < 0) { el.textContent = 'Quedó más de lo que había (' + num(tot) + '). Revisa la balanza.'; el.className = 'ag-calc err'; return null; }
-    var t = num(tot) + ' − ' + num(q) + ' = <b>' + num(c) + ' ml</b>' + (d === 0 ? ' (día parcial)' : d > 1 ? ' en ' + d + ' días (' + num(c / d, 0) + ' por día)' : '') + '.';
-    var ref = promedio(ultimosCompletos(7, hoy)), raro = false;
-    if (d === 1 && ref && ultimosCompletos(7, hoy).length >= 3 && (c > ref * 1.6 || c < ref * 0.5)) {
+    var t = num(tot) + ' − ' + num(q) + ' = <b>' + num(c) + ' ml</b>' + (ab.parcial ? ' (día parcial)' : d > 1 ? ' en ' + d + ' días (' + num(c / d, 0) + ' por día)' : '') + '.';
+    var ref = promedio(ultimosCompletos(7, ab.fecha)), raro = false;
+    if (d === 1 && !ab.parcial && ref && ultimosCompletos(7, ab.fecha).length >= 3 && (c > ref * 1.6 || c < ref * 0.5)) {
       t += ' <span class="ag-warn-in">Es bastante distinto a tu promedio de 7 días (' + num(ref, 0) + ' ml). Revisa la balanza antes de guardar.</span>';
       raro = true;
     }
@@ -286,7 +285,7 @@
     opts = opts || {};
     var D = serieDias(enRango()), labels = D.map(function (x) { var p = dt(x.fecha); return p.d + ' ' + MES[p.m - 1]; });
     var vals = D.map(function (x) { if (!x.r) return null; var d = dias(x.r); return consumo(x.r) / Math.max(1, d); });
-    var claro = D.map(function (x) { return x.r && dias(x.r) !== 1; });
+    var claro = D.map(function (x) { return x.r && (dias(x.r) !== 1 || x.r.parcial); });
     var tick = { color: '#596067', font: { size: opts.pdf ? 22 : 11 }, maxRotation: 0, autoSkipPadding: 8 };
     var tip = { backgroundColor: '#16191B', padding: 10, displayColors: false };
     var base = { responsive: !opts.pdf, maintainAspectRatio: false, animation: false, devicePixelRatio: opts.pdf ? 1 : undefined, layout: { padding: { top: 6, right: 8 } },
@@ -297,7 +296,7 @@
           y: { beginAtZero: true, grid: { color: '#ECEEEA' }, border: { display: false }, ticks: Object.assign({}, tick, { maxTicksLimit: 5, callback: function (v) { return num(v); } }), title: { display: true, text: 'ml', color: '#596067', font: tick.font } } },
         plugins: Object.assign({}, base.plugins, { tooltip: Object.assign({}, tip, { callbacks: {
           title: function (it) { return fLarga(D[it[0].dataIndex].fecha); },
-          label: function (it) { var x = D[it.dataIndex]; if (!x.r) return 'Sin registro'; var d = dias(x.r); return num(consumo(x.r)) + ' ml' + (d === 0 ? ' (día parcial)' : d > 1 ? ' en ' + d + ' días, ' + num(consumo(x.r) / d, 0) + ' por día' : ''); } } }) })
+          label: function (it) { var x = D[it.dataIndex]; if (!x.r) return 'Sin registro'; var d = dias(x.r); return num(consumo(x.r)) + ' ml' + (x.r.parcial && d === 1 ? ' (día parcial)' : d > 1 ? ' en ' + d + ' días, ' + num(consumo(x.r) / d, 0) + ' por día' : ''); } } }) })
       }) });
     var b = new Chart(c2, { type: 'bar', data: { labels: labels, datasets: [{ data: D.map(function (x) { return x.t ? [x.t.min, x.t.max] : null; }), backgroundColor: TERRA, borderRadius: 4, borderSkipped: false, maxBarThickness: opts.pdf ? 40 : 24, categoryPercentage: .8, barPercentage: .9 }] },
       options: Object.assign({}, base, {
@@ -356,7 +355,7 @@
       linea('Teodoro - Registro de agua y temperatura', 16, true);
       linea('Chihuahua, macho. Período: ' + fLarga(desde) + ' al ' + fLarga(hasta) + '. Generado el ' + fLarga(jornada()) + '.', 10, false, '#596067');
       y += 1;
-      var comp = R.filter(function (r) { return dias(r) === 1; });
+      var comp = R.filter(function (r) { return dias(r) === 1 && !r.parcial; });
       var vals = comp.map(consumo), pz = pesoEn(hasta);
       var res = comp.length ? 'Días completos: ' + comp.length + '. Promedio ' + num(promedio(comp), 0) + ' ml/día' + (pz ? ' (' + num(promedio(comp) / pz, 0) + ' ml/kg/día con peso ' + num(pz) + ' kg)' : '') + '. Mínimo ' + num(Math.min.apply(null, vals)) + ' ml, máximo ' + num(Math.max.apply(null, vals)) + ' ml.' : 'Aún no hay días completos en este período.';
       linea(res, 11, true);
@@ -382,7 +381,7 @@
       R.slice().reverse().forEach(function (r) {
         var t = temp(r.fecha), d = dias(r), cons = consumo(r), pz2 = pesoEn(r.fecha), et = etiquetaDias(r);
         var celdas = [fCorta(r.fecha) + (et ? ' (' + et + ')' : ''), num(r.servi), r.agregados.length ? num(suma(r.agregados)) : '', num(r.quedo), num(cons) + (d > 1 ? ' (' + num(cons / d, 0) + '/día)' : '')]
-          .concat(pesoCol ? [pz2 && d === 1 ? num(cons / pz2, 0) : ''] : [])
+          .concat(pesoCol ? [pz2 && d === 1 && !r.parcial ? num(cons / pz2, 0) : ''] : [])
           .concat([t ? num(t.min, 1) : '', t ? num(t.max, 1) : '', (r.nota || '') + (r.peso_teo ? ' Peso ' + num(r.peso_teo) + ' kg.' : '')]);
         doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor('#16191B');
         var partes = celdas.map(function (txt, i) { return doc.splitTextToSize(pdfTxt(txt), cols[i][1] - 2); });
@@ -425,11 +424,11 @@
       var r = calcVivo();
       if (!r) { S.aviso = { tipo: 'error', txt: 'Revisa el número de "Quedó".' }; render(); return; }
       if (r.raro && b.getAttribute('data-confirmado') !== '1') { b.setAttribute('data-confirmado', '1'); b.textContent = 'Guardar igual'; return; }
-      enviar({ op: 'cerrar', id: abierto().id, quedo: val('ag-quedo'), servi_siguiente: val('ag-servi') || null, nota: val('ag-nota'), peso_teo: val('ag-peso') || null }, b);
+      enviar({ op: 'cerrar', id: abierto().id, quedo: val('ag-quedo'), nota: val('ag-nota'), peso_teo: val('ag-peso') || null }, b);
       return;
     }
     if (a === 'corregir') {
-      var op = { op: 'corregir', id: b.getAttribute('data-id'), servi: val('ed-servi'), agregado_total: val('ed-agr'), nota: val('ed-nota'), peso_teo: val('ed-peso') };
+      var op = { op: 'corregir', id: b.getAttribute('data-id'), servi: val('ed-servi'), agregado_total: val('ed-agr'), nota: val('ed-nota'), peso_teo: val('ed-peso'), parcial: !!(document.getElementById('ed-parcial') || {}).checked };
       if (document.getElementById('ed-quedo')) op.quedo = val('ed-quedo');
       enviar(op, b); return;
     }

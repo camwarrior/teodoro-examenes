@@ -1,30 +1,19 @@
 {
   "activo": true,
   "inicio": "2026-11-26",
-  "metodo": "Medición una vez al día, en la noche al acostarse Teo (normalmente entre las 22:00 y las 23:00), con balanza de cocina (1 g = 1 ml). Se pesa el plato con el agua al servir y al día siguiente con el agua restante; si se agrega agua entre medio, se pesa lo agregado. Consumo = servido + agregado - restante. No descuenta la evaporación.",
+  "metodo": "El agua se sirve en la mañana (o en la madrugada si Teo se levanta) y se retira en la noche al acostarlo; no queda agua durante la noche. Se pesa con balanza de cocina (1 g = 1 ml) el plato con el agua al servir y el plato con el agua que quedó al retirarlo; si se agrega agua durante el día, se pesa lo agregado. Consumo del día = servido + agregado - restante. No descuenta la evaporación.",
   "registros": [
     {
-      "id": "2026-11-26-1",
-      "desde": "2026-11-26",
+      "id": "2026-11-26",
       "fecha": "2026-11-26",
       "servi": 386,
       "agregados": [],
-      "quedo": 286,
+      "quedo": null,
+      "hasta": null,
+      "parcial": true,
       "nota": "Primer día del registro, servido en la tarde (día parcial). Plato 115 + agua 271.",
       "peso_teo": null,
-      "creado": "2026-11-26T20:12:00.000Z",
-      "cerrado": "2026-11-26T21:53:34.778Z"
-    },
-    {
-      "id": "2026-11-26-2",
-      "desde": "2026-11-26",
-      "fecha": null,
-      "servi": 400,
-      "agregados": [],
-      "quedo": null,
-      "nota": "",
-      "peso_teo": null,
-      "creado": "2026-11-26T21:54:58.657Z"
+      "creado": "2026-11-26T20:12:00.000Z"
     }
   ]
 }
