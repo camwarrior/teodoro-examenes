@@ -65,6 +65,12 @@
     var fin = c[c.length - 1].fecha, ini = sumarDias(fin, -(+S.rango) + 1);
     return c.filter(function (r) { return r.fecha >= ini; });
   }
+  /* Día con el que quedará el registro abierto: hoy si hoy aún no se cierra; si no, mañana. */
+  function cierreDe(ab) {
+    var hoy = jornada(), cerradoHoy = cerrados().some(function (r) { return r.fecha === hoy; });
+    var f = cerradoHoy ? sumarDias(hoy, 1) : hoy;
+    return f < ab.desde ? ab.desde : f;
+  }
   function etiquetaDias(r) {
     var d = dias(r);
     if (d === 0) return 'día parcial';
@@ -200,7 +206,7 @@
     var pesoCol = hayPeso();
     h += '<div class="sec"><h2>Registro día por día</h2><div class="card ag-tw"><table class="ag-t"><thead><tr><th>Día</th><th class="ag-raw">Serví</th><th class="ag-raw">Agregué</th><th class="ag-raw">Quedó</th><th>Consumo</th>' + (pesoCol ? '<th>ml/kg</th>' : '') + '<th>Mín</th><th>Máx</th><th class="ag-nt">Nota</th></tr></thead><tbody>';
     if (ab) {
-      h += '<tr class="ag-open' + (S.editId === ab.id ? ' on' : '') + '" data-ag-edit="' + esc(ab.id) + '"><td><b>En curso</b><span>desde ' + esc(fCorta(ab.desde)) + '</span></td><td class="ag-raw">' + num(ab.servi) + '</td><td class="ag-raw">' + (ab.agregados.length ? num(suma(ab.agregados)) : '') + '</td><td class="ag-raw"></td><td>' + '<span>serviste ' + num(ab.servi + suma(ab.agregados)) + '</span></td>' + (pesoCol ? '<td></td>' : '') + '<td></td><td></td><td class="ag-nt">' + esc(ab.nota) + '</td></tr>';
+      h += '<tr class="ag-open' + (S.editId === ab.id ? ' on' : '') + '" data-ag-edit="' + esc(ab.id) + '"><td><b>En curso</b><span>se cerrará como el ' + esc(fCorta(cierreDe(ab))) + '</span></td><td class="ag-raw">' + num(ab.servi) + '</td><td class="ag-raw">' + (ab.agregados.length ? num(suma(ab.agregados)) : '') + '</td><td class="ag-raw"></td><td>' + '<span>serviste ' + num(ab.servi + suma(ab.agregados)) + '</span></td>' + (pesoCol ? '<td></td>' : '') + '<td></td><td></td><td class="ag-nt">' + esc(ab.nota) + '</td></tr>';
     }
     R.slice().reverse().forEach(function (r) {
       var t = temp(r.fecha), d = dias(r), cons = consumo(r), pz2 = pesoEn(r.fecha), et = etiquetaDias(r);
