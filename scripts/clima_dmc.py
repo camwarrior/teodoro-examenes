@@ -50,16 +50,50 @@ def descargar(cod):
     raise RuntimeError("No pude descargar la estación %s: %s" % (cod, limpio(ultimo)))
 
 
+def buscar(obj, clave):
+    """Primer objeto que contiene la clave, buscando en profundidad."""
+    if isinstance(obj, dict):
+        if clave in obj:
+            return obj[clave]
+        for v in obj.values():
+            r = buscar(v, clave)
+            if r is not None:
+                return r
+    elif isinstance(obj, list):
+        for v in obj:
+            r = buscar(v, clave)
+            if r is not None:
+                return r
+    return None
+
+
+def estructura(obj, nivel=0):
+    """Solo los nombres de las claves (sin valores), para diagnosticar cambios de formato."""
+    if nivel > 3:
+        return "…"
+    if isinstance(obj, dict):
+        return {k: estructura(v, nivel + 1) for k, v in obj.items() if isinstance(v, (dict, list))} or list(obj.keys())
+    if isinstance(obj, list):
+        return [estructura(obj[0], nivel + 1)] if obj else []
+    return None
+
+
 def extremas(resp, cod):
-    """Devuelve {iso: {min, max, min_hora, max_hora, datos}} de la estación, o {} si no hay."""
+    """Devuelve {iso: {min, max, min_hora, max_hora, datos}} de la estación.
+
+    La DMC entrega dos formatos: con todas las estaciones ("estaciones" -> código -> datosResumenEma
+    -> datos -> temperaturaExtremas) o con una sola ("datosEstacion" + "datos"). Se busca la clave
+    temperaturaExtremas y se confirma que la respuesta sea de la estación pedida."""
     est = (resp or {}).get("estaciones")
-    if isinstance(est, list):  # por si la DMC devuelve una lista en vez de un objeto
-        est = {str(e.get("estacion", {}).get("codigoNacional") or e.get("codigoNacional")): e for e in est}
-    if not isinstance(est, dict) or cod not in est:
-        claves = list((resp or {}).keys())
-        raise RuntimeError("La respuesta de la estación %s no trae 'estaciones/%s' (claves: %s)." % (cod, cod, claves))
-    datos = ((est[cod].get("datosResumenEma") or {}).get("datos") or {})
-    te = datos.get("temperaturaExtremas") or {}
+    if isinstance(est, dict) and cod in est:
+        resp = est[cod]
+    codigo = buscar((resp or {}).get("datosEstacion") or {}, "codigoNacional")
+    if codigo is not None and str(codigo) != cod:
+        raise RuntimeError("Pedí la estación %s y la DMC respondió la %s." % (cod, codigo))
+    te = buscar(resp, "temperaturaExtremas")
+    if not isinstance(te, dict):
+        raise RuntimeError("La respuesta de la estación %s no trae temperaturaExtremas. Estructura: %s"
+                           % (cod, json.dumps(estructura(resp), ensure_ascii=False)[:900]))
     out = {}
     for k, v in te.items():
         try:
@@ -72,6 +106,9 @@ def extremas(resp, cod):
         out[iso] = {"min": float(mn["valor"]), "max": float(mx["valor"]),
                     "min_hora": mn.get("momento"), "max_hora": mx.get("momento"),
                     "datos": v.get("datos")}
+    if not out:
+        raise RuntimeError("La estación %s trae temperaturaExtremas pero sin días legibles (claves: %s)."
+                           % (cod, list(te.keys())[:5]))
     return out
 
 
