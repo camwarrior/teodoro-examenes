@@ -7,7 +7,7 @@ Ficha clínica web con la evolución de los exámenes de laboratorio, cardiolog�
 - **Resumen** — estado de cada área de seguimiento, último valor y tendencia.
 - **Áreas de seguimiento** (órganos y grupos de indicadores), cada una con enlace propio: riñones (`#rinones`), orina (`#orina`), hígado (`#higado`), páncreas (`#pancreas`), tiroides (`#tiroides`), electrolitos (`#electrolitos`), corazón (`#corazon`) y sangre (`#sangre`).
 - **Línea de tiempo**, **imágenes** y **archivos** (los 49 exámenes con visor y descarga en PDF).
-- **Agua y clima** (`#agua`, pestaña temporal): registro diario del agua que toma Teodoro y la temperatura mínima y máxima medida ese día (DMC, estación Tobalaba). Exporta PDF para el nefrólogo.
+- **Agua y clima** (`#agua`, pestaña temporal): registro diario del agua que toma Teodoro y la temperatura mínima y máxima medida ese día (DMC, solo estación Tobalaba). Exporta PDF para el nefrólogo.
 
 ## Archivos
 

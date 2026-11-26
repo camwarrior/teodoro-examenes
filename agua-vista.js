@@ -219,7 +219,7 @@
     h += '<p class="small" style="margin-top:8px">Con PIN, toca una fila para corregirla. Los promedios usan solo días completos (de una medición nocturna a la siguiente).</p></div>';
 
     h += '<div class="card explain sec"><h2>Cómo se mide</h2><p>' + esc((S.agua && S.agua.metodo) || '') + '</p>'
-      + '<p>La temperatura es la mínima y la máxima medidas ese día por la estación de la Dirección Meteorológica de Chile en Tobalaba, a unos 5 km de la casa (respaldo: Quinta Normal). No es pronóstico. Se carga sola cada mañana con el día anterior.</p></div>';
+      + '<p>La temperatura es la mínima y la máxima medidas ese día por la estación oficial de la Dirección Meteorológica de Chile en Tobalaba (Santiago oriente), a unos 6 km de la casa. No es pronóstico ni la temperatura dentro de la casa. Se carga sola cada mañana con el día anterior.</p></div>';
     h += '<p class="disc">Registro hecho en casa, como apoyo para el veterinario tratante. No reemplaza su criterio.</p>';
     return h;
   }
@@ -232,11 +232,9 @@
   function climaEstado() {
     var C = S.clima, u = C && C.ultimo_intento;
     if (!C || !u) return '<p class="nota">La temperatura empieza a cargarse sola cuando esté activa la clave de la Dirección Meteorológica.</p>';
-    var t = 'Fuente: DMC. Última revisión: ' + esc(u.cuando.replace('T', ' ').slice(0, 16)) + '.';
+    var t = 'Fuente: DMC, estación Tobalaba. Última revisión: ' + esc(u.cuando.replace('T', ' ').slice(0, 16)) + '.';
     if (!u.ok && u.avisos && u.avisos.length) t += ' <span class="ag-warn-in">Aviso: ' + esc(u.avisos[0]) + '</span>';
     else if (u.faltan && u.faltan.length) t += ' Sin dato: ' + esc(u.faltan.map(fLarga).join(', ')) + '.';
-    var resp = cerrados().some(function (r) { var x = temp(r.fecha); return x && x.estacion !== (C.principal || '330019'); });
-    if (resp) t += ' Algunos días vienen de Quinta Normal porque Tobalaba no tenía el dato completo.';
     return '<p class="nota">' + t + '</p>';
   }
   function editHtml(r) {
@@ -351,7 +349,7 @@
       var res = comp.length ? 'Días completos: ' + comp.length + '. Promedio ' + num(promedio(comp), 0) + ' ml/día' + (pz ? ' (' + num(promedio(comp) / pz, 0) + ' ml/kg/día con peso ' + num(pz) + ' kg)' : '') + '. Mínimo ' + num(Math.min.apply(null, vals)) + ' ml, máximo ' + num(Math.max.apply(null, vals)) + ' ml.' : 'Aún no hay días completos en este período.';
       linea(res, 11, true);
       linea('Método: ' + ((S.agua && S.agua.metodo) || ''), 9, false, '#2C3136');
-      linea('Temperatura: mínima y máxima medidas cada día por la estación de la Dirección Meteorológica de Chile en Tobalaba (Santiago oriente, a unos 5 km de la casa; respaldo Quinta Normal). No es pronóstico.', 9, false, '#2C3136');
+      linea('Temperatura: mínima y máxima medidas cada día por la estación de la Dirección Meteorológica de Chile en Tobalaba (Santiago oriente, a unos 6 km de la casa). No es pronóstico ni la temperatura dentro de la casa.', 9, false, '#2C3136');
       y += 2;
       var imgs = chartPng(1600, 520), ih = W * 520 / 1600;
       linea('Agua consumida (ml por día; tono claro = día parcial o varios días)', 10, true);

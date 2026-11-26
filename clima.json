@@ -1,8 +1,7 @@
 {
   "fuente": "Dirección Meteorológica de Chile, estaciones automáticas (resumen diario). Temperatura mínima y máxima medidas del día calendario.",
   "estaciones": {
-    "330019": "Eulogio Sánchez, Tobalaba Ad. (Santiago oriente)",
-    "330020": "Quinta Normal, Santiago"
+    "330019": "Eulogio Sánchez, Tobalaba Ad. (Santiago oriente)"
   },
   "principal": "330019",
   "dias": {
