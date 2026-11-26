@@ -1,5 +1,6 @@
 # Temperatura real del día (mínima y máxima) desde la Dirección Meteorológica de Chile.
 # Corre dos veces al día; la segunda vez solo rellena lo que haya faltado. Escribe clima.json.
+# Secretos necesarios (Settings > Secrets and variables > Actions): DMC_USUARIO y DMC_TOKEN.
 name: Clima diario (DMC)
 
 on:
