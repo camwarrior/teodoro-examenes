@@ -50,7 +50,13 @@ async function escribir(archivo, ref, json, sha, mensaje) {
     body: { message: mensaje, content: Buffer.from(contenido, 'utf8').toString('base64'), sha: sha, branch: ref }
   });
   if (r.status === 409 || r.status === 422) return false; /* alguien escribió entre medio: reintentar */
-  if (!r.ok) throw Object.assign(new Error('GitHub respondió ' + r.status + ' al guardar.'), { status: 502 });
+  if (!r.ok) {
+    var det = ''; try { det = (await r.json()).message || ''; } catch (e) {}
+    var txt = 'GitHub respondió ' + r.status + ' al guardar' + (det ? ' ("' + det + '")' : '') + '.';
+    if (r.status === 403 || r.status === 404) txt += ' Revisa que el token GITHUB_TOKEN_AGUA tenga acceso a teodoro-examenes con permiso Contents: Read and write.';
+    if (r.status === 401) txt += ' El token no es válido o expiró: crea uno nuevo y actualízalo en Vercel.';
+    throw Object.assign(new Error(txt), { status: 502 });
+  }
   return true;
 }
 
