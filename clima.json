@@ -6,5 +6,13 @@
   },
   "principal": "330019",
   "dias": {},
-  "ultimo_intento": null
+  "ultimo_intento": {
+    "cuando": "2026-11-26T17:35-03:00",
+    "ok": false,
+    "nuevos": [],
+    "avisos": [
+      "Faltan los secretos DMC_USUARIO y/o DMC_TOKEN en GitHub."
+    ],
+    "faltan": []
+  }
 }
