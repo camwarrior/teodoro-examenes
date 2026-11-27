@@ -1,5 +1,7 @@
 # Temperatura real del día (mínima y máxima) desde la Dirección Meteorológica de Chile.
-# Corre dos veces al día; la segunda vez solo rellena lo que haya faltado. Escribe clima.json.
+# Corre cada vez que se guarda un registro de agua (agua.json en main), que es el disparador
+# confiable, y además dos veces al día como respaldo (los horarios de GitHub pueden atrasarse o
+# saltarse). Solo agrega días ya terminados que falten. Escribe clima.json.
 # Secretos necesarios (Settings > Secrets and variables > Actions): DMC_USUARIO y DMC_TOKEN.
 name: Clima diario (DMC)
 
@@ -8,6 +10,9 @@ on:
     - cron: '17 12 * * *'   # ~09:17 en Santiago (08:17 en invierno)
     - cron: '17 18 * * *'   # ~15:17, por si la primera falló
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['agua.json', '.github/workflows/clima.yml']
 
 permissions:
   contents: write
