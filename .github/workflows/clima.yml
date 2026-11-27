@@ -8,10 +8,6 @@ on:
     - cron: '17 12 * * *'   # ~09:17 en Santiago (08:17 en invierno)
     - cron: '17 18 * * *'   # ~15:17, por si la primera falló
   workflow_dispatch:
-  # TEMPORAL, solo mientras se prueba en la rama agua-clima. Se quita antes de pasar a main.
-  push:
-    branches: [agua-clima]
-    paths: ['scripts/clima_dmc.py', '.github/workflows/clima.yml']
 
 permissions:
   contents: write
