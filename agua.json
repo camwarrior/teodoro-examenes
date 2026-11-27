@@ -8,12 +8,13 @@
       "fecha": "2026-11-26",
       "servi": 386,
       "agregados": [],
-      "quedo": null,
-      "hasta": null,
+      "quedo": 205,
+      "hasta": "2026-11-26",
       "parcial": true,
       "nota": "Primer día del registro, servido en la tarde (día parcial). Plato 115 + agua 271.",
       "peso_teo": null,
-      "creado": "2026-11-26T20:12:00.000Z"
+      "creado": "2026-11-26T20:12:00.000Z",
+      "cerrado": "2026-11-27T01:57:14.662Z"
     }
   ]
 }
