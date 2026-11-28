@@ -65,12 +65,23 @@
       "datos": 1438,
       "estacion": "330019",
       "fuente": "resumen diario"
+    },
+    "2026-11-27": {
+      "min": 13.5,
+      "max": 29.1,
+      "min_hora": "2026-11-27 04:42:00",
+      "max_hora": "2026-11-27 17:01:00",
+      "datos": 1439,
+      "estacion": "330019",
+      "fuente": "resumen diario"
     }
   },
   "ultimo_intento": {
-    "cuando": "2026-11-27T22:51-03:00",
+    "cuando": "2026-11-28T04:47-03:00",
     "ok": true,
-    "nuevos": [],
+    "nuevos": [
+      "2026-11-27: mín 13.5, máx 29.1 (resumen diario)"
+    ],
     "avisos": [],
     "faltan": []
   }
