@@ -29,6 +29,18 @@
       "peso_teo": null,
       "creado": "2026-11-27T15:07:53.130Z",
       "cerrado": "2026-11-28T01:51:18.495Z"
+    },
+    {
+      "id": "2026-11-28",
+      "fecha": "2026-11-28",
+      "servi": 344,
+      "agregados": [],
+      "quedo": null,
+      "hasta": null,
+      "parcial": false,
+      "nota": "",
+      "peso_teo": null,
+      "creado": "2026-11-28T07:47:39.223Z"
     }
   ]
 }
